@@ -1,8 +1,10 @@
 function Navbar() {
   return (
     <nav className="navbar">
+
       <div className="logo">
-        ✳ <span>NestWise</span>
+        <span className="logo-icon">✳</span>
+        <span>NestWise</span>
       </div>
 
       <div className="nav-links">
@@ -16,6 +18,7 @@ function Navbar() {
         <button className="login-btn">Login</button>
         <button className="signup-btn">Sign Up</button>
       </div>
+
     </nav>
   )
 }
