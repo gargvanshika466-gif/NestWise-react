@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-
-
-
 * {
   margin: 0;
   padding: 0;
@@ -10,8 +7,8 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #ffffff;
   color: #1f2937;
 }
 
@@ -25,22 +22,24 @@ a {
   color: inherit;
 }
 
-/* Navbar */
-
 .navbar {
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 7%;
-  background: white;
-  border-bottom: 1px solid #eee;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .logo {
   color: #198754;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.logo-icon {
+  margin-right: 5px;
 }
 
 .nav-links {
@@ -49,8 +48,13 @@ a {
 }
 
 .nav-links a {
-  color: #444;
+  color: #444444;
   font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #198754;
 }
 
 .nav-buttons {
@@ -62,20 +66,20 @@ a {
 .signup-btn {
   padding: 9px 18px;
   border-radius: 6px;
+  font-size: 13px;
 }
 
 .login-btn {
-  background: white;
-  border: 1px solid #ccc;
+  background: #ffffff;
+  color: #333333;
+  border: 1px solid #cccccc;
 }
 
 .signup-btn {
   background: #198754;
-  color: white;
+  color: #ffffff;
   border: 1px solid #198754;
 }
-
-/* Hero */
 
 .hero {
   display: flex;
@@ -92,12 +96,15 @@ a {
 .small-heading {
   color: #198754;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 15px;
+  letter-spacing: 1px;
 }
 
 .hero h1 {
+  color: #172b1f;
   font-size: 48px;
+  line-height: 1.15;
   margin-bottom: 20px;
 }
 
@@ -107,17 +114,19 @@ a {
 }
 
 .hero-text {
+  max-width: 520px;
   color: #667085;
   line-height: 1.6;
   margin-bottom: 25px;
+  font-size: 15px;
 }
 
 .search-box {
   display: flex;
   max-width: 550px;
-  background: white;
+  background: #ffffff;
   padding: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 8px;
 }
 
@@ -126,14 +135,23 @@ a {
   border: none;
   outline: none;
   padding: 12px;
+  font-size: 13px;
+}
+
+.search-box input::placeholder {
+  color: #999999;
 }
 
 .search-box button {
   background: #198754;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 0 25px;
   border-radius: 6px;
+}
+
+.search-box button:hover {
+  background: #157347;
 }
 
 .hero-image {
@@ -144,10 +162,9 @@ a {
   width: 100%;
   height: 350px;
   object-fit: cover;
+  display: block;
   border-radius: 15px;
 }
-
-/* Cards */
 
 .user-options {
   display: flex;
@@ -160,8 +177,10 @@ a {
   width: 320px;
   padding: 25px;
   text-align: center;
-  border: 1px solid #ddd;
+  background: #ffffff;
+  border: 1px solid #dddddd;
   border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .option-icon {
@@ -169,28 +188,46 @@ a {
   margin-bottom: 10px;
 }
 
+.option-card h3 {
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
 .option-card p {
   color: #667085;
   margin: 10px 0 15px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .option-card button {
   background: #198754;
-  background-color:antiquewhite;
-  color: rgb(45, 34, 34);
+  color: #ffffff;
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
 }
 
-
+.option-card button:hover {
+  background: #157347;
+}
 
 .why-section {
   padding: 60px 7%;
   text-align: center;
+  background: #ffffff;
+}
+
+.section-label {
+  color: #198754;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
 .why-section h2 {
+  color: #172b1f;
+  font-size: 28px;
   margin-bottom: 35px;
 }
 
@@ -202,9 +239,9 @@ a {
 
 .why-card {
   padding: 20px;
-  border: 1px solid #eee;
+  border: 1px solid #eeeeee;
   border-radius: 10px;
-  background-color:#ddd
+  background-color: #ffffff;
 }
 
 .why-icon {
@@ -214,10 +251,142 @@ a {
 
 .why-card h3 {
   margin: 10px 0;
+  font-size: 15px;
 }
 
 .why-card p {
   color: #667085;
   font-size: 13px;
+  line-height: 1.5;
 }
 
+.cta-section {
+  padding: 60px 7%;
+  text-align: center;
+  background: #f5faf7;
+}
+
+.cta-section h2 {
+  color: #172b1f;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.cta-section p {
+  color: #667085;
+  margin-bottom: 20px;
+}
+
+.cta-section button {
+  background: #198754;
+  color: #ffffff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 6px;
+}
+
+.cta-section button:hover {
+  background: #157347;
+}
+
+.footer {
+  padding: 35px 7%;
+  background: #172b1f;
+  color: #ffffff;
+  text-align: center;
+}
+
+.footer h3 {
+  margin-bottom: 8px;
+}
+
+.footer p {
+  color: #b8c7be;
+  font-size: 13px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 20px 0;
+}
+
+.footer-links a {
+  color: #d7e2dc;
+  font-size: 13px;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.copyright {
+  margin-top: 15px;
+}
+
+@media (max-width: 800px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 50px 6%;
+  }
+
+  .hero-content,
+  .hero-image {
+    width: 100%;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .user-options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .why-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar {
+    padding: 0 5%;
+  }
+
+  .nav-buttons {
+    gap: 5px;
+  }
+
+  .login-btn,
+  .signup-btn {
+    padding: 8px 12px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .search-box {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .search-box button {
+    padding: 11px;
+  }
+
+  .why-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .option-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
