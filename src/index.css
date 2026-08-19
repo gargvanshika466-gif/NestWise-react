@@ -478,3 +478,213 @@ a {
   font-weight: 600;
   cursor: pointer;
 }
+
+
+
+
+/* SIGN UP PAGE */
+
+.signup-page {
+  min-height: calc(100vh - 72px);
+  background: #f7fbf8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.signup-card {
+  width: 700px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.signup-card h1 {
+  text-align: center;
+  color: #1d2939;
+  margin-bottom: 8px;
+}
+
+.signup-card > p {
+  text-align: center;
+  color: #667085;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.signup-card h3 {
+  text-align: center;
+  color: #1d2939;
+  margin-bottom: 20px;
+}
+
+.role-options {
+  display: flex;
+  gap: 20px;
+}
+
+.role-card {
+  flex: 1;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.role-card:hover {
+  border-color: #198754;
+}
+
+.role-icon {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.role-card h2 {
+  font-size: 20px;
+  color: #1d2939;
+  margin-bottom: 10px;
+}
+
+.role-card p {
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.role-card button {
+  background: #198754;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+}
+
+/* SIGNUP PAGE */
+
+.signup-page {
+  min-height: calc(100vh - 72px);
+  background: #f7fbf8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.signup-card {
+  width: 700px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.signup-card h1 {
+  text-align: center;
+  color: #1d2939;
+  margin-bottom: 8px;
+}
+
+.signup-card > p {
+  text-align: center;
+  color: #667085;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.signup-card h3 {
+  text-align: center;
+  color: #1d2939;
+  margin-bottom: 20px;
+}
+
+.role-options {
+  display: flex;
+  gap: 20px;
+}
+
+.role-card {
+  flex: 1;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.role-card:hover {
+  border-color: #198754;
+}
+
+.role-icon {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.role-card h2 {
+  font-size: 20px;
+  color: #1d2939;
+  margin-bottom: 10px;
+}
+
+.role-card p {
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.role-card button {
+  background: #198754;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.signup-form {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.signup-form h2 {
+  text-align: center;
+  color: #1d2939;
+  margin-bottom: 20px;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.signup-form input:focus {
+  outline: none;
+  border-color: #198754;
+}
+
+.create-account-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #198754;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.create-account-btn:hover {
+  background: #157347;
+}
