@@ -687,4 +687,147 @@ a {
 
 .create-account-btn:hover {
   background: #157347;
+/*BUYERS CSS*/
+
+
+.buyer-page {
+  max-width: 850px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #1f2937;
+}
+
+.buyer-page h1 {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.buyer-page > p {
+  color: #6b7280;
+  margin-bottom: 35px;
+  font-size: 16px;
+}
+
+
+
+
+.card,
+.section,
+.summary {
+  background: white;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.card h2,
+.section h3,
+.summary h2 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+
+
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 13px 15px;
+  margin: 8px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+
+
+
+.section label {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 6px 5px 6px 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #f9fafb;
+  transition: 0.2s;
+}
+
+.section label:hover {
+  border-color: #6366f1;
+  background: #f5f3ff;
+}
+
+.section input {
+  margin-right: 7px;
+}
+
+
+
+.buyer-page button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #6366f1;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.buyer-page button:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+
+
+
+.summary {
+  background: #f5f7ff;
+  border-left: 5px solid #6366f1;
+}
+
+.summary p {
+  margin: 10px 0;
+  color: #4b5563;
+}
+
+
+
+
+@media (max-width: 600px) {
+
+  .buyer-page {
+    margin: 25px auto;
+    padding: 15px;
+  }
+
+  .buyer-page h1 {
+    font-size: 32px;
+  }
+
+  .card,
+  .section,
+  .summary {
+    padding: 20px;
+  }
+
 }

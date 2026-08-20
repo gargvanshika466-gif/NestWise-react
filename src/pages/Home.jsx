@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
 function Home() {
@@ -65,9 +66,11 @@ function Home() {
             Find affordable accommodation near your campus.
           </p>
 
+          <Link to="/buyer">
           <button>
             Search Now
           </button>
+          </Link>
 
         </div>
 

@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import BuyerPage from "./pages/BuyerPage";
 
 function App() {
   return (
@@ -16,10 +17,12 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
 
+        <Route path="/buyer" element={<BuyerPage />} />
+
       </Routes>
 
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
