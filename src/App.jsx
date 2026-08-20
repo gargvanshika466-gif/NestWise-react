@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import BuyerPage from "./pages/BuyerPage";
+import ListProperty from "./pages/ListProperty";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/buyer" element={<BuyerPage />} />
+
+        <Route path="/list-property" element={<ListProperty />} />
 
       </Routes>
 

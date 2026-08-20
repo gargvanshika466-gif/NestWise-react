@@ -831,3 +831,347 @@ input[type="number"]:focus {
   }
 
 }
+}
+/*SHANAYA LIST PROPERTY PAGE*/
+
+.list-property-page {
+  min-height: 100vh;
+  padding: 45px 20px 80px;
+  background: linear-gradient(135deg, #f4faf7 0%, #eef7f2 100%);
+  font-family: Arial, sans-serif;
+  color: #24372d;
+}
+
+.list-property-page > h1 {
+  text-align: center;
+  margin: 0 0 40px;
+  color: #123d2a;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.property-steps {
+  max-width: 780px;
+  margin: 0 auto 42px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.property-steps::before {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 17%;
+  right: 17%;
+  height: 3px;
+  background: #d9e8df;
+  border-radius: 10px;
+}
+
+.property-steps span {
+  position: relative;
+  z-index: 1;
+  width: 33.33%;
+  text-align: center;
+  color: #89968e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.property-steps span::before {
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 11px;
+  border-radius: 50%;
+  background: white;
+  color: #89968e;
+  border: 3px solid #d9e8df;
+  box-shadow: 0 4px 12px rgba(25, 70, 48, 0.08);
+}
+
+.property-steps span:nth-child(1)::before {
+  content: "1";
+}
+
+.property-steps span:nth-child(2)::before {
+  content: "2";
+}
+
+.property-steps span:nth-child(3)::before {
+  content: "3";
+}
+
+.property-steps .active-step {
+  color: #13834e;
+  font-weight: 700;
+}
+
+.property-steps .active-step::before {
+  background: #13834e;
+  color: white;
+  border-color: #13834e;
+  box-shadow: 0 6px 18px rgba(19, 131, 78, 0.25);
+}
+
+.property-card {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 42px 48px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  border: 1px solid #e0ebe5;
+  box-shadow: 0 18px 45px rgba(30, 70, 50, 0.10);
+}
+
+.property-card h2 {
+  margin: 0 0 30px;
+  padding-bottom: 18px;
+  color: #123d2a;
+  font-size: 26px;
+  border-bottom: 1px solid #e5eee9;
+}
+
+.property-card label {
+  display: block;
+  margin: 20px 0 9px;
+  color: #294036;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.property-card input,
+.property-card select,
+.property-card textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid #d5e2da;
+  border-radius: 11px;
+  background: #fafdff;
+  color: #26372e;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.property-card input::placeholder,
+.property-card textarea::placeholder {
+  color: #a0aaa5;
+}
+
+.property-card input:hover,
+.property-card select:hover,
+.property-card textarea:hover {
+  border-color: #aac7b7;
+}
+
+.property-card input:focus,
+.property-card select:focus,
+.property-card textarea:focus {
+  background: white;
+  border-color: #13834e;
+  box-shadow: 0 0 0 4px rgba(19, 131, 78, 0.08);
+}
+
+.property-card textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.property-card button {
+  padding: 13px 28px;
+  margin-top: 30px;
+  margin-right: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #13834e;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.property-card button:hover {
+  background: #0e6d40;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(19, 131, 78, 0.22);
+}
+
+.property-card button:first-of-type:not(:only-of-type) {
+  background: white;
+  color: #13834e;
+  border: 1px solid #15995b;
+}
+
+.property-card button:first-of-type:not(:only-of-type):hover {
+  background: #f1faf5;
+  box-shadow: none;
+}
+
+.photo-upload {
+  margin: 10px 0 28px;
+  padding: 38px 20px;
+  border: 2px dashed #5f7969;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8fcf9, #f1faf5);
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.photo-upload:hover {
+  border-color: #13834e;
+  background: #eef9f3;
+}
+
+.photo-upload p:first-child {
+  margin: 0 0 9px;
+  color: #13834e;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.photo-upload p {
+  margin: 5px 0;
+  color: #7b8981;
+  font-size: 13px;
+}
+
+.photo-upload input[type="file"] {
+  width: auto;
+  margin-top: 16px;
+  padding: 7px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.property-published {
+  max-width: 650px;
+  margin: 70px auto;
+  padding: 60px 40px;
+  box-sizing: border-box;
+  background: white;
+  text-align: center;
+  border-radius: 24px;
+  border: 1px solid #e0ebe4;
+  box-shadow: 0 20px 50px rgba(28, 63, 45, 0.12);
+}
+
+.success-icon {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: #13834e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  font-weight: bold;
+  box-shadow: 0 10px 25px rgba(19, 131, 78, 0.25);
+}
+
+.property-published h2 {
+  margin: 0 0 13px;
+  color: #123d2a;
+  font-size: 30px;
+}
+
+.property-published p {
+  max-width: 440px;
+  margin: 0 auto 25px;
+  color: #718078;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.property-published button {
+  padding: 13px 25px;
+  margin: 7px;
+  border: none;
+  border-radius: 10px;
+  background: #13834e;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.property-published button:hover {
+  background: #0a3b24;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(19, 131, 78, 0.22);
+}
+
+@media (max-width: 700px) {
+  .list-property-page {
+    padding: 30px 15px 55px;
+  }
+
+  .list-property-page > h1 {
+    font-size: 29px;
+    margin-bottom: 32px;
+  }
+
+  .property-steps {
+    margin-bottom: 32px;
+  }
+
+  .property-steps span {
+    font-size: 11px;
+  }
+
+  .property-steps span::before {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+  }
+
+  .property-steps::before {
+    top: 15px;
+  }
+
+  .property-card {
+    padding: 30px 22px;
+    border-radius: 17px;
+  }
+
+  .property-card h2 {
+    font-size: 22px;
+  }
+
+  .property-card button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .photo-upload {
+    padding: 30px 15px;
+  }
+
+  .property-published {
+    margin: 40px auto;
+    padding: 45px 20px;
+    border-radius: 18px;
+  }
+
+  .property-published h2 {
+    font-size: 25px;
+  }
+
+  .property-published button {
+    width: 100%;
+    margin: 7px 0;
+  }
+}
