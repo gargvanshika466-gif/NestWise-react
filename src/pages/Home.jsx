@@ -51,55 +51,6 @@ function Home() {
 
       </section>
 
-
-    
-      <section className="user-options">
-
-        <div className="option-card">
-
-          <div className="option-icon">
-            🎓
-          </div>
-
-          <h3>I'm a Student</h3>
-
-          <p>
-            Find affordable accommodation near your campus.
-          </p>
-
-          <Link to="/buyer">
-          <button>
-            Search Now
-          </button>
-          </Link>
-
-        </div>
-
-
-        <div className="option-card">
-
-          <div className="option-icon">
-            🏠
-          </div>
-
-          <h3>I'm a Property Owner</h3>
-
-          <p>
-            List your property and connect with students.
-          </p>
-
-          <Link to="/list-property">
-            <button>
-              List Property
-            </button>
-          </Link>
-
-        </div>
-
-      </section>
-
-
-      
       <section className="why-section">
 
         <p className="section-label">
