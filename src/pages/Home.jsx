@@ -68,8 +68,29 @@ function Home() {
           </p>
 
           <Link to="/buyer">
+          <button>
+            Search Now
+          </button>
+          </Link>
+
+        </div>
+
+
+        <div className="option-card">
+
+          <div className="option-icon">
+            🏠
+          </div>
+
+          <h3>I'm a Property Owner</h3>
+
+          <p>
+            List your property and connect with students.
+          </p>
+
+          <Link to="/list-property">
             <button>
-              Search Now
+              List Property
             </button>
           </Link>
 
