@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import BuyerPage from "./pages/BuyerPage";
 import SellerPage from "./pages/SellerPage";
+import ListProperty from "./pages/ListProperty";
 
 function App() {
   return (
@@ -20,8 +21,8 @@ function App() {
 
         <Route path="/buyer" element={<BuyerPage />} />
 
-        <Route path="/seller" element={<SellerPage />} />
-
+<Route path="/seller" element={<SellerPage />} />
+<Route path="/list-property" element={<ListProperty />} />
       </Routes>
 
     </BrowserRouter>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
+
 function Home() {
   return (
     <div className="home-page">
@@ -93,9 +94,11 @@ function Home() {
             List your property and connect with students.
           </p>
 
-          <button>
-            List Property
-          </button>
+          <Link to="/list-property">
+            <button>
+              List Property
+            </button>
+          </Link>
 
         </div>
 
