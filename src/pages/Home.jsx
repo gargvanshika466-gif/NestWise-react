@@ -67,9 +67,15 @@ function Home() {
           </p>
 
           <Link to="/buyer">
-          <button>
-            Search Now
-          </button>
+            <button>
+              Search Now
+            </button>
+          </Link>
+
+          <Link to="/seller">
+            <button>
+              List Property
+            </button>
           </Link>
 
         </div>
