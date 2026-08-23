@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
+
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
@@ -10,18 +11,24 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
+    phone: ""
   });
 
-  const handleBuyerChange = (e) => {
+
+  function handleBuyerChange(e) {
+
     setBuyer({
       ...buyer,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
-  };
 
-  const handleBuyerSignup = (e) => {
+  }
+
+
+  function handleBuyerSignup(e) {
+
     e.preventDefault();
+
 
     if (
       !buyer.name ||
@@ -30,43 +37,77 @@ function Signup() {
       !buyer.confirmPassword ||
       !buyer.phone
     ) {
+
       alert("Please fill all details.");
       return;
+
     }
 
-    if (buyer.password !== buyer.confirmPassword) {
+
+    if (
+      buyer.password !==
+      buyer.confirmPassword
+    ) {
+
       alert("Passwords do not match.");
       return;
+
     }
 
-    localStorage.setItem("buyerData", JSON.stringify(buyer));
 
-    navigate("/buyer");
-  };
+    localStorage.setItem(
+      "buyerData",
+      JSON.stringify({
+        name: buyer.name,
+        email: buyer.email,
+        phone: buyer.phone
+      })
+    );
+
+
+    navigate("/results");
+
+  }
+
 
   const handleSellerAccount = () => {
+
     navigate("/list-property");
+
   };
 
+
   return (
+
     <div className="signup-page">
+
       <div className="signup-card">
 
         <h1>Create Account</h1>
+
         <p>Join NestWise today</p>
 
         <h3>Choose your account type</h3>
 
+
         <div className="role-options">
 
+
           <div className="role-card">
-            <div className="role-icon">🏠</div>
+
+            <div className="role-icon">
+              🏠
+            </div>
 
             <h2>Buyer</h2>
 
-            <p>Find your perfect home on NestWise.</p>
+            <p>
+              Find your perfect home on NestWise.
+            </p>
 
-            <button onClick={() => setRole("buyer")}>
+            <button
+              onClick={() => setRole("buyer")}
+            >
               Continue as Buyer
             </button>
 
@@ -74,26 +115,42 @@ function Signup() {
               Already have an account?
               <Link to="/login"> Login</Link>
             </p>
+
           </div>
 
+
           <div className="role-card">
-            <div className="role-icon">🏢</div>
+
+            <div className="role-icon">
+              🏢
+            </div>
 
             <h2>Seller</h2>
 
-            <p>List your property on NestWise.</p>
+            <p>
+              List your property on NestWise.
+            </p>
 
-            <button onClick={() => setRole("seller")}>
+            <button
+              onClick={() => setRole("seller")}
+            >
               Continue as Seller
             </button>
+
           </div>
 
         </div>
 
+
         {role === "buyer" && (
-          <form className="signup-form" onSubmit={handleBuyerSignup}>
+
+          <form
+            className="signup-form"
+            onSubmit={handleBuyerSignup}
+          >
 
             <h2>Buyer Information</h2>
+
 
             <input
               type="text"
@@ -103,6 +160,7 @@ function Signup() {
               onChange={handleBuyerChange}
             />
 
+
             <input
               type="email"
               name="email"
@@ -110,6 +168,7 @@ function Signup() {
               value={buyer.email}
               onChange={handleBuyerChange}
             />
+
 
             <input
               type="password"
@@ -119,6 +178,7 @@ function Signup() {
               onChange={handleBuyerChange}
             />
 
+
             <input
               type="password"
               name="confirmPassword"
@@ -126,6 +186,7 @@ function Signup() {
               value={buyer.confirmPassword}
               onChange={handleBuyerChange}
             />
+
 
             <input
               type="text"
@@ -135,6 +196,7 @@ function Signup() {
               onChange={handleBuyerChange}
             />
 
+
             <button
               type="submit"
               className="create-account-btn"
@@ -143,18 +205,40 @@ function Signup() {
             </button>
 
           </form>
+
         )}
 
+
         {role === "seller" && (
+
           <div className="signup-form">
 
             <h2>Seller Information</h2>
 
-            <input type="text" placeholder="Full Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <input type="password" placeholder="Confirm Password" />
-            <input type="text" placeholder="Phone Number" />
+            <input
+              type="text"
+              placeholder="Full Name"
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+            />
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+            />
+
+            <input
+              type="text"
+              placeholder="Phone Number"
+            />
 
             <button
               className="create-account-btn"
@@ -164,10 +248,13 @@ function Signup() {
             </button>
 
           </div>
+
         )}
 
       </div>
+
     </div>
+
   );
 }
 
