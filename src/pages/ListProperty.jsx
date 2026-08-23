@@ -13,6 +13,10 @@ function ListProperty() {
         setStep(step - 1);
     };
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
     return (
         <div className="list-property-page">
 
@@ -195,7 +199,7 @@ function ListProperty() {
                         View My Listing
                     </button>
 
-                    <button onClick={() => navigate("/")}>
+                    <button onClick={goToHome}>
                         Go to Dashboard
                     </button>
 
