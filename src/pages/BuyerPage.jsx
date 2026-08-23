@@ -1,42 +1,69 @@
-import { useState } from "react"
-import PreferenceOptions from "../components/PreferenceOptions"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PreferenceOptions from "../components/PreferenceOptions";
 
 function BuyerPage() {
 
-  const [name, setName] = useState("")
-  const [location, setLocation] = useState("")
-  const [budget, setBudget] = useState("")
+  const navigate = useNavigate();
 
-  const [propertyType, setPropertyType] = useState("")
-  const [bhk, setBhk] = useState("")
-  const [furnishing, setFurnishing] = useState("")
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [budget, setBudget] = useState("");
 
-  const [amenities, setAmenities] = useState([])
+  const [propertyType, setPropertyType] = useState("");
+  const [bhk, setBhk] = useState("");
+  const [furnishing, setFurnishing] = useState("");
 
-  const propertyTypes = ["Apartment", "Villa", "PG", "Studio"]
-  const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"]
-  const furnishingTypes = ["Fully Furnished", "Semi Furnished", "Unfurnished"]
+  const [amenities, setAmenities] = useState([]);
+
+  const propertyTypes = ["Apartment", "Villa", "PG", "Studio"];
+  const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
+  const furnishingTypes = [
+    "Fully Furnished",
+    "Semi Furnished",
+    "Unfurnished"
+  ];
 
   const amenityList = [
     "Gym",
     "Parking",
     "Security",
     "Lift"
-  ]
+  ];
 
   function handleAmenity(amenity) {
 
     if (amenities.includes(amenity)) {
-      setAmenities(amenities.filter((item) => item !== amenity))
+      setAmenities(
+        amenities.filter((item) => item !== amenity)
+      );
     } else {
-      setAmenities([...amenities, amenity])
+      setAmenities([...amenities, amenity]);
     }
 
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
-    alert("Preferences Saved!")
+
+    e.preventDefault();
+
+    if (!name || !location || !budget || !propertyType || !bhk) {
+      alert("Please fill all required details.");
+      return;
+    }
+
+    navigate("/results", {
+      state: {
+        name,
+        location,
+        budget: Number(budget),
+        propertyType,
+        bhk,
+        furnishing,
+        amenities
+      }
+    });
+
   }
 
   return (
@@ -46,7 +73,6 @@ function BuyerPage() {
       <h1>Find Your Perfect Home</h1>
 
       <p>Tell us what you are looking for.</p>
-
 
       <form onSubmit={handleSubmit}>
 
@@ -135,6 +161,8 @@ function BuyerPage() {
         </div>
 
 
+        {/* FIND HOME BUTTON */}
+
         <button type="submit">
           Find My Home
         </button>
@@ -155,6 +183,7 @@ function BuyerPage() {
           <p>Property: {propertyType}</p>
           <p>Bedrooms: {bhk}</p>
           <p>Furnishing: {furnishing}</p>
+
           <p>
             Amenities: {amenities.join(", ")}
           </p>
@@ -163,7 +192,7 @@ function BuyerPage() {
       )}
 
     </div>
-  )
+  );
 }
 
-export default BuyerPage
+export default BuyerPage;
