@@ -6,7 +6,11 @@ function BuyerPage() {
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const savedBuyer = JSON.parse(localStorage.getItem("buyerData"));
+
+  const [name, setName] = useState(savedBuyer?.name || "");
+  const [email, setEmail] = useState(savedBuyer?.email || "");
+
   const [location, setLocation] = useState("");
   const [budget, setBudget] = useState("");
 
@@ -18,6 +22,7 @@ function BuyerPage() {
 
   const propertyTypes = ["Apartment", "Villa", "PG", "Studio"];
   const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
+
   const furnishingTypes = [
     "Fully Furnished",
     "Semi Furnished",
