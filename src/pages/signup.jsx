@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Signup() {
 
   const [role, setRole] = useState('')
+  const navigate = useNavigate()
+
+  const handleSellerAccount = () => {
+    navigate('/list-property')
+  }
 
   return (
     <div className="signup-page">
@@ -17,8 +22,6 @@ function Signup() {
         <h3>Choose your account type</h3>
 
         <div className="role-options">
-
-          {/* BUYER */}
 
           <div className="role-card">
 
@@ -42,8 +45,6 @@ function Signup() {
           </div>
 
 
-          {/* SELLER */}
-
           <div className="role-card">
 
             <div className="role-icon">🏢</div>
@@ -62,8 +63,6 @@ function Signup() {
 
         </div>
 
-
-        {/* BUYER FORM */}
 
         {role === 'buyer' && (
 
@@ -105,8 +104,6 @@ function Signup() {
         )}
 
 
-        {/* SELLER FORM */}
-
         {role === 'seller' && (
 
           <div className="signup-form">
@@ -138,7 +135,10 @@ function Signup() {
               placeholder="Phone Number"
             />
 
-            <button className="create-account-btn">
+            <button
+              className="create-account-btn"
+              onClick={handleSellerAccount}
+            >
               Create Seller Account
             </button>
 
