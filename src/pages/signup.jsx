@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Signup() {
 
@@ -32,6 +33,11 @@ function Signup() {
             <button onClick={() => setRole('buyer')}>
               Continue as Buyer
             </button>
+
+            <p className="login-text">
+              Already have an account?
+              <Link to="/login"> Login</Link>
+            </p>
 
           </div>
 

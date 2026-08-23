@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Login() {
   return (
     <div className="login-page">
@@ -32,7 +34,7 @@ function Login() {
 
         <p className="signup-text">
           Don't have an account?
-          <span> Sign Up</span>
+        <Link to="/signup"> Sign Up</Link>
         </p>
 
       </div>
