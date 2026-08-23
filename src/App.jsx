@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import BuyerPage from "./pages/BuyerPage";
 import SellerPage from "./pages/SellerPage";
 import ListProperty from "./pages/ListProperty";
+import Results from "./pages/Results";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
 
         {/* Property Listing */}
         <Route path="/list-property" element={<ListProperty />} />
+        <Route path="/results" element={<Results />} />
+
+
       </Routes>
     </BrowserRouter>
   );
