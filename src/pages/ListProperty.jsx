@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ListProperty() {
     const [step, setStep] = useState(1);
+    const navigate = useNavigate();
 
     const handleNext = () => {
         setStep(step + 1);
@@ -193,7 +195,7 @@ function ListProperty() {
                         View My Listing
                     </button>
 
-                    <button>
+                    <button onClick={() => navigate("/")}>
                         Go to Dashboard
                     </button>
 
