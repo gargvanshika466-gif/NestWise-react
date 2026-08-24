@@ -4,43 +4,91 @@ function Login() {
   return (
     <div className="login-page">
 
-      <div className="login-card">
+        <div className="login-left">
 
-        <h1>Welcome Back</h1>
+          <div className="login-left-content">
 
-        <p className="login-text">
-          Login to continue to NestWise
-        </p>
+            <h2 className="login-brand">NestWise</h2>
 
-        <form>
+            <h1>Welcome Back!</h1>
 
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-          />
+            <p>
+              Login to access your saved properties,
+              preferences, and continue your home search.
+            </p>
 
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-          />
+            <div className="login-features">
 
-          <button type="submit" className="login-submit">
-            Login
-          </button>
+              <div className="login-feature">
+                <span className="feature-icon">🔍</span>
+                <span>Smart property matching</span>
+              </div>
 
-        </form>
+              <div className="login-feature">
+                <span className="feature-icon">💰</span>
+                <span>Budget-friendly options</span>
+              </div>
 
-        <p className="signup-text">
-          Don't have an account?
-        <Link to="/signup"> Sign Up</Link>
-        </p>
+              <div className="login-feature">
+                <span className="feature-icon">✅</span>
+                <span>Verified listings only</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div className="login-right">
+
+          <div className="login-card">
+
+            <div className="login-icon">🔑</div>
+
+            <h1>Login</h1>
+
+            <p className="login-text">
+              Enter your credentials to continue
+            </p>
+
+            <form>
+
+              <label>Email Address</label>
+              <div className="input-group">
+                <span className="input-icon">📧</span>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <label>Password</label>
+              <div className="input-group">
+                <span className="input-icon">🔒</span>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <button type="submit" className="login-submit">
+                Login →
+              </button>
+
+            </form>
+
+            <p className="signup-text">
+              Don't have an account?
+              <Link to="/signup"> Create one</Link>
+            </p>
+
+          </div>
+
+        </div>
 
       </div>
-
-    </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
