@@ -91,11 +91,11 @@ function Home() {
             </div>
 
             <h3>
-              Student Friendly
+              User Friendly
             </h3>
 
             <p>
-              Properties selected according to student needs.
+              Properties selected according to user needs.
             </p>
 
           </div>
@@ -159,7 +159,7 @@ function Home() {
           <div className="property-card">
 
             <img
-              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80"
+              src="https://st.hzcdn.com/simgs/pictures/bedrooms/apartment-with-traditional-indian-interior-abhishek-shah-img~7c61ffe70e830d81_9-2435-1-f9e2591.jpg"
               alt="Modern student apartment"
             />
 
@@ -190,7 +190,7 @@ function Home() {
           <div className="property-card">
 
             <img
-              src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80"
+              src="https://i.pinimg.com/originals/21/83/24/2183245b937f1ce26e10805b204354ca.jpg"
               alt="Comfortable PG room"
             />
 
@@ -221,7 +221,7 @@ function Home() {
           <div className="property-card">
 
             <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"
+              src="https://dressyourhome.in/wp-content/uploads/IMG-3220.jpg"
               alt="Spacious shared flat"
             />
 
@@ -263,7 +263,7 @@ function Home() {
           </p>
 
           <h2>
-            Making Student Living Simple
+            Making Your Living Simple
           </h2>
 
           <p>
@@ -281,7 +281,7 @@ function Home() {
               </h3>
 
               <p>
-                Homes that fit a student's budget.
+                Homes that fit a user's budget.
               </p>
             </div>
 
@@ -315,7 +315,7 @@ function Home() {
         <div className="about-image">
 
           <img
-            src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80"
+            src="https://media.designcafe.com/wp-content/uploads/2021/04/28110847/middle-class-indian-bedroom-design.jpg"
             alt="Comfortable student home"
           />
 
@@ -328,11 +328,11 @@ function Home() {
       <section className="reviews-section">
 
         <p className="section-label">
-          WHAT STUDENTS SAY
+          WHAT USERS SAY
         </p>
 
         <h2>
-          Our Students Love NestWise
+          Our Users Love NestWise
         </h2>
 
         <div className="review-cards">
@@ -353,7 +353,7 @@ function Home() {
             </h3>
 
             <span>
-              Student
+              User
             </span>
 
           </div>
@@ -375,7 +375,7 @@ function Home() {
             </h3>
 
             <span>
-              Student
+              User
             </span>
 
           </div>
@@ -388,7 +388,7 @@ function Home() {
             </div>
 
             <p>
-              "A simple and useful platform for students
+              "A simple and useful platform for users
               looking for accommodation."
             </p>
 
@@ -397,7 +397,7 @@ function Home() {
             </h3>
 
             <span>
-              Student
+              User
             </span>
 
           </div>
