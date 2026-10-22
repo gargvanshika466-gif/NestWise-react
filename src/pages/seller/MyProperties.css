@@ -1,0 +1,47 @@
+.my-properties {
+  width: 100%;
+}
+
+.properties-header {
+  margin-bottom: 30px;
+}
+
+.properties-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.properties-header p {
+  color: #666;
+}
+
+
+.empty-properties {
+  background: white;
+  padding: 50px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-properties h2 {
+  margin-bottom: 10px;
+}
+
+.empty-properties p {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.empty-properties button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #7c5ac7;
+  color: white;
+  cursor: pointer;
+}
+
+.empty-properties button:hover {
+  background: #6848b0;
+}
