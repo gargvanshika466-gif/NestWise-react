@@ -70,9 +70,10 @@ function Signup() {
   }
 
 
+  // Seller account ke liye sirf yahan change kiya hai
   const handleSellerAccount = () => {
 
-    navigate("/list-property");
+    navigate("/seller");
 
   };
 
@@ -93,6 +94,7 @@ function Signup() {
         <div className="role-options">
 
 
+          {/* BUYER */}
           <div className="role-card">
 
             <div className="role-icon">
@@ -119,6 +121,7 @@ function Signup() {
           </div>
 
 
+          {/* SELLER */}
           <div className="role-card">
 
             <div className="role-icon">
@@ -142,6 +145,7 @@ function Signup() {
         </div>
 
 
+        {/* BUYER FORM - UNCHANGED */}
         {role === "buyer" && (
 
           <form
@@ -209,6 +213,7 @@ function Signup() {
         )}
 
 
+        {/* SELLER FORM */}
         {role === "seller" && (
 
           <div className="signup-form">
