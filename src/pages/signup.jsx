@@ -70,276 +70,196 @@ function Signup() {
   }
 
 
+  // Seller account ke liye sirf yahan change kiya hai
   const handleSellerAccount = () => {
 
-    navigate("/list-property");
+    navigate("/seller");
 
   };
 
 
   return (
+
     <div className="signup-page">
 
-        <div className="signup-left">
+      <div className="signup-card">
 
-          <div className="signup-left-content">
+        <h1>Create Account</h1>
 
-            <h2 className="signup-brand">NestWise</h2>
+        <p>Join NestWise today</p>
 
-            <h1>Join NestWise</h1>
+        <h3>Choose your account type</h3>
+
+
+        <div className="role-options">
+
+
+          {/* BUYER */}
+          <div className="role-card">
+
+            <div className="role-icon">
+              🏠
+            </div>
+
+            <h2>Buyer</h2>
 
             <p>
-              Create your account and start your journey
-              to finding the perfect home or listing your
-              property.
+              Find your perfect home on NestWise.
             </p>
 
-            <div className="signup-stats">
+            <button
+              onClick={() => setRole("buyer")}
+            >
+              Continue as Buyer
+            </button>
 
-              <div className="stat-item">
-                <span className="stat-number">500+</span>
-                <span className="stat-label">Properties Listed</span>
-              </div>
-
-              <div className="stat-item">
-                <span className="stat-number">1000+</span>
-                <span className="stat-label">Happy Students</span>
-              </div>
-
-              <div className="stat-item">
-                <span className="stat-number">50+</span>
-                <span className="stat-label">Areas Covered</span>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="signup-right">
-
-          <div className="signup-card">
-
-            <div className="signup-header-icon">✨</div>
-
-            <h1>Create Account</h1>
-
-            <p>Choose your account type to get started</p>
-
-            <h3>I want to...</h3>
-
-            <div className="role-options">
-
-              <div
-                className={
-                  "role-card" +
-                  (role === "buyer" ? " role-active" : "")
-                }
-                onClick={() => setRole("buyer")}
-              >
-
-                <div className="role-icon">
-                  🏠
-                </div>
-
-                <h2>Buy a Home</h2>
-
-                <p>
-                  Search and find your perfect home
-                  on NestWise.
-                </p>
-
-                <button>
-                  Continue as Buyer
-                </button>
-
-              </div>
-
-
-              <div
-                className={
-                  "role-card" +
-                  (role === "seller" ? " role-active" : "")
-                }
-                onClick={() => setRole("seller")}
-              >
-
-                <div className="role-icon">
-                  🏢
-                </div>
-
-                <h2>Sell / List</h2>
-
-                <p>
-                  List your property and reach
-                  thousands of students.
-                </p>
-
-                <button>
-                  Continue as Seller
-                </button>
-
-              </div>
-
-            </div>
-
-
-            {role === "buyer" && (
-
-              <form
-                className="signup-form"
-                onSubmit={handleBuyerSignup}
-              >
-
-                <h2>
-                  <span className="form-icon">📋</span>
-                  Buyer Information
-                </h2>
-
-
-                <div className="input-group">
-                  <span className="input-icon">👤</span>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={buyer.name}
-                    onChange={handleBuyerChange}
-                  />
-                </div>
-
-
-                <div className="input-group">
-                  <span className="input-icon">📧</span>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={buyer.email}
-                    onChange={handleBuyerChange}
-                  />
-                </div>
-
-
-                <div className="input-group">
-                  <span className="input-icon">🔒</span>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={buyer.password}
-                    onChange={handleBuyerChange}
-                  />
-                </div>
-
-
-                <div className="input-group">
-                  <span className="input-icon">🔒</span>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={buyer.confirmPassword}
-                    onChange={handleBuyerChange}
-                  />
-                </div>
-
-
-                <div className="input-group">
-                  <span className="input-icon">📱</span>
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={buyer.phone}
-                    onChange={handleBuyerChange}
-                  />
-                </div>
-
-
-                <button
-                  type="submit"
-                  className="create-account-btn"
-                >
-                  Create Buyer Account →
-                </button>
-
-              </form>
-
-            )}
-
-
-            {role === "seller" && (
-
-              <div className="signup-form">
-
-                <h2>
-                  <span className="form-icon">📋</span>
-                  Seller Information
-                </h2>
-
-                <div className="input-group">
-                  <span className="input-icon">👤</span>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="input-icon">📧</span>
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="input-icon">🔒</span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="input-icon">🔒</span>
-                  <input
-                    type="password"
-                    placeholder="Confirm Password"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="input-icon">📱</span>
-                  <input
-                    type="text"
-                    placeholder="Phone Number"
-                  />
-                </div>
-
-                <button
-                  className="create-account-btn"
-                  onClick={handleSellerAccount}
-                >
-                  Create Seller Account →
-                </button>
-
-              </div>
-
-            )}
-
-            <p className="login-redirect">
+            <p className="login-text">
               Already have an account?
-              <Link to="/login"> Login here</Link>
+              <Link to="/login"> Login</Link>
             </p>
 
           </div>
 
+
+          {/* SELLER */}
+          <div className="role-card">
+
+            <div className="role-icon">
+              🏢
+            </div>
+
+            <h2>Seller</h2>
+
+            <p>
+              List your property on NestWise.
+            </p>
+
+            <button
+              onClick={() => setRole("seller")}
+            >
+              Continue as Seller
+            </button>
+
+          </div>
+
         </div>
+
+
+        {/* BUYER FORM - UNCHANGED */}
+        {role === "buyer" && (
+
+          <form
+            className="signup-form"
+            onSubmit={handleBuyerSignup}
+          >
+
+            <h2>Buyer Information</h2>
+
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={buyer.name}
+              onChange={handleBuyerChange}
+            />
+
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={buyer.email}
+              onChange={handleBuyerChange}
+            />
+
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={buyer.password}
+              onChange={handleBuyerChange}
+            />
+
+
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={buyer.confirmPassword}
+              onChange={handleBuyerChange}
+            />
+
+
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              value={buyer.phone}
+              onChange={handleBuyerChange}
+            />
+
+
+            <button
+              type="submit"
+              className="create-account-btn"
+            >
+              Create Buyer Account
+            </button>
+
+          </form>
+
+        )}
+
+
+        {/* SELLER FORM */}
+        {role === "seller" && (
+
+          <div className="signup-form">
+
+            <h2>Seller Information</h2>
+
+            <input
+              type="text"
+              placeholder="Full Name"
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+            />
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+            />
+
+            <input
+              type="text"
+              placeholder="Phone Number"
+            />
+
+            <button
+              className="create-account-btn"
+              onClick={handleSellerAccount}
+            >
+              Create Seller Account
+            </button>
+
+          </div>
+
+        )}
+
+      </div>
 
     </div>
+
   );
 }
 

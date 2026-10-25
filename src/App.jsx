@@ -8,9 +8,15 @@ import {
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
-import SellerPage from "./pages/SellerPage";
 import ListProperty from "./pages/ListProperty";
 import Results from "./pages/Results";
+
+import SellerPage from "./pages/seller/SellerPage";
+import Dashboard from "./pages/seller/Dashboard";
+import PublishProperty from "./pages/seller/PublishProperty";
+import MyProperties from "./pages/seller/MyProperties";
+import Status from "./pages/seller/Status";
+
 
 function App() {
   return (
@@ -18,45 +24,49 @@ function App() {
 
       <Routes>
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+        {/* Existing Pages */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
         <Route
           path="/buyer"
-          element={
-            <Navigate
-              to="/results"
-              replace
-            />
-          }
+          element={<Navigate to="/results" replace />}
         />
 
-        <Route
-          path="/seller"
-          element={<SellerPage />}
-        />
+        <Route path="/list-property" element={<ListProperty />} />
+        <Route path="/results" element={<Results />} />
 
-        <Route
-          path="/list-property"
-          element={<ListProperty />}
-        />
 
-        <Route
-          path="/results"
-          element={<Results />}
-        />
+        {/* Seller Pages */}
+        <Route path="/seller" element={<SellerPage />}>
+
+          <Route
+            index
+            element={<Navigate to="dashboard" replace />}
+          />
+
+          <Route
+            path="dashboard"
+            element={<Dashboard />}
+          />
+
+          <Route
+            path="publish"
+            element={<PublishProperty />}
+          />
+
+          <Route
+            path="properties"
+            element={<MyProperties />}
+          />
+
+          <Route
+            path="status"
+            element={<Status />}
+          />
+
+        </Route>
 
       </Routes>
 
