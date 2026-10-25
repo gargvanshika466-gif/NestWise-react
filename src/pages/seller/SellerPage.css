@@ -1,14 +1,13 @@
 /* ================================
-   SELLER PAGE
+   NESTWISE SELLER PAGE — Warm Theme
 ================================ */
 
 .seller-page {
   min-height: 100vh;
   display: flex;
-  background: #f7f3ff;
-  font-family: Arial, sans-serif;
+  background: #FAF6F0;
+  font-family: 'Inter', Arial, sans-serif;
 }
-
 
 /* ================================
    SIDEBAR
@@ -17,7 +16,7 @@
 .seller-sidebar {
   width: 250px;
   min-height: 100vh;
-  background: #7c5ac7;
+  background: #382F2A;
   color: white;
   padding: 30px 20px;
   box-sizing: border-box;
@@ -26,25 +25,26 @@
   top: 0;
 }
 
-
 .seller-logo {
   text-align: center;
   margin-bottom: 45px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
-
 
 .seller-logo h2 {
   margin: 0;
-  font-size: 28px;
+  font-size: 26px;
+  color: #D8B99C;
+  font-weight: 800;
 }
-
 
 .seller-logo p {
   margin-top: 6px;
-  font-size: 14px;
-  opacity: 0.85;
+  font-size: 13px;
+  opacity: 0.65;
+  color: rgba(255,255,255,0.7);
 }
-
 
 /* ================================
    SIDEBAR NAVIGATION
@@ -53,28 +53,27 @@
 .seller-nav {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
-
 
 .seller-nav button {
   width: 100%;
-  padding: 14px 16px;
+  padding: 13px 16px;
   border: none;
   border-radius: 10px;
   background: transparent;
-  color: white;
+  color: rgba(255,255,255,0.75);
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
+  font-family: 'Inter', Arial, sans-serif;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.2s ease, color 0.2s ease;
 }
-
 
 .seller-nav button:hover {
-  background: #9476d8;
+  background: rgba(216, 185, 156, 0.15);
+  color: #D8B99C;
 }
-
 
 /* ================================
    MAIN CONTENT
@@ -87,7 +86,6 @@
   box-sizing: border-box;
 }
 
-
 /* ================================
    DASHBOARD HEADER
 ================================ */
@@ -96,20 +94,17 @@
   margin-bottom: 30px;
 }
 
-
 .dashboard-header h1 {
   margin: 0 0 8px;
   font-size: 32px;
-  color: #30264d;
+  color: #382F2A;
 }
-
 
 .dashboard-header p {
   margin: 0;
-  color: #756b88;
+  color: #796D64;
   font-size: 16px;
 }
-
 
 /* ================================
    STAT CARDS
@@ -122,116 +117,110 @@
   margin-bottom: 35px;
 }
 
-
 .stat-card {
-  background: white;
+  background: #FFFCF7;
   padding: 25px;
-  border-radius: 16px;
-  border: 1px solid #e4daf7;
-  box-shadow: 0 5px 18px rgba(80, 50, 120, 0.08);
+  border-radius: 14px;
+  border: 1px solid #E8DDD1;
+  box-shadow: 0 4px 16px rgba(56, 47, 42, 0.07);
 }
-
 
 .stat-card h3 {
   margin: 0 0 15px;
-  color: #756b88;
-  font-size: 15px;
+  color: #796D64;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-
 
 .stat-card p {
   margin: 0;
-  color: #6f4dbb;
+  color: #B86F52;
   font-size: 32px;
-  font-weight: bold;
+  font-weight: 800;
 }
-
 
 /* ================================
    QUICK ACTIONS
 ================================ */
 
 .quick-actions {
-  background: white;
+  background: #FFFCF7;
   padding: 25px;
-  border-radius: 16px;
-  border: 1px solid #e4daf7;
-  box-shadow: 0 5px 18px rgba(80, 50, 120, 0.08);
+  border-radius: 14px;
+  border: 1px solid #E8DDD1;
+  box-shadow: 0 4px 16px rgba(56, 47, 42, 0.07);
   margin-bottom: 25px;
 }
 
-
 .quick-actions h2 {
   margin-top: 0;
-  color: #30264d;
+  margin-bottom: 18px;
+  color: #382F2A;
 }
 
-
 .quick-actions button {
-  padding: 12px 18px;
+  padding: 12px 20px;
   margin-right: 12px;
-  margin-top: 10px;
+  margin-top: 8px;
   border: none;
-  border-radius: 9px;
-  background: #7c5ac7;
+  border-radius: 8px;
+  background: #B86F52;
   color: white;
   cursor: pointer;
   font-size: 14px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
-
 
 .quick-actions button:hover {
-  background: #6846b0;
+  background: #99583F;
+  transform: translateY(-1px);
 }
-
 
 /* ================================
    RECENT ACTIVITY
 ================================ */
 
 .recent-activity {
-  background: white;
+  background: #FFFCF7;
   padding: 25px;
-  border-radius: 16px;
-  border: 1px solid #e4daf7;
-  box-shadow: 0 5px 18px rgba(80, 50, 120, 0.08);
+  border-radius: 14px;
+  border: 1px solid #E8DDD1;
+  box-shadow: 0 4px 16px rgba(56, 47, 42, 0.07);
 }
-
 
 .recent-activity h2 {
   margin-top: 0;
-  color: #30264d;
+  color: #382F2A;
 }
-
 
 .recent-activity p {
-  color: #756b88;
+  color: #796D64;
 }
-
 
 /* ================================
    OTHER SELLER SECTIONS
 ================================ */
 
 .seller-section {
-  background: white;
+  background: #FFFCF7;
   padding: 35px;
-  border-radius: 18px;
-  border: 1px solid #e4daf7;
-  box-shadow: 0 5px 18px rgba(80, 50, 120, 0.08);
+  border-radius: 16px;
+  border: 1px solid #E8DDD1;
+  box-shadow: 0 4px 16px rgba(56, 47, 42, 0.07);
 }
-
 
 .seller-section h1 {
   margin-top: 0;
-  color: #30264d;
+  color: #382F2A;
 }
-
 
 .seller-section > p {
-  color: #756b88;
+  color: #796D64;
 }
-
 
 /* ================================
    BUTTON
@@ -242,17 +231,19 @@
   padding: 13px 22px;
   border: none;
   border-radius: 9px;
-  background: #7c5ac7;
+  background: #B86F52;
   color: white;
   font-size: 15px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
-
 
 .seller-section button:hover {
-  background: #6846b0;
+  background: #99583F;
+  transform: translateY(-1px);
 }
-
 
 /* ================================
    EMPTY PROPERTIES
@@ -262,21 +253,18 @@
   margin-top: 30px;
   padding: 30px;
   text-align: center;
-  background: #f8f5ff;
-  border: 1px dashed #cbbbe9;
+  background: #FAF6F0;
+  border: 2px dashed #D8B99C;
   border-radius: 14px;
 }
 
-
 .empty-properties h3 {
-  color: #4a3b68;
+  color: #382F2A;
 }
-
 
 .empty-properties p {
-  color: #756b88;
+  color: #796D64;
 }
-
 
 /* ================================
    STATUS
@@ -289,25 +277,21 @@
   margin-top: 30px;
 }
 
-
 .status-box > div {
   padding: 22px;
-  background: #f8f5ff;
-  border-radius: 14px;
-  border: 1px solid #e4daf7;
+  background: #FAF6F0;
+  border-radius: 12px;
+  border: 1px solid #E8DDD1;
 }
-
 
 .status-box h3 {
   margin-top: 0;
-  color: #6f4dbb;
+  color: #B86F52;
 }
-
 
 .status-box p {
-  color: #756b88;
+  color: #796D64;
 }
-
 
 /* ================================
    RESPONSIVE
@@ -334,7 +318,6 @@
   }
 
 }
-
 
 @media (max-width: 600px) {
 
@@ -364,6 +347,12 @@
 
   .status-box {
     grid-template-columns: 1fr;
+  }
+
+  .quick-actions button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
 }

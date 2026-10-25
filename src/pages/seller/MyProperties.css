@@ -1,5 +1,8 @@
+/* NESTWISE MY PROPERTIES — Warm Theme */
+
 .my-properties {
   width: 100%;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 .properties-header {
@@ -9,39 +12,46 @@
 .properties-header h1 {
   font-size: 32px;
   margin-bottom: 8px;
+  color: #382F2A;
 }
 
 .properties-header p {
-  color: #666;
+  color: #796D64;
 }
 
-
 .empty-properties {
-  background: white;
+  background: #FFFCF7;
   padding: 50px 30px;
-  border-radius: 15px;
+  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px dashed #D8B99C;
+  box-shadow: 0 4px 14px rgba(56, 47, 42, 0.07);
 }
 
 .empty-properties h2 {
   margin-bottom: 10px;
+  color: #382F2A;
 }
 
 .empty-properties p {
-  color: #777;
+  color: #796D64;
   margin-bottom: 25px;
 }
 
 .empty-properties button {
   border: none;
-  padding: 12px 20px;
+  padding: 12px 22px;
   border-radius: 8px;
-  background: #7c5ac7;
+  background: #B86F52;
   color: white;
   cursor: pointer;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .empty-properties button:hover {
-  background: #6848b0;
+  background: #99583F;
+  transform: translateY(-1px);
 }

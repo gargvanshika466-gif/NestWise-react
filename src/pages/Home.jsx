@@ -1,495 +1,376 @@
-import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import './Home.css'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import './home.css'
+
+const PROPERTIES = [
+  {
+    id: 1,
+    badge: 'FOR RENT',
+    price: '₹55,000/mo',
+    title: 'Sunlit 3BHK in Indiranagar',
+    location: 'Indiranagar, Bangalore',
+    beds: 3, baths: 2, sqft: '1,450',
+    img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 2,
+    badge: 'FOR RENT',
+    price: '₹32,000/mo',
+    title: 'Modern 2BHK near Hitech City',
+    location: 'Gachibowli, Hyderabad',
+    beds: 2, baths: 2, sqft: '1,080',
+    img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 3,
+    badge: 'FOR SALE',
+    price: '₹2.65 Cr',
+    title: 'Sea-facing 3BHK in Bandra West',
+    location: 'Bandra West, Mumbai',
+    beds: 3, baths: 3, sqft: '1,650',
+    img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 4,
+    badge: 'FOR RENT',
+    price: '₹28,000/mo',
+    title: 'Quiet 2BHK in Koregaon Park',
+    location: 'Koregaon Park, Pune',
+    beds: 2, baths: 2, sqft: '980',
+    img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 5,
+    badge: 'FOR SALE',
+    price: '₹1.85 Cr',
+    title: 'Garden villa with private lawn',
+    location: 'Whitefield, Bangalore',
+    beds: 4, baths: 4, sqft: '2,850',
+    img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 6,
+    badge: 'FOR RENT',
+    price: '₹19,500/mo',
+    title: 'Studio loft in Anna Nagar',
+    location: 'Anna Nagar, Chennai',
+    beds: 1, baths: 1, sqft: '620',
+    img: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&w=800&q=80',
+  },
+]
+
+const CITIES = [
+  { name: 'Bangalore', homes: 3, color: '#FCE7F0' },
+  { name: 'Hyderabad', homes: 2, color: '#D8F956' },
+  { name: 'Pune',      homes: 2, color: '#E6F7EB' },
+  { name: 'Mumbai',    homes: 2, color: '#E3EFFD' },
+  { name: 'Chennai',   homes: 2, color: '#FEF3D6' },
+  { name: 'Delhi NCR', homes: 1, color: '#F4F5F9' },
+]
 
 function Home() {
+  const [search, setSearch] = useState('')
+  const navigate = useNavigate()
+
+  function handleSearch(e) {
+    e.preventDefault()
+    navigate('/results')
+  }
+
   return (
     <div className="home-page">
 
-      <Navbar />
+      {/* ── NAVBAR ── */}
+      <nav className="navbar" id="home">
 
-    
-      <section className="hero" id="home">
+        <div className="logo">
+          <span className="logo-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z"/>
+              <path d="M9 21V12h6v9"/>
+            </svg>
+          </span>
+          NestWise
+        </div>
 
-        <div className="hero-content">
+        <div className="nav-links">
+          <Link to="/results">Browse homes</Link>
+          <a href="#how-it-works">How it works</a>
+          <a href="#contact">Contact</a>
+        </div>
 
-          <p className="small-heading">
-            FIND YOUR PERFECT HOME
-          </p>
+        <div className="nav-buttons">
+          <Link to="/login"  className="login-btn">Log in</Link>
+          <Link to="/signup" className="signup-btn">Register</Link>
+          <Link to="/list-property" className="list-nav-btn">List Property</Link>
+          <button type="button" className="download-btn" onClick={() => alert('NestWise mobile app coming soon!')}>Download App</button>
+        </div>
 
-          <h1>
-            Find Your Perfect
-            <span> Home with NestWise</span>
+      </nav>
+
+      {/* ── HERO ── */}
+      <section className="hero">
+        <div className="hero-inner">
+
+          <div className="hero-badge">
+            <span className="badge-star">✨</span>
+            Trusted &amp; loved by home seekers across India
+          </div>
+
+          <h1 className="hero-title">
+            Find a home that<br />
+            <span className="hero-highlight">feels like yours</span>
           </h1>
 
-          <p className="hero-text">
-            Discover affordable and verified homes 
-             find a place that feels like home.
+          <p className="hero-subtitle">
+            Verified apartments to rent and buy across India's best cities —{' '}
+            <span>honest prices, real photos,</span> and zero brokerage games.
           </p>
 
-          <div className="search-box">
-
+          <form className="search-box" onSubmit={handleSearch}>
+            <span className="search-pin">📍</span>
             <input
               type="text"
-              placeholder="Search location or property..."
+              placeholder="Search Places..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
+            <button type="submit">
+              <span>🔍</span> Search
+            </button>
+          </form>
 
-            <button>Search</button>
-
+          <div className="top-cities-row">
+            <span className="top-cities-label">Top Cities:</span>
+            {['Bangalore', 'Hyderabad', 'Pune', 'Mumbai', 'Chennai', 'Delhi NCR'].map(city => (
+              <Link key={city} to="/results" className="top-city-link">{city}</Link>
+            ))}
           </div>
 
         </div>
-
-        <div className="hero-image">
-
-          <img
-            src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80"
-            alt="Modern home"
-          />
-
-        </div>
-
       </section>
 
-      <section className="why-section">
-
-        <p className="section-label">
-          WHY NESTWISE
-        </p>
-
-        <h2>
-          Everything You Need to Find Your Home
-        </h2>
-
-        <p className="section-text">
-          Simple, safe housing made easy.
-        </p>
-
-        <div className="why-cards">
-
-          <div className="why-card">
-
-            <div className="why-icon">
-              ✓
-            </div>
-
-            <h3>
-              Verified Listings
-            </h3>
-
-            <p>
-              Safe and reliable properties .
-            </p>
-
-          </div>
-
-
-          <div className="why-card">
-
-            <div className="why-icon">
-              ♧
-            </div>
-
-            <h3>
-              User Friendly
-            </h3>
-
-            <p>
-              Properties selected according to user needs.
-            </p>
-
-          </div>
-
-
-          <div className="why-card">
-
-            <div className="why-icon">
-              ★
-            </div>
-
-            <h3>
-              Smart Matching
-            </h3>
-
-            <p>
-              Find homes that match your preferences.
-            </p>
-
-          </div>
-
-
-          <div className="why-card">
-
-            <div className="why-icon">
-              🔒
-            </div>
-
-            <h3>
-              Safe & Secure
-            </h3>
-
-            <p>
-              A trusted platform for you.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      
+      {/* ── FEATURED HOMES ── */}
       <section className="featured-section" id="properties">
 
-        <p className="section-label">
-          FEATURED HOMES
-        </p>
-
-        <h2>
-          Popular  Properties
-        </h2>
-
-        <p className="section-text">
-          Explore comfortable and affordable homes .
-        </p>
+        <div className="featured-header">
+          <div>
+            <p className="section-label">HANDPICKED</p>
+            <h2>Featured homes</h2>
+            <p className="section-text">
+              Verified properties with real photography and clear pricing — ready to move into.
+            </p>
+          </div>
+          <Link to="/results" className="view-all-btn">View all homes →</Link>
+        </div>
 
         <div className="property-cards">
-
-          <div className="property-card">
-
-            <img
-              src="https://st.hzcdn.com/simgs/pictures/bedrooms/apartment-with-traditional-indian-interior-abhishek-shah-img~7c61ffe70e830d81_9-2435-1-f9e2591.jpg"
-              alt="Modern student apartment"
-            />
-
-            <div className="property-info">
-
-              <h3>
-                Modern Apartment
-              </h3>
-
-              <p>
-                Near Chitkara University
-              </p>
-
-              <div className="property-details">
-                <span>2 Beds</span>
-                <span>2 Baths</span>
+          {PROPERTIES.map(p => (
+            <div key={p.id} className="property-card">
+              <div className="card-image-wrap">
+                <img src={p.img} alt={p.title} />
+                <span className={`badge-type ${p.badge === 'FOR SALE' ? 'sale' : ''}`}>{p.badge}</span>
+                <span className="badge-featured">Featured</span>
               </div>
-
-              <h4>
-                ₹12,000 / month
-              </h4>
-
-            </div>
-
-          </div>
-
-
-          <div className="property-card">
-
-            <img
-              src="https://i.pinimg.com/originals/21/83/24/2183245b937f1ce26e10805b204354ca.jpg"
-              alt="Comfortable PG room"
-            />
-
-            <div className="property-info">
-
-              <h3>
-                Comfortable PG Room
-              </h3>
-
-              <p>
-                Near University Campus
-              </p>
-
-              <div className="property-details">
-                <span>1 Bed</span>
-                <span>1 Bath</span>
+              <div className="card-body">
+                <div className="card-price">{p.price}</div>
+                <div className="card-title">{p.title}</div>
+                <div className="card-location">
+                  <span className="loc-dot">📍</span> {p.location}
+                </div>
+                <div className="card-specs">
+                  <span>🛏 {p.beds} Beds</span>
+                  <span>🚿 {p.baths} Baths</span>
+                  <span>📐 {p.sqft} sq.ft</span>
+                </div>
               </div>
-
-              <h4>
-                ₹8,500 / month
-              </h4>
-
             </div>
-
-          </div>
-
-
-          <div className="property-card">
-
-            <img
-              src="https://dressyourhome.in/wp-content/uploads/IMG-3220.jpg"
-              alt="Spacious shared flat"
-            />
-
-            <div className="property-info">
-
-              <h3>
-                Spacious Shared Flat
-              </h3>
-
-              <p>
-                Rajpura, Punjab
-              </p>
-
-              <div className="property-details">
-                <span>3 Beds</span>
-                <span>2 Baths</span>
-              </div>
-
-              <h4>
-                ₹15,000 / month
-              </h4>
-
-            </div>
-
-          </div>
-
+          ))}
         </div>
 
       </section>
 
+      {/* ── HOW IT WORKS ── */}
+      <section className="how-section" id="how-it-works">
 
-    
-      <section className="about-section" id="about">
-
-        <div className="about-content">
-
-          <p className="section-label">
-            ABOUT NESTWISE
-          </p>
-
-          <h2>
-            Making Your Living Simple
-          </h2>
-
-          <p>
-            Finding a comfortable and affordable place near
-            NestWise makes this
-            process simple by bringing 
-            properties together in one place.
-          </p>
-
-          <div className="about-points">
-
-            <div>
-              <h3>
-                Affordable
-              </h3>
-
-              <p>
-                Homes that fit a user's budget.
-              </p>
-            </div>
-
-
-            <div>
-              <h3>
-                Convenient
-              </h3>
-
-              <p>
-                Find properties close to your campus.
-              </p>
-            </div>
-
-
-            <div>
-              <h3>
-                Reliable
-              </h3>
-
-              <p>
-                Discover safe and verified listings.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div className="about-image">
-
-          <img
-            src="https://media.designcafe.com/wp-content/uploads/2021/04/28110847/middle-class-indian-bedroom-design.jpg"
-            alt="Comfortable student home"
-          />
-
-        </div>
-
-      </section>
-
-
-      
-      <section className="reviews-section">
-
-        <p className="section-label">
-          WHAT USERS SAY
+        <p className="section-label">HOW IT WORKS</p>
+        <h2>Three steps to your next address</h2>
+        <p className="section-text">
+          NestWise keeps the whole journey simple, transparent and free of clutter.
         </p>
 
-        <h2>
-          Our Users Love NestWise
-        </h2>
+        <div className="how-cards">
+
+          <div className="how-card">
+            <div className="how-icon" style={{ background: '#FFE8F0' }}>🔍</div>
+            <h3>Search</h3>
+            <p>Tell us the city or locality you have in mind and see verified homes with real photos.</p>
+          </div>
+
+          <div className="how-card">
+            <div className="how-icon" style={{ background: '#CCEF4C' }}>❤️</div>
+            <h3>Shortlist</h3>
+            <p>Compare rent, size and amenities side by side, then keep the handful you actually love.</p>
+          </div>
+
+          <div className="how-card">
+            <div className="how-icon" style={{ background: '#E2F5E2' }}>📞</div>
+            <h3>Contact</h3>
+            <p>Reach the owner or our city partner directly — no middlemen, no brokerage surprises.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ── BUYER / SELLER OPTIONS ── */}
+      <section className="options-section" id="about">
+
+        <p className="section-label">GET STARTED</p>
+        <h2>What brings you here?</h2>
+        <p className="section-text">Whether you are searching for a home or listing one, we have you covered.</p>
+
+        <div className="option-cards">
+
+          <div className="option-card">
+            <div className="option-icon">🏠</div>
+            <h3>I'm Looking for a Home</h3>
+            <p>Find verified flats, PGs, apartments and shared accommodations based on your preferences.</p>
+            <Link to="/results">
+              <button className="option-btn">Browse Properties</button>
+            </Link>
+          </div>
+
+          <div className="option-card">
+            <div className="option-icon">🏢</div>
+            <h3>I'm a Property Owner</h3>
+            <p>List your property for free and reach thousands of verified buyers and tenants near you.</p>
+            <Link to="/list-property">
+              <button className="option-btn">List My Property</button>
+            </Link>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ── BROWSE BY CITY ── */}
+      <section className="cities-section">
+
+        <p className="section-label">EXPLORE</p>
+        <h2>Browse by city</h2>
+        <p className="section-text">
+          From tech corridors to quiet old neighbourhoods — pick a city and start looking.
+        </p>
+
+        <div className="cities-grid">
+          {CITIES.map(c => (
+            <Link
+              key={c.name}
+              to="/results"
+              className="city-card"
+              style={{ background: c.color }}
+            >
+              <strong>{c.name}</strong>
+              <span>{c.homes} homes</span>
+            </Link>
+          ))}
+        </div>
+
+      </section>
+
+      {/* ── REVIEWS ── */}
+      <section className="reviews-section">
+
+        <p className="section-label">WHAT USERS SAY</p>
+        <h2>Our Users Love NestWise</h2>
 
         <div className="review-cards">
 
           <div className="review-card">
-
-            <div className="stars">
-              ★★★★★
-            </div>
-
-            <p>
-              "NestWise made it really easy for me to find
-              a comfortable place near my university."
-            </p>
-
-            <h3>
-              Aarav
-            </h3>
-
-            <span>
-              User
-            </span>
-
+            <div className="stars">★★★★★</div>
+            <p>"NestWise made it really easy for me to find a comfortable place near my university."</p>
+            <h3>Aarav</h3>
+            <span>Student, Chandigarh</span>
           </div>
 
-
           <div className="review-card">
-
-            <div className="stars">
-              ★★★★★
-            </div>
-
-            <p>
-              "The property options were simple to understand
-              and helped me find a place within my budget."
-            </p>
-
-            <h3>
-              Simran
-            </h3>
-
-            <span>
-              User
-            </span>
-
+            <div className="stars">★★★★★</div>
+            <p>"The property options were simple to understand and helped me find a place within my budget."</p>
+            <h3>Simran</h3>
+            <span>Working Professional, Delhi</span>
           </div>
 
-
           <div className="review-card">
-
-            <div className="stars">
-              ★★★★★
-            </div>
-
-            <p>
-              "A simple and useful platform for users
-              looking for accommodation."
-            </p>
-
-            <h3>
-              Rahul
-            </h3>
-
-            <span>
-              User
-            </span>
-
+            <div className="stars">★★★★★</div>
+            <p>"A simple and useful platform for users looking for accommodation near campus."</p>
+            <h3>Rahul</h3>
+            <span>Student, Mohali</span>
           </div>
 
         </div>
 
       </section>
 
-
-    
+      {/* ── CONTACT ── */}
       <section className="contact-section" id="contact">
 
         <div className="contact-content">
-
-          <p className="section-label">
-            CONTACT US
-          </p>
-
-          <h2>
-            Have Questions?
-          </h2>
-
-          <p>
-            Our team is here to help you find your perfect home.
-          </p>
+          <p className="section-label">CONTACT US</p>
+          <h2>Have Questions?</h2>
+          <p>Our team is here to help you find your perfect home.</p>
 
           <div className="contact-details">
-
             <div>
               <strong>Email</strong>
               <p>support@nestwise.com</p>
             </div>
-
             <div>
               <strong>Phone</strong>
               <p>+91 98765 43210</p>
             </div>
-
             <div>
               <strong>Location</strong>
               <p>Punjab, India</p>
             </div>
-
           </div>
-
         </div>
 
       </section>
 
-
+      {/* ── FOOTER ── */}
       <footer className="footer">
 
         <div className="footer-content">
 
-          <div>
-
-            <h2>
+          <div className="footer-brand">
+            <div className="footer-logo">
+              <span className="logo-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z"/>
+                  <path d="M9 21V12h6v9"/>
+                </svg>
+              </span>
               NestWise
-            </h2>
-
-            <p>
-              Smart. Simple. Student Living.
+            </div>
+            <p>A smarter way to rent and buy apartments in India —{' '}
+              <span>verified listings, honest pricing.</span>
             </p>
-
           </div>
 
-
           <div className="footer-links">
-
-            <a href="#home">
-              Home
-            </a>
-
-            <a href="#about">
-              About
-            </a>
-
-            <a href="#properties">
-              Properties
-            </a>
-
-            <a href="#contact">
-              Contact
-            </a>
-
+            <Link to="/results">Browse homes</Link>
+            <Link to="/results">For rent</Link>
+            <Link to="/results">For sale</Link>
+            <Link to="/list-property">List property</Link>
+            <a href="#contact">Contact</a>
           </div>
 
         </div>
 
-        <p className="copyright">
-          © 2026 NestWise. All rights reserved.
-        </p>
+        <div className="footer-bottom">
+          <p className="copyright">© 2026 NestWise. All rights reserved.</p>
+        </div>
 
       </footer>
 
