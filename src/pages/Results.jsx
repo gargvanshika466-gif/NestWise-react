@@ -1,14 +1,8 @@
-
-
-import {
-  useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback
-} from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 import "./results.css";
+
 const properties = [
   {
     id: 1,
@@ -138,121 +132,170 @@ const properties = [
   }
 ];
 
+/* ---------- Constants ---------- */
 
-const budgetOptions = {
-  PG: [
-    { value: "", label: "Any Budget" },
-    { value: "8000", label: "Under ₹8,000" },
-    { value: "10000", label: "Under ₹10,000" },
-    { value: "15000", label: "Under ₹15,000" }
-  ],
+const propertyTypes = ["Apartment", "Villa", "PG", "Studio"];
+const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
+const furnishingTypes = ["Fully Furnished", "Semi Furnished", "Unfurnished"];
+const amenityList = ["Gym", "Parking", "Security", "Lift"];
 
-  Studio: [
-    { value: "", label: "Any Budget" },
-    { value: "15000", label: "Under ₹15,000" },
-    { value: "20000", label: "Under ₹20,000" },
-    { value: "25000", label: "Under ₹25,000" }
-  ],
+const cities = [...new Set(properties.map((p) => p.location))];
 
-  Apartment: [
-    { value: "", label: "Any Budget" },
-    { value: "20000", label: "Under ₹20,000" },
-    { value: "30000", label: "Under ₹30,000" },
-    { value: "50000", label: "Under ₹50,000" }
-  ],
+const MAX_BUDGET_LIMIT = 500000;
 
-  Villa: [
-    { value: "", label: "Any Budget" },
-    { value: "40000", label: "Under ₹40,000" },
-    { value: "60000", label: "Under ₹60,000" },
-    { value: "100000", label: "Under ₹1,00,000" }
-  ]
+const budgetPresets = [
+  { label: "Under ₹15k", min: "", max: "15000" },
+  { label: "₹15k – ₹30k", min: "15000", max: "30000" },
+  { label: "₹30k – ₹60k", min: "30000", max: "60000" },
+  { label: "₹60k+", min: "60000", max: "" }
+];
+
+const initialFilters = {
+  search: "",
+  location: "",
+  type: "",
+  bhk: "",
+  furnishing: "",
+  amenities: [],
+  minBudget: "",
+  maxBudget: ""
 };
 
+const averagePrice = Math.round(
+  properties.reduce((sum, p) => sum + p.price, 0) / properties.length
+);
 
-function PropertyCard({
-  property,
-  favorite,
-  onFavorite
-}) {
+
+/* ---------- Helpers ---------- */
+
+function loadSaved(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function formatPrice(value) {
+  return "₹" + Number(value).toLocaleString("en-IN");
+}
+
+// Returns an error message, or "" when the budget is valid
+function checkBudget(min, max) {
+  if (min !== "" && (isNaN(min) || Number(min) < 0)) {
+    return "Minimum budget must be a positive number.";
+  }
+
+  if (max !== "" && (isNaN(max) || Number(max) <= 0)) {
+    return "Maximum budget must be greater than zero.";
+  }
+
+  if (max !== "" && Number(max) > MAX_BUDGET_LIMIT) {
+    return `Maximum budget cannot exceed ${formatPrice(MAX_BUDGET_LIMIT)}.`;
+  }
+
+  if (min !== "" && max !== "" && Number(min) > Number(max)) {
+    return "Minimum budget cannot be greater than maximum budget.";
+  }
+
+  return "";
+}
+
+
+/* ---------- Small components ---------- */
+
+function PillGroup({ options, value, onChange }) {
+  return (
+    <div className="nw-pills">
+      {options.map((option) => (
+        <button
+          type="button"
+          key={option}
+          className={value === option ? "nw-pill active" : "nw-pill"}
+          onClick={() => onChange(value === option ? "" : option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+
+function PropertyCard({ property, index, favorite, onFavorite, onOpen }) {
+
+  const [imageFailed, setImageFailed] = useState(false);
 
   return (
-    <div className="property-card">
+    <div
+      className="nw-card"
+      style={{ animationDelay: `${index * 60}ms` }}
+    >
 
-      <div className="property-image">
+      <div className="nw-card-image">
 
-        <img
-          src={property.image}
-          alt={property.title}
-        />
+        {imageFailed ? (
+          <div className="nw-image-fallback">🏠 Image unavailable</div>
+        ) : (
+          <img
+            src={property.image}
+            alt={property.title}
+            onError={() => setImageFailed(true)}
+          />
+        )}
+
+        {property.rating >= 4.8 && (
+          <span className="nw-badge">★ Top Rated</span>
+        )}
 
         <button
-          className="favorite-btn"
+          type="button"
+          className={favorite ? "nw-fav active" : "nw-fav"}
           onClick={() => onFavorite(property.id)}
+          aria-label="Save property"
         >
           {favorite ? "♥" : "♡"}
         </button>
 
+        <span className="nw-type-chip">{property.type}</span>
+
       </div>
 
 
-      <div className="property-info">
+      <div className="nw-card-body">
 
-        <div className="price-row">
-
+        <div className="nw-price-row">
           <h3>
-            ₹{property.price.toLocaleString()}
-            <small>/month</small>
+            {formatPrice(property.price)}
+            <small> /month</small>
           </h3>
-
-          <span>{property.bhk}</span>
-
+          <span className="nw-bhk">{property.bhk}</span>
         </div>
-
 
         <h4>{property.title}</h4>
 
-        <p className="location">
-          📍 {property.location}
-        </p>
+        <p className="nw-location">📍 {property.location}</p>
 
+        <p className="nw-desc">{property.description}</p>
 
-        <div className="property-tags">
-
-          <span>{property.type}</span>
-
+        <div className="nw-tags">
           <span>{property.furnishing}</span>
-
           <span>⭐ {property.rating}</span>
-
         </div>
 
-
-        <p className="property-description">
-          {property.description}
-        </p>
-
-
-        <div className="amenity-tags">
-
+        <div className="nw-amenity-row">
           {property.amenities.map((amenity) => (
-            <span key={amenity}>
-              ✓ {amenity}
-            </span>
+            <span key={amenity}>✓ {amenity}</span>
           ))}
-
         </div>
-
 
         <button
-          className="view-btn"
-          onClick={() =>
-            alert(
-              `${property.title}\n\n₹${property.price.toLocaleString()} / month\n${property.location}\n${property.bhk}\n${property.furnishing}`
-            )
-          }
+          type="button"
+          className="nw-view-btn"
+          onClick={() => onOpen(property)}
         >
-          View Details
+          View Details →
         </button>
 
       </div>
@@ -262,622 +305,559 @@ function PropertyCard({
 }
 
 
+function PropertyModal({ property, favorite, onFavorite, onClose }) {
+
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Escape") onClose();
+    }
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  return (
+    <div className="nw-overlay" onClick={onClose}>
+
+      <div
+        className="nw-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+
+        <button
+          type="button"
+          className="nw-modal-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        <img src={property.image} alt={property.title} />
+
+        <div className="nw-modal-body">
+
+          <div className="nw-price-row">
+            <h3>
+              {formatPrice(property.price)}
+              <small> /month</small>
+            </h3>
+            <span className="nw-bhk">{property.bhk}</span>
+          </div>
+
+          <h2>{property.title}</h2>
+
+          <p className="nw-location">📍 {property.location}</p>
+
+          <p className="nw-modal-desc">{property.description}</p>
+
+          <div className="nw-modal-grid">
+            <div><small>Type</small><strong>{property.type}</strong></div>
+            <div><small>Furnishing</small><strong>{property.furnishing}</strong></div>
+            <div><small>Rating</small><strong>⭐ {property.rating}</strong></div>
+            <div><small>Bedrooms</small><strong>{property.bhk}</strong></div>
+          </div>
+
+          <div className="nw-amenity-row">
+            {property.amenities.map((amenity) => (
+              <span key={amenity}>✓ {amenity}</span>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="nw-view-btn"
+            onClick={() => onFavorite(property.id)}
+          >
+            {favorite ? "♥ Saved to favorites" : "♡ Save to favorites"}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+
+/* ---------- Buyers page ---------- */
+
 function Results() {
 
-  const savedBuyer = JSON.parse(
-    localStorage.getItem("buyerData")
-  );
+  const savedBuyer = loadSaved("buyerData", null);
+  const savedPreferences = loadSaved("buyerPreferences", {});
 
+  const [name, setName] = useState(savedBuyer?.name || "");
 
-  const savedPreferences = JSON.parse(
-    localStorage.getItem("buyerPreferences")
-  );
+  // One object holds every filter value
+  const [filters, setFilters] = useState({
+    ...initialFilters,
+    search: savedPreferences.search || "",
+    location: savedPreferences.location || "",
+    type: savedPreferences.type || savedPreferences.propertyType || "",
+    bhk: savedPreferences.bhk || "",
+    furnishing: savedPreferences.furnishing || "",
+    amenities: Array.isArray(savedPreferences.amenities)
+      ? savedPreferences.amenities
+      : [],
+    minBudget: savedPreferences.minBudget || "",
+    maxBudget: savedPreferences.maxBudget || ""
+  });
 
-
-  const [name, setName] = useState(
-    savedBuyer?.name || ""
-  );
-
-  const [location, setLocation] = useState(
-    savedPreferences?.location || ""
-  );
-
-  const [propertyType, setPropertyType] = useState(
-    savedPreferences?.propertyType || ""
-  );
-
-  const [budget, setBudget] = useState(
-    savedPreferences?.budget || ""
-  );
-
-  const [bhk, setBhk] = useState(
-    savedPreferences?.bhk || ""
-  );
-
-  const [furnishing, setFurnishing] = useState(
-    savedPreferences?.furnishing || ""
-  );
-
-  const [amenities, setAmenities] = useState(
-    savedPreferences?.amenities || []
-  );
-
-  const [favorites, setFavorites] = useState([]);
-
-
-  const resultsRef = useRef(null);
-
-
-  const propertyTypes = [
-    "Apartment",
-    "Villa",
-    "PG",
-    "Studio"
-  ];
-
-  const bhks = [
-    "1 BHK",
-    "2 BHK",
-    "3 BHK",
-    "4+ BHK"
-  ];
-
-  const furnishingTypes = [
-    "Fully Furnished",
-    "Semi Furnished",
-    "Unfurnished"
-  ];
-
-  const amenityList = [
-    "Gym",
-    "Parking",
-    "Security",
-    "Lift"
-  ];
+  const [sortBy, setSortBy] = useState("recommended");
+  const [favorites, setFavorites] = useState(() => loadSaved("buyerFavorites", []));
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
 
 
   useEffect(() => {
-
     document.title = "NestWise | Find Your Home";
-
   }, []);
 
+  // Keep filters between visits
+  useEffect(() => {
+    localStorage.setItem("buyerPreferences", JSON.stringify(filters));
+  }, [filters]);
 
   useEffect(() => {
-
-    const preferences = {
-      name,
-      location,
-      propertyType,
-      budget,
-      bhk,
-      furnishing,
-      amenities
-    };
-
-    localStorage.setItem(
-      "buyerPreferences",
-      JSON.stringify(preferences)
-    );
-
-  }, [
-    name,
-    location,
-    propertyType,
-    budget,
-    bhk,
-    furnishing,
-    amenities
-  ]);
+    localStorage.setItem("buyerFavorites", JSON.stringify(favorites));
+  }, [favorites]);
 
 
-  useEffect(() => {
+  function updateFilter(key, value) {
+    setFilters((previous) => ({ ...previous, [key]: value }));
+  }
 
-    if (!propertyType) {
-      return;
-    }
-
-    const validBudgets = budgetOptions[
-      propertyType
-    ].map((item) => item.value);
-
-    if (!validBudgets.includes(String(budget))) {
-      setBudget("");
-    }
-
-  }, [propertyType]);
-
-
-  const handleAmenity = useCallback((amenity) => {
-
-    setAmenities((previous) => {
-
-      if (previous.includes(amenity)) {
-
-        return previous.filter(
-          (item) => item !== amenity
-        );
-
-      }
-
-      return [
-        ...previous,
-        amenity
-      ];
-
-    });
-
+  const toggleAmenity = useCallback((amenity) => {
+    setFilters((previous) => ({
+      ...previous,
+      amenities: previous.amenities.includes(amenity)
+        ? previous.amenities.filter((item) => item !== amenity)
+        : [...previous.amenities, amenity]
+    }));
   }, []);
-
 
   const toggleFavorite = useCallback((id) => {
-
-    setFavorites((previous) => {
-
-      if (previous.includes(id)) {
-
-        return previous.filter(
-          (item) => item !== id
-        );
-
-      }
-
-      return [
-        ...previous,
-        id
-      ];
-
-    });
-
+    setFavorites((previous) =>
+      previous.includes(id)
+        ? previous.filter((item) => item !== id)
+        : [...previous, id]
+    );
   }, []);
 
+  const closeModal = useCallback(() => setSelectedProperty(null), []);
 
-  const filteredProperties = useMemo(() => {
+  function resetFilters() {
+    setFilters(initialFilters);
+    setSortBy("recommended");
+    setShowFavorites(false);
+  }
 
-    let filtered = properties.filter((property) => {
+  function applyPreset(preset) {
+    setFilters((previous) => ({
+      ...previous,
+      minBudget: preset.min,
+      maxBudget: preset.max
+    }));
+  }
 
-      const matchesType =
-        !propertyType ||
-        property.type === propertyType;
 
-      const matchesBudget =
-        !budget ||
-        property.price <= Number(budget);
+  const budgetError = checkBudget(filters.minBudget, filters.maxBudget);
 
-      return matchesType && matchesBudget;
 
+  // Search + filters + favorites + sorting, all on a copy of the data
+  const visibleProperties = useMemo(() => {
+
+    const search = filters.search.trim().toLowerCase();
+    const city = filters.location.trim().toLowerCase();
+
+    const result = properties.filter((property) => {
+
+      const matchesSearch =
+        !search ||
+        property.title.toLowerCase().includes(search) ||
+        property.location.toLowerCase().includes(search) ||
+        property.type.toLowerCase().includes(search) ||
+        property.description.toLowerCase().includes(search);
+
+      const matchesCity =
+        !city || property.location.toLowerCase().includes(city);
+
+      const matchesType = !filters.type || property.type === filters.type;
+      const matchesBhk = !filters.bhk || property.bhk === filters.bhk;
+      const matchesFurnishing =
+        !filters.furnishing || property.furnishing === filters.furnishing;
+
+      const matchesAmenities = filters.amenities.every((amenity) =>
+        property.amenities.includes(amenity)
+      );
+
+      // Budget is only applied when the typed values are valid
+      const matchesMin =
+        budgetError || filters.minBudget === "" ||
+        property.price >= Number(filters.minBudget);
+
+      const matchesMax =
+        budgetError || filters.maxBudget === "" ||
+        property.price <= Number(filters.maxBudget);
+
+      const matchesFavorite = !showFavorites || favorites.includes(property.id);
+
+      return (
+        matchesSearch && matchesCity && matchesType && matchesBhk &&
+        matchesFurnishing && matchesAmenities && matchesMin &&
+        matchesMax && matchesFavorite
+      );
     });
 
+    const sorted = [...result];
 
-    const scoredProperties = filtered.map(
-      (property) => {
+    if (sortBy === "low") sorted.sort((a, b) => a.price - b.price);
+    else if (sortBy === "high") sorted.sort((a, b) => b.price - a.price);
+    else sorted.sort((a, b) => b.rating - a.rating);
 
-        let score = 0;
+    return sorted;
 
-
-        if (
-          location &&
-          property.location
-            .toLowerCase()
-            .includes(location.toLowerCase())
-        ) {
-          score += 3;
-        }
+  }, [filters, sortBy, showFavorites, favorites, budgetError]);
 
 
-        if (
-          bhk &&
-          property.bhk === bhk
-        ) {
-          score += 2;
-        }
+  // Chips that show which filters are on
+  const activeChips = [];
 
-
-        if (
-          furnishing &&
-          property.furnishing === furnishing
-        ) {
-          score += 2;
-        }
-
-
-        amenities.forEach((amenity) => {
-
-          if (
-            property.amenities.includes(amenity)
-          ) {
-            score += 1;
-          }
-
-        });
-
-
-        return {
-          ...property,
-          score
-        };
-
-      }
-    );
-
-
-    return scoredProperties.sort(
-      (a, b) => b.score - a.score
-    );
-
-  }, [
-    location,
-    propertyType,
-    budget,
-    bhk,
-    furnishing,
-    amenities
-  ]);
-
-
-  const hasFilters =
-    location ||
-    propertyType ||
-    budget ||
-    bhk ||
-    furnishing ||
-    amenities.length;
-
-
-  function scrollToResults() {
-
-    resultsRef.current?.scrollIntoView({
-      behavior: "smooth"
+  if (filters.search.trim()) {
+    activeChips.push({ label: `"${filters.search.trim()}"`, remove: () => updateFilter("search", "") });
+  }
+  if (filters.location) {
+    activeChips.push({ label: `📍 ${filters.location}`, remove: () => updateFilter("location", "") });
+  }
+  if (filters.type) {
+    activeChips.push({ label: filters.type, remove: () => updateFilter("type", "") });
+  }
+  if (filters.bhk) {
+    activeChips.push({ label: filters.bhk, remove: () => updateFilter("bhk", "") });
+  }
+  if (filters.furnishing) {
+    activeChips.push({ label: filters.furnishing, remove: () => updateFilter("furnishing", "") });
+  }
+  filters.amenities.forEach((amenity) => {
+    activeChips.push({ label: amenity, remove: () => toggleAmenity(amenity) });
+  });
+  if (!budgetError && (filters.minBudget || filters.maxBudget)) {
+    activeChips.push({
+      label: `${formatPrice(filters.minBudget || 0)} – ${filters.maxBudget ? formatPrice(filters.maxBudget) : "No limit"}`,
+      remove: () => setFilters((p) => ({ ...p, minBudget: "", maxBudget: "" }))
     });
-
   }
 
 
   return (
 
-    <div className="results-page">
+    <div className="nw-page">
+
+      {/* TOP BAR */}
+
+      <div className="nw-topbar">
+        <Link to="/" className="nw-logo">NestWise</Link>
+
+        <div className="nw-topbar-links">
+          <Link to="/">Home</Link>
+          <Link to="/seller">Sell / Rent Out</Link>
+        </div>
+      </div>
 
 
       {/* HERO */}
 
-      <div className="results-header">
+      <header className="nw-hero">
 
-        <div>
+        <span className="nw-orb nw-orb-1"></span>
+        <span className="nw-orb nw-orb-2"></span>
 
-          <p className="result-label">
-            NESTWISE
-          </p>
+        <div className="nw-hero-content">
+
+          <p className="nw-eyebrow">● SMART HOME SEARCH</p>
 
           <h1>
-            Find Your Perfect Home
+            Find Your <span>Perfect Home</span>
           </h1>
 
-          <p>
+          <p className="nw-hero-text">
             {name
-              ? `Welcome ${name}! Find a home that matches your needs.`
-              : "Find a home that matches your needs."}
+              ? `Welcome ${name}! Search, filter and compare homes that match your needs.`
+              : "Search, filter and compare homes that match your needs."}
           </p>
+
+          <div className="nw-search">
+            <span>🔍</span>
+            <input
+              type="text"
+              value={filters.search}
+              placeholder="Search by name, city, type..."
+              onChange={(e) => updateFilter("search", e.target.value)}
+            />
+            {filters.search && (
+              <button type="button" onClick={() => updateFilter("search", "")}>
+                ✕
+              </button>
+            )}
+          </div>
+
+          <div className="nw-stats">
+            <div>
+              <strong>{properties.length}</strong>
+              <small>Listings</small>
+            </div>
+            <div>
+              <strong>{cities.length}</strong>
+              <small>Cities</small>
+            </div>
+            <div>
+              <strong>{formatPrice(averagePrice)}</strong>
+              <small>Avg. rent</small>
+            </div>
+          </div>
 
         </div>
 
-      </div>
+      </header>
 
 
-      {/* BUYER SEARCH */}
+      <div className="nw-layout">
 
-      <form
-        className="buyer-search"
-        onSubmit={(e) => {
-          e.preventDefault();
-          scrollToResults();
-        }}
-      >
+        {/* FILTER PANEL */}
 
-        <h2>Tell us what you are looking for</h2>
+        <aside className={showFilters ? "nw-filters open" : "nw-filters"}>
 
+          <div className="nw-filters-head">
+            <h2>Filters</h2>
+            <button type="button" onClick={resetFilters}>Reset all</button>
+          </div>
 
-        <div className="search-grid">
-
-
-          <div className="search-field">
-
+          <div className="nw-group">
             <label>Your Name</label>
-
             <input
               type="text"
               value={name}
               placeholder="Your name"
-              onChange={(e) =>
-                setName(e.target.value)
-              }
+              onChange={(e) => setName(e.target.value)}
             />
-
           </div>
 
-
-          <div className="search-field">
-
-            <label>Preferred Location</label>
-
-            <input
-              type="text"
-              value={location}
-              placeholder="Delhi, Gurgaon..."
-              onChange={(e) =>
-                setLocation(e.target.value)
-              }
+          <div className="nw-group">
+            <label>Location</label>
+            <PillGroup
+              options={cities}
+              value={filters.location}
+              onChange={(value) => updateFilter("location", value)}
             />
-
           </div>
 
-
-          <div className="search-field">
-
+          <div className="nw-group">
             <label>Property Type</label>
-
-            <select
-              value={propertyType}
-              onChange={(e) =>
-                setPropertyType(e.target.value)
-              }
-            >
-
-              <option value="">
-                All Properties
-              </option>
-
-              {propertyTypes.map((type) => (
-                <option
-                  key={type}
-                  value={type}
-                >
-                  {type}
-                </option>
-              ))}
-
-            </select>
-
+            <PillGroup
+              options={propertyTypes}
+              value={filters.type}
+              onChange={(value) => updateFilter("type", value)}
+            />
           </div>
 
+          <div className="nw-group">
+            <label>Monthly Budget (₹)</label>
 
-          <div className="search-field">
+            <div className="nw-budget">
+              <input
+                type="number"
+                min="0"
+                placeholder="Min"
+                value={filters.minBudget}
+                className={budgetError ? "invalid" : ""}
+                onChange={(e) => updateFilter("minBudget", e.target.value)}
+              />
+              <span>to</span>
+              <input
+                type="number"
+                min="0"
+                placeholder="Max"
+                value={filters.maxBudget}
+                className={budgetError ? "invalid" : ""}
+                onChange={(e) => updateFilter("maxBudget", e.target.value)}
+              />
+            </div>
 
-            <label>Budget</label>
+            {budgetError && <p className="nw-error">⚠ {budgetError}</p>}
 
-            <select
-              value={budget}
-              onChange={(e) =>
-                setBudget(e.target.value)
-              }
-            >
-
-              {(
-                propertyType
-                  ? budgetOptions[propertyType]
-                  : [
-                      {
-                        value: "",
-                        label: "Any Budget"
-                      },
-                      {
-                        value: "15000",
-                        label: "Under ₹15,000"
-                      },
-                      {
-                        value: "30000",
-                        label: "Under ₹30,000"
-                      },
-                      {
-                        value: "50000",
-                        label: "Under ₹50,000"
-                      },
-                      {
-                        value: "100000",
-                        label: "Under ₹1,00,000"
-                      }
-                    ]
-              ).map((item) => (
-
-                <option
-                  key={item.value}
-                  value={item.value}
+            <div className="nw-pills nw-presets">
+              {budgetPresets.map((preset) => (
+                <button
+                  type="button"
+                  key={preset.label}
+                  className="nw-pill"
+                  onClick={() => applyPreset(preset)}
                 >
-                  {item.label}
-                </option>
-
+                  {preset.label}
+                </button>
               ))}
-
-            </select>
-
+            </div>
           </div>
 
-
-          <div className="search-field">
-
+          <div className="nw-group">
             <label>Bedrooms</label>
-
-            <select
-              value={bhk}
-              onChange={(e) =>
-                setBhk(e.target.value)
-              }
-            >
-
-              <option value="">
-                Any BHK
-              </option>
-
-              {bhks.map((item) => (
-                <option
-                  key={item}
-                  value={item}
-                >
-                  {item}
-                </option>
-              ))}
-
-            </select>
-
+            <PillGroup
+              options={bhks}
+              value={filters.bhk}
+              onChange={(value) => updateFilter("bhk", value)}
+            />
           </div>
 
-
-          <div className="search-field">
-
+          <div className="nw-group">
             <label>Furnishing</label>
-
-            <select
-              value={furnishing}
-              onChange={(e) =>
-                setFurnishing(e.target.value)
-              }
-            >
-
-              <option value="">
-                Any Furnishing
-              </option>
-
-              {furnishingTypes.map((item) => (
-                <option
-                  key={item}
-                  value={item}
-                >
-                  {item}
-                </option>
-              ))}
-
-            </select>
-
+            <PillGroup
+              options={furnishingTypes}
+              value={filters.furnishing}
+              onChange={(value) => updateFilter("furnishing", value)}
+            />
           </div>
 
-        </div>
-
-
-        {/* AMENITIES */}
-
-        <div className="amenities-box">
-
-          <h3>Amenities</h3>
-
-          <div className="amenities-list">
-
-            {amenityList.map((amenity) => (
-
-              <label
-                key={amenity}
-                className={
-                  amenities.includes(amenity)
-                    ? "amenity selected"
-                    : "amenity"
-                }
-              >
-
-                <input
-                  type="checkbox"
-                  checked={amenities.includes(amenity)}
-                  onChange={() =>
-                    handleAmenity(amenity)
+          <div className="nw-group">
+            <label>Amenities</label>
+            <div className="nw-pills">
+              {amenityList.map((amenity) => (
+                <button
+                  type="button"
+                  key={amenity}
+                  className={
+                    filters.amenities.includes(amenity)
+                      ? "nw-pill active"
+                      : "nw-pill"
                   }
-                />
+                  onClick={() => toggleAmenity(amenity)}
+                >
+                  {amenity}
+                </button>
+              ))}
+            </div>
+          </div>
 
-                {amenity}
+        </aside>
 
-              </label>
 
-            ))}
+        {/* RESULTS */}
+
+        <main className="nw-results">
+
+          <div className="nw-toolbar">
+
+            <div>
+              <h2>Recommended Properties</h2>
+              <p>
+                {visibleProperties.length} of {properties.length} properties
+              </p>
+            </div>
+
+            <div className="nw-toolbar-actions">
+
+              <button
+                type="button"
+                className="nw-filter-toggle"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                ⚙ Filters
+              </button>
+
+              <button
+                type="button"
+                className={showFavorites ? "nw-fav-toggle active" : "nw-fav-toggle"}
+                onClick={() => setShowFavorites(!showFavorites)}
+              >
+                ♥ Saved ({favorites.length})
+              </button>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="recommended">Sort: Top Rated</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+              </select>
+
+            </div>
 
           </div>
 
-        </div>
 
-
-        <button
-          type="submit"
-          className="find-home-btn"
-        >
-          Find My Home
-        </button>
-
-      </form>
-
-
-      {/* PROPERTY RESULTS */}
-
-      <div
-        className="results-section"
-        ref={resultsRef}
-      >
-
-        <div className="section-top">
-
-          <div>
-
-            <h2>
-              Recommended Properties
-            </h2>
-
-            <p>
-              {filteredProperties.length} properties found
-            </p>
-
-          </div>
-
-          {hasFilters && (
-            <span className="matching-text">
-              Best matches shown first
-            </span>
+          {activeChips.length > 0 && (
+            <div className="nw-chips">
+              {activeChips.map((chip) => (
+                <button type="button" key={chip.label} onClick={chip.remove}>
+                  {chip.label} <span>✕</span>
+                </button>
+              ))}
+              <button type="button" className="nw-clear" onClick={resetFilters}>
+                Clear all
+              </button>
+            </div>
           )}
 
-        </div>
 
+          {visibleProperties.length === 0 ? (
 
-        {filteredProperties.length === 0 ? (
+            <div className="nw-empty">
 
-          <div className="no-results">
+              <div className="nw-empty-icon">🔎</div>
 
-            <h3>
-              No exact matches found
-            </h3>
+              <h3>
+                {showFavorites && favorites.length === 0
+                  ? "No saved properties yet"
+                  : "No properties match your search"}
+              </h3>
 
-            <p>
-              Try changing your budget or preferences.
-            </p>
+              <p>
+                {showFavorites && favorites.length === 0
+                  ? "Tap the heart on a property to save it here."
+                  : "Try removing a filter or widening your budget."}
+              </p>
 
-            <button
-              onClick={() => {
-                setPropertyType("");
-                setBudget("");
-                setBhk("");
-                setFurnishing("");
-                setAmenities([]);
-              }}
-            >
-              Show Similar Properties
-            </button>
+              <button type="button" onClick={resetFilters}>
+                Reset Filters
+              </button>
 
-          </div>
+            </div>
 
-        ) : (
+          ) : (
 
-          <div className="property-grid">
+            <div className="nw-grid">
 
-            {filteredProperties.map((property) => (
+              {visibleProperties.map((property, index) => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  index={index}
+                  favorite={favorites.includes(property.id)}
+                  onFavorite={toggleFavorite}
+                  onOpen={setSelectedProperty}
+                />
+              ))}
 
-              <PropertyCard
-                key={property.id}
-                property={property}
-                favorite={
-                  favorites.includes(property.id)
-                }
-                onFavorite={toggleFavorite}
-              />
+            </div>
 
-            ))}
+          )}
 
-          </div>
-
-        )}
+        </main>
 
       </div>
+
+
+      {selectedProperty && (
+        <PropertyModal
+          property={selectedProperty}
+          favorite={favorites.includes(selectedProperty.id)}
+          onFavorite={toggleFavorite}
+          onClose={closeModal}
+        />
+      )}
 
     </div>
   );
