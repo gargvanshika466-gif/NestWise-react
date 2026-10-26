@@ -11,66 +11,106 @@ import Signup from "./pages/signup";
 import ListProperty from "./pages/ListProperty";
 import Results from "./pages/Results";
 
+import { SellerProvider } from "./Content/SellerContext";
+
 import SellerPage from "./pages/seller/SellerPage";
 import Dashboard from "./pages/seller/Dashboard";
 import PublishProperty from "./pages/seller/PublishProperty";
 import MyProperties from "./pages/seller/MyProperties";
 import Status from "./pages/seller/Status";
+import EditProperty from "./pages/seller/EditProperty";
 
 
 function App() {
   return (
-    <BrowserRouter>
+    <SellerProvider>
 
-      <Routes>
+      <BrowserRouter>
 
-        {/* Existing Pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Routes>
 
-        <Route
-          path="/buyer"
-          element={<Navigate to="/results" replace />}
-        />
-
-        <Route path="/list-property" element={<ListProperty />} />
-        <Route path="/results" element={<Results />} />
-
-
-        {/* Seller Pages */}
-        <Route path="/seller" element={<SellerPage />}>
+          {/* Existing Pages */}
 
           <Route
-            index
-            element={<Navigate to="dashboard" replace />}
+            path="/"
+            element={<Home />}
           />
 
           <Route
-            path="dashboard"
-            element={<Dashboard />}
+            path="/login"
+            element={<Login />}
           />
 
           <Route
-            path="publish"
-            element={<PublishProperty />}
+            path="/signup"
+            element={<Signup />}
           />
 
           <Route
-            path="properties"
-            element={<MyProperties />}
+            path="/buyer"
+            element={<Navigate to="/results" replace />}
           />
 
           <Route
-            path="status"
-            element={<Status />}
+            path="/list-property"
+            element={<ListProperty />}
           />
 
-        </Route>
+          <Route
+            path="/results"
+            element={<Results />}
+          />
 
-      </Routes>
 
-    </BrowserRouter>
+          {/* Seller Pages */}
+
+          <Route
+            path="/seller"
+            element={<SellerPage />}
+          >
+
+            <Route
+              index
+              element={
+                <Navigate
+                  to="dashboard"
+                  replace
+                />
+              }
+            />
+
+            <Route
+              path="dashboard"
+              element={<Dashboard />}
+            />
+
+            <Route
+              path="publish"
+              element={<PublishProperty />}
+            />
+
+            <Route
+              path="properties"
+              element={<MyProperties />}
+            />
+
+            <Route
+              path="status"
+              element={<Status />}
+            />
+
+            <Route
+              path="properties/:id/edit"
+              element={<EditProperty />}
+            />
+
+          </Route>
+
+        </Routes>
+
+      </BrowserRouter>
+
+    </SellerProvider>
   );
 }
 
