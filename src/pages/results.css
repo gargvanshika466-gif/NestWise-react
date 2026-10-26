@@ -2,12 +2,266 @@
    NESTWISE RESULTS PAGE — Warm Theme
 ========================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 .results-page {
   min-height: 100vh;
-  padding: 35px 7%;
   background: #FAF6F0;
   font-family: 'Inter', Arial, sans-serif;
 }
+
+/* ================================================================
+   BROWSE HOMES SECTION — top of Results page
+================================================================ */
+
+.browse-section {
+  padding: 48px 64px 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.browse-header { margin-bottom: 28px; }
+
+.browse-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #19873d;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.browse-title {
+  font-size: 46px;
+  font-weight: 900;
+  color: #0D0D0D;
+  letter-spacing: -1.5px;
+  margin: 0 0 8px;
+  line-height: 1.05;
+}
+
+.browse-count {
+  font-size: 14px;
+  color: #19873d;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Search bar */
+.browse-search {
+  display: flex;
+  align-items: center;
+  max-width: 560px;
+  background: #ffffff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  gap: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 22px;
+}
+
+.browse-search-icon { display: flex; align-items: center; flex-shrink: 0; }
+
+.browse-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  color: #111111;
+  background: transparent;
+  padding: 0;
+}
+
+.browse-search-input::placeholder { color: #aaaaaa; }
+
+.browse-search-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 100px;
+  background: #19873d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.browse-search-btn:hover { background: #145f2c; transform: scale(1.02); }
+
+/* Filter tabs */
+.browse-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.browse-filter-tab {
+  padding: 8px 22px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 100px;
+  background: #ffffff;
+  color: #444444;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.browse-filter-tab:hover { border-color: #111111; color: #111111; }
+.browse-filter-tab.active { background: #111111; border-color: #111111; color: #ffffff; }
+
+/* City quick-links */
+.browse-cities {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.browse-city-link {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555555;
+  transition: color 0.2s;
+}
+
+.browse-city-link:hover { color: #19873d; text-decoration: underline; }
+
+/* 3-column property grid */
+.browse-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Property card */
+.browse-card {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+}
+
+.browse-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(0,0,0,0.10); }
+
+.browse-card-img-wrap {
+  position: relative;
+  height: 230px;
+  overflow: hidden;
+}
+
+.browse-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.browse-card:hover .browse-card-img-wrap img { transform: scale(1.06); }
+
+/* Badges */
+.browse-badge-type {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,0.97);
+  color: #111111;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+}
+
+.browse-badge-type.sale { }   /* same style, kept for future use */
+
+.browse-badge-featured {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #D8F956;
+  color: #111111;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+
+/* Card body */
+.browse-card-body { padding: 16px 18px 20px; }
+
+.browse-card-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0D0D0D;
+  letter-spacing: -0.4px;
+  margin-bottom: 3px;
+}
+
+.browse-card-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #222222;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.browse-card-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: #555555;
+}
+
+.browse-card-divider { height: 1px; background: #f0f0f0; margin: 12px 0; }
+
+.browse-card-specs {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: #555555;
+}
+
+.browse-card-specs span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+/* Make the buyer-search and results-section retain the old 7% padding */
+.buyer-search { margin: 25px 7%; }
+.results-section { margin: 0 7%; }
+
+@media (max-width: 1100px) {
+  .browse-section { padding-left: 36px; padding-right: 36px; }
+  .browse-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .browse-section { padding-left: 18px; padding-right: 18px; }
+  .browse-grid { grid-template-columns: 1fr; }
+  .browse-title { font-size: 32px; }
+  .buyer-search { margin: 20px 18px; }
+  .results-section { margin: 0 18px; }
+}
+
+
 
 /* HEADER */
 
