@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useSeller } from "../../Content/SellerContext";
 import "./PublishProperty.css";
 
-const INITIAL_FORM = {
+const EMPTY_FORM = {
   title: "",
   type: "",
-  listingType: "rent",   // "rent" | "sale"
+  listingType: "rent",
   rent: "",
   salePrice: "",
   securityDeposit: "",
@@ -24,263 +24,414 @@ const INITIAL_FORM = {
 };
 
 function PublishProperty({ editData = null, onEditDone = null }) {
+
   const navigate = useNavigate();
+
   const { addProperty, updateProperty } = useSeller();
 
-  const isEdit = !!editData;
+  const isEdit = editData !== null;
 
   const [step, setStep] = useState(1);
+
   const [formData, setFormData] = useState(
-    editData
-      ? { ...INITIAL_FORM, ...editData }
-      : INITIAL_FORM
+    editData ? { ...EMPTY_FORM, ...editData } : { ...EMPTY_FORM }
   );
-  const [imagePreview, setImagePreview] = useState(editData?.image || "");
+  const [imagePreview, setImagePreview] = useState(
+    editData ? editData.image : ""
+  );
+
   const [errors, setErrors] = useState({});
-
-  const isRent = formData.listingType === "rent";
-
   function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  }
 
-  function handleListingTypeChange(type) {
-    setFormData((prev) => ({ ...prev, listingType: type }));
-    setErrors((prev) => ({ ...prev, rent: "", salePrice: "" }));
-  }
+    const name = e.target.name;
+    const value = e.target.value;
 
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
+  }
+  function changeListingType(type) {
+
+    setFormData({
+      ...formData,
+      listingType: type,
+    });
+
+    setErrors({
+      ...errors,
+      rent: "",
+      salePrice: "",
+    });
+  }
   function handleImageChange(e) {
+
     const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-      setFormData((prev) => ({ ...prev, image: reader.result }));
-    };
-    reader.readAsDataURL(file);
-  }
 
-  function validateStep1() {
-    const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = "Property title is required.";
-    if (!formData.type) newErrors.type = "Property type is required.";
-    if (isRent && !formData.rent) newErrors.rent = "Monthly rent is required.";
-    if (!isRent && !formData.salePrice) newErrors.salePrice = "Sale price is required.";
-    return newErrors;
-  }
-
-  function validateStep2() {
-    const newErrors = {};
-    if (!formData.city.trim()) newErrors.city = "City is required.";
-    if (!formData.location.trim()) newErrors.location = "Area / Locality is required.";
-    return newErrors;
-  }
-
-  function handleNext() {
-    let newErrors = {};
-    if (step === 1) newErrors = validateStep1();
-    if (step === 2) newErrors = validateStep2();
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    if (!file) {
       return;
     }
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+
+      setImagePreview(reader.result);
+
+      setFormData({
+        ...formData,
+        image: reader.result,
+      });
+
+    };
+
+    reader.readAsDataURL(file);
+  }
+  function validateStep1() {
+
+    const newErrors = {};
+
+    if (formData.title.trim() === "") {
+      newErrors.title = "Property title is required.";
+    }
+
+    if (formData.type === "") {
+      newErrors.type = "Property type is required.";
+    }
+
+    if (
+      formData.listingType === "rent" &&
+      formData.rent === ""
+    ) {
+      newErrors.rent = "Monthly rent is required.";
+    }
+
+    if (
+      formData.listingType === "sale" &&
+      formData.salePrice === ""
+    ) {
+      newErrors.salePrice = "Sale price is required.";
+    }
+
+    return newErrors;
+  }
+  function validateStep2() {
+
+    const newErrors = {};
+
+    if (formData.city.trim() === "") {
+      newErrors.city = "City is required.";
+    }
+
+    if (formData.location.trim() === "") {
+      newErrors.location = "Area / Locality is required.";
+    }
+
+    return newErrors;
+  }
+
+
+  function handleNext() {
+
+    let newErrors = {};
+
+    if (step === 1) {
+      newErrors = validateStep1();
+    }
+
+    if (step === 2) {
+      newErrors = validateStep2();
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+
+      setErrors(newErrors);
+
+      return;
+    }
+
     setErrors({});
-    setStep((s) => s + 1);
+
+    setStep(step + 1);
   }
 
   function handleBack() {
+
     setErrors({});
-    setStep((s) => s - 1);
+
+    setStep(step - 1);
   }
+
 
   function handleSaveDraft() {
-    const step1Errors = validateStep1();
-    if (Object.keys(step1Errors).length > 0) {
-      setErrors(step1Errors);
+
+    const errors = validateStep1();
+
+    if (Object.keys(errors).length > 0) {
+
+      setErrors(errors);
       setStep(1);
+
       return;
     }
 
     if (isEdit) {
-      updateProperty(editData.id, { ...formData, status: "Draft" });
-      if (onEditDone) onEditDone();
+
+      updateProperty(editData.id, {
+        ...formData,
+        status: "Draft",
+      });
+
+      if (onEditDone) {
+        onEditDone();
+      }
+
     } else {
-      addProperty({ ...formData, status: "Draft" });
+
+      addProperty({
+        ...formData,
+        status: "Draft",
+      });
+
     }
+
     navigate("/seller/properties");
   }
 
+
+  
   function handlePublish() {
+
     const step1Errors = validateStep1();
     const step2Errors = validateStep2();
-    const allErrors = { ...step1Errors, ...step2Errors };
+
+    const allErrors = {
+      ...step1Errors,
+      ...step2Errors,
+    };
+
     if (Object.keys(allErrors).length > 0) {
+
       setErrors(allErrors);
-      if (Object.keys(step1Errors).length > 0) setStep(1);
-      else if (Object.keys(step2Errors).length > 0) setStep(2);
+
+      if (Object.keys(step1Errors).length > 0) {
+        setStep(1);
+      } else {
+        setStep(2);
+      }
+
       return;
     }
 
+
     if (isEdit) {
-      updateProperty(editData.id, { ...formData, status: "Published" });
-      if (onEditDone) onEditDone();
+
+      updateProperty(editData.id, {
+        ...formData,
+        status: "Published",
+      });
+
+      if (onEditDone) {
+        onEditDone();
+      }
+
     } else {
-      addProperty({ ...formData, status: "Published" });
+
+      addProperty({
+        ...formData,
+        status: "Published",
+      });
+
     }
+
     navigate("/seller/properties");
   }
 
+
   function handleCancel() {
+
     if (onEditDone) {
+
       onEditDone();
+
     } else {
+
       navigate("/seller/dashboard");
+
     }
   }
 
-  const steps = [
-    { num: 1, label: "Basic Information" },
-    { num: 2, label: "Photos & Location" },
-    { num: 3, label: "Property Details" },
-  ];
+
 
   return (
     <section className="publish-property">
 
       <div className="publish-header">
-        <h1>{isEdit ? "Edit Property" : "Publish Property"}</h1>
+
+        <h1>
+          {isEdit ? "Edit Property" : "Publish Property"}
+        </h1>
+
         <p>
           {isEdit
             ? "Update your property details below."
             : "Fill in your property details and publish your listing."}
         </p>
+
       </div>
+       {step === 1 && (
 
-
-      {/* Step Progress Indicator */}
-      <div className="step-progress">
-        {steps.map((s, idx) => (
-          <div key={s.num} className="step-progress-item">
-            <div
-              className={`step-circle ${
-                step === s.num
-                  ? "step-active"
-                  : step > s.num
-                  ? "step-done"
-                  : ""
-              }`}
-            >
-              {step > s.num ? "✓" : s.num}
-            </div>
-            <span
-              className={`step-label ${
-                step === s.num ? "step-label-active" : ""
-              }`}
-            >
-              {s.label}
-            </span>
-            {idx < steps.length - 1 && (
-              <div className={`step-line ${step > s.num ? "step-line-done" : ""}`} />
-            )}
-          </div>
-        ))}
-      </div>
-
-
-      {/* ===== STEP 1: Basic Information ===== */}
-      {step === 1 && (
         <div className="form-section">
+
           <h2>Basic Information</h2>
+
           <div className="form-grid">
 
+
+            {/* TITLE */}
+
             <div className="form-group full">
+
               <label>Property Title *</label>
+
               <input
                 type="text"
                 name="title"
-                placeholder="e.g. Spacious 2BHK Apartment in Model Town"
+                placeholder="e.g. Spacious 2BHK Apartment"
                 value={formData.title}
                 onChange={handleChange}
-                className={errors.title ? "input-error" : ""}
               />
-              {errors.title && <span className="field-error">{errors.title}</span>}
+
+              {errors.title && (
+                <span className="field-error">
+                  {errors.title}
+                </span>
+              )}
+
             </div>
 
+
+            {/* PROPERTY TYPE */}
+
             <div className="form-group">
+
               <label>Property Type *</label>
+
               <select
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className={errors.type ? "input-error" : ""}
               >
+
                 <option value="">Select Type</option>
                 <option value="Apartment">Apartment</option>
                 <option value="House">House</option>
                 <option value="PG">PG</option>
                 <option value="Studio">Studio</option>
+
               </select>
-              {errors.type && <span className="field-error">{errors.type}</span>}
+
+              {errors.type && (
+                <span className="field-error">
+                  {errors.type}
+                </span>
+              )}
+
             </div>
 
-            {/* Listing Type Toggle */}
+
+            {/* RENT / SALE */}
+
             <div className="form-group">
+
               <label>Listing Type *</label>
+
               <div className="listing-type-toggle">
+
                 <button
                   type="button"
-                  className={`listing-type-btn${formData.listingType === "rent" ? " listing-type-active" : ""}`}
-                  onClick={() => handleListingTypeChange("rent")}
+                  className={
+                    formData.listingType === "rent"
+                      ? "listing-type-btn listing-type-active"
+                      : "listing-type-btn"
+                  }
+                  onClick={() => changeListingType("rent")}
                 >
                   🏠 For Rent
                 </button>
+
                 <button
                   type="button"
-                  className={`listing-type-btn${formData.listingType === "sale" ? " listing-type-active listing-type-sale" : ""}`}
-                  onClick={() => handleListingTypeChange("sale")}
+                  className={
+                    formData.listingType === "sale"
+                      ? "listing-type-btn listing-type-active"
+                      : "listing-type-btn"
+                  }
+                  onClick={() => changeListingType("sale")}
                 >
                   🏷️ For Sale
                 </button>
-              </div>
-            </div>
 
-            {/* Conditional Price Field */}
-            {isRent ? (
+              </div>
+
+            </div>
+             {formData.listingType === "rent" ? (
+
               <div className="form-group">
+
                 <label>Monthly Rent (₹) *</label>
+
                 <input
                   type="number"
                   name="rent"
                   placeholder="e.g. 15000"
                   value={formData.rent}
                   onChange={handleChange}
-                  className={errors.rent ? "input-error" : ""}
                 />
-                {errors.rent && <span className="field-error">{errors.rent}</span>}
+
+                {errors.rent && (
+                  <span className="field-error">
+                    {errors.rent}
+                  </span>
+                )}
+
               </div>
+
             ) : (
+
               <div className="form-group">
+
                 <label>Sale Price (₹) *</label>
+
                 <input
                   type="number"
                   name="salePrice"
                   placeholder="e.g. 8500000"
                   value={formData.salePrice}
                   onChange={handleChange}
-                  className={errors.salePrice ? "input-error" : ""}
                 />
-                {errors.salePrice && <span className="field-error">{errors.salePrice}</span>}
+
+                {errors.salePrice && (
+                  <span className="field-error">
+                    {errors.salePrice}
+                  </span>
+                )}
+
               </div>
+
             )}
 
-            {isRent && (
+            {formData.listingType === "rent" && (
+
               <div className="form-group">
+
                 <label>Security Deposit (₹)</label>
+
                 <input
                   type="number"
                   name="securityDeposit"
@@ -288,90 +439,118 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                   value={formData.securityDeposit}
                   onChange={handleChange}
                 />
-              </div>
-            )}
 
+              </div>
+
+            )}
             <div className="form-group full">
+
               <label>Description</label>
+
               <textarea
                 name="description"
                 rows="4"
-                placeholder="Describe your property — amenities, surroundings, highlights..."
+                placeholder="Describe your property..."
                 value={formData.description}
                 onChange={handleChange}
               />
+
             </div>
 
           </div>
+
         </div>
+
       )}
 
 
-      {/* ===== STEP 2: Photos & Location ===== */}
+
       {step === 2 && (
+
         <div className="form-section">
-          <h2>Photos &amp; Location</h2>
+
+          <h2>Photos & Location</h2>
+
           <div className="form-grid">
 
+
+            {/* IMAGE */}
+
             <div className="form-group full">
+
               <label>Property Image</label>
-              <div className="image-upload-area">
-                {imagePreview ? (
-                  <div className="image-preview-wrap">
-                    <img
-                      src={imagePreview}
-                      alt="Property Preview"
-                      className="image-preview"
-                    />
-                    <label className="change-image-btn" htmlFor="property-image-input">
-                      🔄 Change Image
-                    </label>
-                  </div>
-                ) : (
-                  <label className="image-upload-placeholder" htmlFor="property-image-input">
-                    <span className="upload-icon">📷</span>
-                    <span>Click to upload a property image</span>
-                    <span className="upload-hint">JPG, PNG, WEBP supported</span>
-                  </label>
-                )}
-                <input
-                  id="property-image-input"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  style={{ display: "none" }}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+
+              {imagePreview && (
+
+                <img
+                  src={imagePreview}
+                  alt="Property"
+                  className="image-preview"
                 />
-              </div>
+
+              )}
+
             </div>
 
+
+            {/* CITY */}
+
             <div className="form-group">
+
               <label>City *</label>
+
               <input
                 type="text"
                 name="city"
                 placeholder="e.g. Ludhiana"
                 value={formData.city}
                 onChange={handleChange}
-                className={errors.city ? "input-error" : ""}
               />
-              {errors.city && <span className="field-error">{errors.city}</span>}
+
+              {errors.city && (
+                <span className="field-error">
+                  {errors.city}
+                </span>
+              )}
+
             </div>
 
+
+            {/* LOCATION */}
+
             <div className="form-group">
+
               <label>Area / Locality *</label>
+
               <input
                 type="text"
                 name="location"
                 placeholder="e.g. Model Town"
                 value={formData.location}
                 onChange={handleChange}
-                className={errors.location ? "input-error" : ""}
               />
-              {errors.location && <span className="field-error">{errors.location}</span>}
+
+              {errors.location && (
+                <span className="field-error">
+                  {errors.location}
+                </span>
+              )}
+
             </div>
 
+
+            {/* ADDRESS */}
+
             <div className="form-group full">
+
               <label>Full Address</label>
+
               <input
                 type="text"
                 name="address"
@@ -379,10 +558,16 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.address}
                 onChange={handleChange}
               />
+
             </div>
 
+
+            {/* LANDMARK */}
+
             <div className="form-group full">
+
               <label>Nearby Landmark</label>
+
               <input
                 type="text"
                 name="landmark"
@@ -390,21 +575,32 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.landmark}
                 onChange={handleChange}
               />
+
             </div>
 
           </div>
+
         </div>
+
       )}
 
 
-      {/* ===== STEP 3: Property Details ===== */}
+
       {step === 3 && (
+
         <div className="form-section">
+
           <h2>Property Details</h2>
+
           <div className="form-grid">
 
+
+            {/* BEDROOMS */}
+
             <div className="form-group">
+
               <label>Bedrooms</label>
+
               <input
                 type="number"
                 name="bedrooms"
@@ -412,10 +608,16 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.bedrooms}
                 onChange={handleChange}
               />
+
             </div>
 
+
+            {/* BATHROOMS */}
+
             <div className="form-group">
+
               <label>Bathrooms</label>
+
               <input
                 type="number"
                 name="bathrooms"
@@ -423,10 +625,16 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.bathrooms}
                 onChange={handleChange}
               />
+
             </div>
 
+
+            {/* AREA */}
+
             <div className="form-group">
+
               <label>Area (sq.ft)</label>
+
               <input
                 type="number"
                 name="area"
@@ -434,10 +642,16 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.area}
                 onChange={handleChange}
               />
+
             </div>
 
+
+            {/* FLOOR */}
+
             <div className="form-group">
+
               <label>Floor</label>
+
               <input
                 type="text"
                 name="floor"
@@ -445,28 +659,42 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 value={formData.floor}
                 onChange={handleChange}
               />
+
             </div>
 
+
+            {/* FURNISHING */}
+
             <div className="form-group full">
+
               <label>Furnishing</label>
+
               <select
                 name="furnishing"
                 value={formData.furnishing}
                 onChange={handleChange}
               >
+
                 <option value="">Select Furnishing</option>
-                <option value="Fully Furnished">Fully Furnished</option>
-                <option value="Semi Furnished">Semi Furnished</option>
-                <option value="Unfurnished">Unfurnished</option>
+                <option value="Fully Furnished">
+                  Fully Furnished
+                </option>
+                <option value="Semi Furnished">
+                  Semi Furnished
+                </option>
+                <option value="Unfurnished">
+                  Unfurnished
+                </option>
+
               </select>
+
             </div>
 
           </div>
+
         </div>
+
       )}
-
-
-      {/* Navigation Buttons */}
       <div className="form-actions">
 
         <button
@@ -477,9 +705,10 @@ function PublishProperty({ editData = null, onEditDone = null }) {
           {isEdit ? "← Cancel" : "Cancel"}
         </button>
 
-        <div className="form-actions-right">
 
+        <div className="form-actions-right">
           {step > 1 && (
+
             <button
               type="button"
               className="btn-back"
@@ -487,9 +716,14 @@ function PublishProperty({ editData = null, onEditDone = null }) {
             >
               ← Back
             </button>
+
           )}
 
+
+       
+
           {step < 3 && (
+
             <button
               type="button"
               className="btn-next"
@@ -497,10 +731,15 @@ function PublishProperty({ editData = null, onEditDone = null }) {
             >
               Next →
             </button>
+
           )}
 
+
+
           {step === 3 && (
+
             <>
+
               <button
                 type="button"
                 className="btn-draft"
@@ -509,14 +748,17 @@ function PublishProperty({ editData = null, onEditDone = null }) {
                 💾 Save as Draft
               </button>
 
+
               <button
                 type="button"
                 className="btn-publish"
                 onClick={handlePublish}
               >
-                🚀 {isEdit ? "Save Changes" : "Publish Property"}
+                 {isEdit ? "Save Changes" : "Publish Property"}
               </button>
+
             </>
+
           )}
 
         </div>

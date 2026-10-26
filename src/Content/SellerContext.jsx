@@ -51,7 +51,7 @@ export function SellerProvider({ children }) {
   function sellerLogout() {
     setSellerLoggedIn(false);
     localStorage.removeItem("sellerLoggedIn");
-    // Note: we do NOT clear sellerProperties so data persists across sessions
+    
   }
 
   return (

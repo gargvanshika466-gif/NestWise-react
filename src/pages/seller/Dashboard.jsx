@@ -15,7 +15,7 @@ function Dashboard() {
 
   const recentProperties = [...properties].slice(-5).reverse();
 
-  return (
+  return ( 
     <section className="dashboard">
 
       <div className="dashboard-header">
@@ -99,14 +99,14 @@ function Dashboard() {
               <div
                 className="recent-property"
                 key={property.id}
-                onClick={() => navigate(`/seller/properties/${property.id}`)}
+               
               >
 
                 <div className="recent-property-img">
                   <img
                     src={property.image || PLACEHOLDER_IMAGE}
-                    alt={property.title}
-                    onError={(e) => { e.target.src = PLACEHOLDER_IMAGE; }}
+              
+                    
                   />
                 </div>
 

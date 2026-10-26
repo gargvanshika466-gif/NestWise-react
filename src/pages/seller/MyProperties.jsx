@@ -104,7 +104,7 @@ function MyProperties() {
           <h2>No Properties Listed</h2>
           <p>You haven't published any property yet.</p>
           <button onClick={() => navigate("/seller/publish")}>
-            ＋ Publish Your First Property
+            + Publish Your First Property
           </button>
         </div>
 
@@ -173,7 +173,6 @@ function MyProperties() {
 
               </div>
 
-              {/* Card Actions */}
               <div className="property-card-actions">
                 
 
