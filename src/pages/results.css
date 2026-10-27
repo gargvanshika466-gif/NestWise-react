@@ -912,3 +912,583 @@
     transition: none !important;
   }
 }
+
+
+/* =========================================
+   BUYER FLOW ADDITIONS (preferences page, forms,
+   saved-homes dashboard, loading / error states)
+========================================= */
+
+/* ---------- Top bar: active link + wrapping ---------- */
+
+.nw-topbar {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nw-topbar-links {
+  flex-wrap: wrap;
+}
+
+.nw-topbar-links a.active,
+.nw-topbar-links a[aria-current="page"] {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+
+/* ---------- Shared: buttons, banners, field text ---------- */
+
+.nw-btn {
+  padding: 14px 26px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.nw-btn-primary {
+  background: linear-gradient(135deg, var(--green), #20a86b);
+  color: white;
+  box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+}
+
+.nw-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(25, 135, 84, 0.38);
+}
+
+.nw-btn-ghost {
+  background: white;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.nw-btn-ghost:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.nw-btn:focus-visible,
+.nw-view-btn:focus-visible {
+  outline: 3px solid rgba(25, 135, 84, 0.4);
+  outline-offset: 2px;
+}
+
+.nw-view-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+
+.nw-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nw-banner button {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #b91c1c;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nw-banner-error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.nw-banner-success {
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+.nw-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.nw-required {
+  color: #dc2626;
+}
+
+
+/* ---------- Reusable form field (FormInput) ---------- */
+
+.nw-field {
+  margin-bottom: 16px;
+}
+
+.nw-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #344054;
+}
+
+.nw-field .nw-input {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nw-field .nw-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
+}
+
+.nw-field .nw-input:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.nw-field .nw-input.invalid {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+/* icon version used on the Sign Up page */
+
+.nw-field-wrap {
+  margin-bottom: 14px;
+}
+
+.signup-form .nw-field-wrap .input-group {
+  margin-bottom: 0;
+}
+
+.signup-form .nw-field-wrap .nw-error {
+  margin-top: 6px;
+}
+
+.signup-form .input-group input.invalid {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+
+/* ---------- Preferences page (/buyer) ---------- */
+
+.nw-prefs {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+
+.nw-prefs-head {
+  margin: 14px 0 26px;
+}
+
+.nw-prefs-head h1 {
+  margin: 0 0 8px;
+  font-size: 38px;
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+
+.nw-prefs-head p {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.nw-prefs-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 26px;
+  align-items: start;
+}
+
+.nw-form-card,
+.nw-summary-card {
+  margin-bottom: 20px;
+  padding: 26px;
+  border-radius: 22px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 22px rgba(16, 60, 40, 0.08);
+}
+
+.nw-summary-card {
+  position: sticky;
+  top: 20px;
+  border-left: 5px solid var(--green);
+}
+
+.nw-form-heading {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nw-form-heading > span {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-weight: 800;
+}
+
+.nw-form-heading h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.nw-form-heading p {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.nw-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.nw-fieldset {
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+.nw-fieldset legend {
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #344054;
+}
+
+.nw-option-grid,
+.nw-amenities-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nw-option {
+  position: relative;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.nw-option:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.nw-option.selected {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--green), #20a86b);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(25, 135, 84, 0.3);
+}
+
+/* the real radio / checkbox stays in the page for keyboards and screen readers */
+.nw-option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.nw-option:focus-within {
+  outline: 3px solid rgba(25, 135, 84, 0.4);
+  outline-offset: 2px;
+}
+
+.nw-form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nw-skip {
+  margin: 18px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.nw-skip a {
+  color: var(--green);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nw-skip a:hover {
+  text-decoration: underline;
+}
+
+
+/* summary card */
+
+.nw-summary-empty {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.nw-summary-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.nw-summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f6faf8;
+}
+
+.nw-summary-item small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.nw-summary-item strong {
+  font-size: 14px;
+  text-align: right;
+}
+
+.nw-summary-amenities {
+  margin-top: 14px;
+}
+
+.nw-summary-amenities small {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.nw-summary-amenities div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.nw-summary-amenities span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ---------- Results page extras ---------- */
+
+.nw-profile-name {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.nw-profile-link {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nw-profile-link:hover {
+  text-decoration: underline;
+}
+
+/* saved homes dashboard */
+
+.nw-saved-summary {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #cfe3d8;
+}
+
+.nw-saved-summary div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nw-saved-summary small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.nw-saved-summary strong {
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.nw-saved-summary button {
+  margin-left: auto;
+  padding: 9px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* loading skeleton */
+
+.nw-skeleton {
+  pointer-events: none;
+}
+
+.nw-skeleton-image {
+  height: 210px;
+  background: #e5ece8;
+}
+
+.nw-skeleton-line {
+  height: 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  background: #e5ece8;
+}
+
+.nw-skeleton-image,
+.nw-skeleton-line {
+  animation: nw-pulse 1.3s ease-in-out infinite;
+}
+
+.nw-w-40 { width: 40%; }
+.nw-w-50 { width: 50%; }
+.nw-w-70 { width: 70%; }
+.nw-w-90 { width: 90%; }
+
+@keyframes nw-pulse {
+  50% { opacity: 0.45; }
+}
+
+/* error state */
+
+.nw-error-state {
+  border-color: #fecaca;
+}
+
+.nw-error-state button {
+  background: #b91c1c;
+}
+
+/* property details: visit form + missing property */
+
+.nw-visit-form {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.nw-visit-form h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.nw-visit-form .nw-form-row {
+  gap: 12px;
+}
+
+.nw-modal-body > .nw-banner {
+  margin-top: 22px;
+}
+
+.nw-modal-missing {
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.nw-modal-missing p {
+  margin: 0 0 22px;
+  color: var(--muted);
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+
+  .nw-prefs-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .nw-summary-card {
+    position: static;
+  }
+
+  .nw-prefs-head h1 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .nw-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .nw-form-card,
+  .nw-summary-card {
+    padding: 20px;
+  }
+
+  .nw-saved-summary button {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nw-skeleton-image,
+  .nw-skeleton-line {
+    animation: none;
+  }
+}

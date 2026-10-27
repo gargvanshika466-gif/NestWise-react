@@ -1,0 +1,51 @@
+/* NESTWISE STATUS — Warm Theme */
+
+.property-status {
+  width: 100%;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.status-header {
+  margin-bottom: 30px;
+}
+
+.status-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: #382F2A;
+}
+
+.status-header p {
+  color: #796D64;
+}
+
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.status-card {
+  background: #FFFCF7;
+  padding: 30px;
+  border-radius: 14px;
+  border: 1px solid #E8DDD1;
+  box-shadow: 0 4px 14px rgba(56, 47, 42, 0.07);
+}
+
+.status-card h3 {
+  margin-bottom: 12px;
+  color: #382F2A;
+}
+
+.status-card p {
+  color: #B86F52;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .status-cards {
+    grid-template-columns: 1fr;
+  }
+}

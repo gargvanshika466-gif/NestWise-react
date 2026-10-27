@@ -1,0 +1,57 @@
+/* NESTWISE MY PROPERTIES — Warm Theme */
+
+.my-properties {
+  width: 100%;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.properties-header {
+  margin-bottom: 30px;
+}
+
+.properties-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: #382F2A;
+}
+
+.properties-header p {
+  color: #796D64;
+}
+
+.empty-properties {
+  background: #FFFCF7;
+  padding: 50px 30px;
+  border-radius: 14px;
+  text-align: center;
+  border: 2px dashed #D8B99C;
+  box-shadow: 0 4px 14px rgba(56, 47, 42, 0.07);
+}
+
+.empty-properties h2 {
+  margin-bottom: 10px;
+  color: #382F2A;
+}
+
+.empty-properties p {
+  color: #796D64;
+  margin-bottom: 25px;
+}
+
+.empty-properties button {
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: #B86F52;
+  color: white;
+  cursor: pointer;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.empty-properties button:hover {
+  background: #99583F;
+  transform: translateY(-1px);
+}
