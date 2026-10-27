@@ -1,147 +1,56 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./results.css";
 
-const properties = [
-  {
-    id: 1,
-    title: "Modern Green Apartment",
-    location: "Delhi",
-    price: 18000,
-    bhk: "2 BHK",
-    type: "Apartment",
-    furnishing: "Semi Furnished",
-    amenities: ["Gym", "Parking", "Security", "Lift"],
-    rating: 4.7,
-    description: "Bright 2 BHK apartment in a peaceful residential area.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"
-  },
-  {
-    id: 2,
-    title: "Luxury City Apartment",
-    location: "Gurgaon",
-    price: 28000,
-    bhk: "3 BHK",
-    type: "Apartment",
-    furnishing: "Fully Furnished",
-    amenities: ["Gym", "Parking", "Security", "Lift"],
-    rating: 4.9,
-    description: "Premium furnished apartment close to offices and metro.",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800"
-  },
-  {
-    id: 3,
-    title: "Comfortable Studio",
-    location: "Noida",
-    price: 14000,
-    bhk: "1 BHK",
-    type: "Studio",
-    furnishing: "Fully Furnished",
-    amenities: ["Security", "Lift"],
-    rating: 4.5,
-    description: "Compact studio perfect for students and working professionals.",
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800"
-  },
-  {
-    id: 4,
-    title: "Spacious Family Villa",
-    location: "Delhi",
-    price: 55000,
-    bhk: "4+ BHK",
-    type: "Villa",
-    furnishing: "Semi Furnished",
-    amenities: ["Parking", "Security", "Gym"],
-    rating: 4.8,
-    description: "Large family villa with excellent parking and security.",
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800"
-  },
-  {
-    id: 5,
-    title: "Premium City Apartment",
-    location: "Noida",
-    price: 22000,
-    bhk: "2 BHK",
-    type: "Apartment",
-    furnishing: "Fully Furnished",
-    amenities: ["Gym", "Parking", "Lift"],
-    rating: 4.6,
-    description: "Modern apartment with excellent amenities and connectivity.",
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800"
-  },
-  {
-    id: 6,
-    title: "Budget Friendly PG",
-    location: "Gurgaon",
-    price: 9000,
-    bhk: "1 BHK",
-    type: "PG",
-    furnishing: "Fully Furnished",
-    amenities: ["Security", "Lift", "Parking"],
-    rating: 4.4,
-    description: "Affordable PG with furnished rooms and basic facilities.",
-    image:
-      "https://images.unsplash.com/photo-1560185008-b033106af5c3?w=800"
-  },
-  {
-    id: 7,
-    title: "Premium PG Residence",
-    location: "Delhi",
-    price: 13000,
-    bhk: "1 BHK",
-    type: "PG",
-    furnishing: "Semi Furnished",
-    amenities: ["Gym", "Security", "Lift"],
-    rating: 4.6,
-    description: "Comfortable PG located near metro and shopping areas.",
-    image:
-      "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800"
-  },
-  {
-    id: 8,
-    title: "Elegant Studio Home",
-    location: "Gurgaon",
-    price: 20000,
-    bhk: "1 BHK",
-    type: "Studio",
-    furnishing: "Semi Furnished",
-    amenities: ["Parking", "Security", "Lift"],
-    rating: 4.7,
-    description: "Stylish studio apartment with convenient city access.",
-    image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"
-  },
-  {
-    id: 9,
-    title: "Luxury Garden Villa",
-    location: "Gurgaon",
-    price: 75000,
-    bhk: "4+ BHK",
-    type: "Villa",
-    furnishing: "Fully Furnished",
-    amenities: ["Gym", "Parking", "Security", "Lift"],
-    rating: 4.9,
-    description: "Luxury villa with spacious interiors and garden space.",
-    image:
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800"
-  }
-];
+import FormInput from "../components/FormInput";
+import useForm, { todayISO, validators, validateBudget } from "../hooks/useForm";
+
+import {
+  initialPreferences,
+  paramsToPreferences,
+  preferencesToParams,
+  useBuyer
+} from "../context/BuyerContext";
+
+import {
+  clearFavorites,
+  fetchProperties,
+  requestVisit,
+  resetVisitStatus,
+  selectFavoriteIds,
+  selectSavedSummary,
+  toggleFavorite
+} from "../store/buyerStore";
+
+import {
+  AMENITY_OPTIONS,
+  BHK_OPTIONS,
+  FURNISHING_OPTIONS,
+  PROPERTY_TYPES,
+  formatPrice
+} from "../store/propertiesApi";
+
+
+/* =========================================================
+   BUYERS PAGE  (route: /results  and  /results/:propertyId)
+
+   Where each kind of state lives
+   ------------------------------
+   Redux Toolkit  properties (async), favorites, visit requests
+   Context API    buyer profile + saved search preferences
+   URL            sort order, "saved only" view, open property
+   Local state    filters being edited, filter drawer open/closed
+========================================================= */
 
 /* ---------- Constants ---------- */
-
-const propertyTypes = ["Apartment", "Villa", "PG", "Studio"];
-const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
-const furnishingTypes = ["Fully Furnished", "Semi Furnished", "Unfurnished"];
-const amenityList = ["Gym", "Parking", "Security", "Lift"];
-
-const cities = [...new Set(properties.map((p) => p.location))];
-
-const MAX_BUDGET_LIMIT = 500000;
 
 const budgetPresets = [
   { label: "Under ₹15k", min: "", max: "15000" },
@@ -150,57 +59,7 @@ const budgetPresets = [
   { label: "₹60k+", min: "60000", max: "" }
 ];
 
-const initialFilters = {
-  search: "",
-  location: "",
-  type: "",
-  bhk: "",
-  furnishing: "",
-  amenities: [],
-  minBudget: "",
-  maxBudget: ""
-};
-
-const averagePrice = Math.round(
-  properties.reduce((sum, p) => sum + p.price, 0) / properties.length
-);
-
-
-/* ---------- Helpers ---------- */
-
-function loadSaved(key, fallback) {
-  try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return value ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function formatPrice(value) {
-  return "₹" + Number(value).toLocaleString("en-IN");
-}
-
-// Returns an error message, or "" when the budget is valid
-function checkBudget(min, max) {
-  if (min !== "" && (isNaN(min) || Number(min) < 0)) {
-    return "Minimum budget must be a positive number.";
-  }
-
-  if (max !== "" && (isNaN(max) || Number(max) <= 0)) {
-    return "Maximum budget must be greater than zero.";
-  }
-
-  if (max !== "" && Number(max) > MAX_BUDGET_LIMIT) {
-    return `Maximum budget cannot exceed ${formatPrice(MAX_BUDGET_LIMIT)}.`;
-  }
-
-  if (min !== "" && max !== "" && Number(min) > Number(max)) {
-    return "Minimum budget cannot be greater than maximum budget.";
-  }
-
-  return "";
-}
+const SORT_OPTIONS = ["recommended", "low", "high"];
 
 
 /* ---------- Small components ---------- */
@@ -223,7 +82,30 @@ function PillGroup({ options, value, onChange }) {
 }
 
 
-function PropertyCard({ property, index, favorite, onFavorite, onOpen }) {
+// Placeholder card shown while the properties are loading
+function PropertySkeleton() {
+  return (
+    <div className="nw-card nw-skeleton" aria-hidden="true">
+      <div className="nw-skeleton-image"></div>
+
+      <div className="nw-card-body">
+        <div className="nw-skeleton-line nw-w-40"></div>
+        <div className="nw-skeleton-line nw-w-70"></div>
+        <div className="nw-skeleton-line nw-w-50"></div>
+        <div className="nw-skeleton-line nw-w-90"></div>
+      </div>
+    </div>
+  );
+}
+
+
+const PropertyCard = memo(function PropertyCard({
+  property,
+  index,
+  favorite,
+  onFavorite,
+  onOpen
+}) {
 
   const [imageFailed, setImageFailed] = useState(false);
 
@@ -302,8 +184,143 @@ function PropertyCard({ property, index, favorite, onFavorite, onOpen }) {
 
     </div>
   );
+});
+
+
+/* ---------- Visit request form (form handling + async state) ---------- */
+
+function validateVisit(values) {
+  return {
+    name: validators.name(values.name),
+    email: validators.email(values.email),
+    phone: validators.phone(values.phone, true),
+    visitDate: validators.visitDate(values.visitDate)
+  };
 }
 
+function VisitRequestForm({ property }) {
+
+  const dispatch = useDispatch();
+  const { buyer } = useBuyer();
+
+  const { requests, status, error } = useSelector((state) => state.visits);
+
+  const existingRequest = requests.find(
+    (request) => request.propertyId === property.id
+  );
+
+  const sending = status === "loading";
+
+  const form = useForm({
+
+    initialValues: {
+      name: buyer.name,
+      email: buyer.email,
+      phone: buyer.phone,
+      visitDate: ""
+    },
+
+    validate: validateVisit,
+
+    onSubmit(values) {
+      dispatch(
+        requestVisit({
+          propertyId: property.id,
+          propertyTitle: property.title,
+          name: values.name.trim(),
+          email: values.email.trim(),
+          phone: values.phone.trim(),
+          visitDate: values.visitDate
+        })
+      );
+    }
+
+  });
+
+  // Start every opened property with a clean request status
+  useEffect(() => {
+    dispatch(resetVisitStatus());
+  }, [dispatch, property.id]);
+
+
+  if (existingRequest) {
+    return (
+      <div className="nw-banner nw-banner-success" role="status">
+        <span>
+          ✓ Visit requested for <strong>{existingRequest.visitDate}</strong>.
+          The owner will contact you on {existingRequest.phone}.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      className="nw-visit-form"
+      onSubmit={form.handleSubmit}
+      noValidate
+    >
+
+      <h3>Book a visit</h3>
+
+      <div className="nw-form-row">
+
+        <FormInput
+          label="Your Name"
+          placeholder="Full name"
+          autoComplete="name"
+          required
+          {...form.getFieldProps("name")}
+        />
+
+        <FormInput
+          label="Phone"
+          type="tel"
+          placeholder="10-digit mobile"
+          autoComplete="tel"
+          inputMode="numeric"
+          required
+          {...form.getFieldProps("phone")}
+        />
+
+      </div>
+
+      <FormInput
+        label="Email"
+        type="email"
+        placeholder="name@example.com"
+        autoComplete="email"
+        required
+        {...form.getFieldProps("email")}
+      />
+
+      <FormInput
+        label="Preferred visit date"
+        type="date"
+        min={todayISO()}
+        required
+        {...form.getFieldProps("visitDate")}
+      />
+
+      {status === "failed" && (
+        <div className="nw-banner nw-banner-error" role="alert">
+          <span>{error}</span>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="nw-view-btn"
+        disabled={sending}
+      >
+        {sending ? "Sending request..." : "Request a visit"}
+      </button>
+
+    </form>
+  );
+}
+
+/* ---------- Property details (opened by the /results/:propertyId route) ---------- */
 
 function PropertyModal({ property, favorite, onFavorite, onClose }) {
 
@@ -372,7 +389,36 @@ function PropertyModal({ property, favorite, onFavorite, onClose }) {
             {favorite ? "♥ Saved to favorites" : "♡ Save to favorites"}
           </button>
 
+          <VisitRequestForm property={property} />
+
         </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+
+// Shown when the URL has an id that does not exist, e.g. /results/999
+function MissingPropertyModal({ onClose }) {
+  return (
+    <div className="nw-overlay" onClick={onClose}>
+
+      <div
+        className="nw-modal nw-modal-missing"
+        onClick={(e) => e.stopPropagation()}
+      >
+
+        <div className="nw-empty-icon">🏚️</div>
+
+        <h2>Property not found</h2>
+
+        <p>This listing may have been removed or the link is incorrect.</p>
+
+        <button type="button" className="nw-view-btn" onClick={onClose}>
+          Back to all homes
+        </button>
 
       </div>
 
@@ -385,86 +431,169 @@ function PropertyModal({ property, favorite, onFavorite, onClose }) {
 
 function Results() {
 
-  const savedBuyer = loadSaved("buyerData", null);
-  const savedPreferences = loadSaved("buyerPreferences", {});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [name, setName] = useState(savedBuyer?.name || "");
+  const { propertyId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // One object holds every filter value
-  const [filters, setFilters] = useState({
-    ...initialFilters,
-    search: savedPreferences.search || "",
-    location: savedPreferences.location || "",
-    type: savedPreferences.type || savedPreferences.propertyType || "",
-    bhk: savedPreferences.bhk || "",
-    furnishing: savedPreferences.furnishing || "",
-    amenities: Array.isArray(savedPreferences.amenities)
-      ? savedPreferences.amenities
-      : [],
-    minBudget: savedPreferences.minBudget || "",
-    maxBudget: savedPreferences.maxBudget || ""
-  });
+  const { buyer, preferences, updatePreferences } = useBuyer();
 
-  const [sortBy, setSortBy] = useState("recommended");
-  const [favorites, setFavorites] = useState(() => loadSaved("buyerFavorites", []));
-  const [showFavorites, setShowFavorites] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState(null);
+  // Redux: async property list + saved homes
+  const { items: properties, status, error } = useSelector(
+    (state) => state.properties
+  );
+  const favorites = useSelector(selectFavoriteIds);
+  const savedSummary = useSelector(selectSavedSummary);
+
+  // URL: how the list is shown
+  const sortParam = searchParams.get("sort");
+  const sortBy = SORT_OPTIONS.includes(sortParam) ? sortParam : "recommended";
+  const showFavorites = searchParams.get("saved") === "1";
+
+  // Local state: the filters being edited
+  // (start from the URL if it has filters, otherwise from the saved preferences)
+  const [filters, setFilters] = useState(
+    () => paramsToPreferences(searchParams) ?? preferences
+  );
   const [showFilters, setShowFilters] = useState(false);
+
+  const isLoading = status === "idle" || status === "loading";
 
 
   useEffect(() => {
     document.title = "NestWise | Find Your Home";
   }, []);
 
-  // Keep filters between visits
+  // Load the properties from the (mock) API
   useEffect(() => {
-    localStorage.setItem("buyerPreferences", JSON.stringify(filters));
-  }, [filters]);
-
-  useEffect(() => {
-    localStorage.setItem("buyerFavorites", JSON.stringify(favorites));
-  }, [favorites]);
+    if (status === "idle") dispatch(fetchProperties());
+  }, [status, dispatch]);
 
 
-  function updateFilter(key, value) {
-    setFilters((previous) => ({ ...previous, [key]: value }));
+  const cities = useMemo(
+    () => [...new Set(properties.map((p) => p.location))],
+    [properties]
+  );
+
+  const averagePrice = useMemo(
+    () =>
+      properties.length
+        ? Math.round(
+            properties.reduce((sum, p) => sum + p.price, 0) / properties.length
+          )
+        : 0,
+    [properties]
+  );
+
+
+  /* ----- Changing filters: update local state, Context and the URL together ----- */
+
+  // view: sort / saved overrides.   options.replace: false adds a history entry
+  function applyFilters(changedFilters, view = {}, options = {}) {
+
+    // Work on a copy so the filters currently on screen are never changed in place
+    const nextFilters = {
+      ...changedFilters,
+      amenities: [...changedFilters.amenities]
+    };
+
+    setFilters(nextFilters);
+    updatePreferences(nextFilters);
+
+    const query = preferencesToParams(nextFilters, {
+      sort: view.sort ?? sortBy,
+      saved: view.saved ?? showFavorites
+    }).toString();
+
+    setSearchParams(query, { replace: options.replace ?? true });
   }
 
-  const toggleAmenity = useCallback((amenity) => {
-    setFilters((previous) => ({
-      ...previous,
-      amenities: previous.amenities.includes(amenity)
-        ? previous.amenities.filter((item) => item !== amenity)
-        : [...previous.amenities, amenity]
-    }));
-  }, []);
+  function updateFilter(key, value) {
+    applyFilters({ ...filters, [key]: value });
+  }
 
-  const toggleFavorite = useCallback((id) => {
-    setFavorites((previous) =>
-      previous.includes(id)
-        ? previous.filter((item) => item !== id)
-        : [...previous, id]
-    );
-  }, []);
-
-  const closeModal = useCallback(() => setSelectedProperty(null), []);
-
-  function resetFilters() {
-    setFilters(initialFilters);
-    setSortBy("recommended");
-    setShowFavorites(false);
+  function toggleAmenity(amenity) {
+    applyFilters({
+      ...filters,
+      amenities: filters.amenities.includes(amenity)
+        ? filters.amenities.filter((item) => item !== amenity)
+        : [...filters.amenities, amenity]
+    });
   }
 
   function applyPreset(preset) {
-    setFilters((previous) => ({
-      ...previous,
+    applyFilters({
+      ...filters,
       minBudget: preset.min,
       maxBudget: preset.max
-    }));
+    });
+  }
+
+  function clearBudget() {
+    applyFilters({ ...filters, minBudget: "", maxBudget: "" });
+  }
+
+  function resetFilters() {
+    applyFilters(initialPreferences, { sort: "recommended", saved: false });
+  }
+
+  // Sort order and "saved only" live in the URL; the other params stay as they are
+  function changeSort(value) {
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+
+        if (value === "recommended") next.delete("sort");
+        else next.set("sort", value);
+
+        return next;
+      },
+      { replace: true }
+    );
+  }
+
+  function toggleSavedView() {
+    setSearchParams((previous) => {
+      const next = new URLSearchParams(previous);
+
+      if (showFavorites) next.delete("saved");
+      else next.set("saved", "1");
+
+      return next;
+    });
   }
 
 
-  const budgetError = checkBudget(filters.minBudget, filters.maxBudget);
+  /* ----- Property details live in the URL: /results/:propertyId ----- */
+
+  const openProperty = useCallback(
+    (property) =>
+      navigate({
+        pathname: `/results/${property.id}`,
+        search: location.search
+      }),
+    [navigate, location.search]
+  );
+
+  const closeModal = useCallback(
+    () => navigate({ pathname: "/results", search: location.search }),
+    [navigate, location.search]
+  );
+
+  const handleFavorite = useCallback(
+    (id) => dispatch(toggleFavorite(id)),
+    [dispatch]
+  );
+
+  const selectedProperty = propertyId
+    ? properties.find((property) => String(property.id) === propertyId)
+    : null;
+
+
+  const budgetError =
+    Object.values(validateBudget(filters.minBudget, filters.maxBudget))[0] || "";
 
 
   // Search + filters + favorites + sorting, all on a copy of the data
@@ -520,7 +649,8 @@ function Results() {
 
     return sorted;
 
-  }, [filters, sortBy, showFavorites, favorites, budgetError]);
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  }, [properties, filters, sortBy, showFavorites, favorites, budgetError]);
 
 
   // Chips that show which filters are on
@@ -547,26 +677,14 @@ function Results() {
   if (!budgetError && (filters.minBudget || filters.maxBudget)) {
     activeChips.push({
       label: `${formatPrice(filters.minBudget || 0)} – ${filters.maxBudget ? formatPrice(filters.maxBudget) : "No limit"}`,
-      remove: () => setFilters((p) => ({ ...p, minBudget: "", maxBudget: "" }))
+      remove: clearBudget
     });
   }
 
 
   return (
 
-    <div className="nw-page">
-
-      {/* TOP BAR */}
-
-      <div className="nw-topbar">
-        <Link to="/" className="nw-logo">NestWise</Link>
-
-        <div className="nw-topbar-links">
-          <Link to="/">Home</Link>
-          <Link to="/seller">Sell / Rent Out</Link>
-        </div>
-      </div>
-
+    <>
 
       {/* HERO */}
 
@@ -584,8 +702,8 @@ function Results() {
           </h1>
 
           <p className="nw-hero-text">
-            {name
-              ? `Welcome ${name}! Search, filter and compare homes that match your needs.`
+            {buyer.name
+              ? `Welcome ${buyer.name}! Search, filter and compare homes that match your needs.`
               : "Search, filter and compare homes that match your needs."}
           </p>
 
@@ -606,15 +724,15 @@ function Results() {
 
           <div className="nw-stats">
             <div>
-              <strong>{properties.length}</strong>
+              <strong>{isLoading ? "—" : properties.length}</strong>
               <small>Listings</small>
             </div>
             <div>
-              <strong>{cities.length}</strong>
+              <strong>{isLoading ? "—" : cities.length}</strong>
               <small>Cities</small>
             </div>
             <div>
-              <strong>{formatPrice(averagePrice)}</strong>
+              <strong>{isLoading ? "—" : formatPrice(averagePrice)}</strong>
               <small>Avg. rent</small>
             </div>
           </div>
@@ -636,13 +754,11 @@ function Results() {
           </div>
 
           <div className="nw-group">
-            <label>Your Name</label>
-            <input
-              type="text"
-              value={name}
-              placeholder="Your name"
-              onChange={(e) => setName(e.target.value)}
-            />
+            <label>Searching as</label>
+            <p className="nw-profile-name">{buyer.name || "Guest"}</p>
+            <Link to="/buyer" className="nw-profile-link">
+              Edit my preferences →
+            </Link>
           </div>
 
           <div className="nw-group">
@@ -657,7 +773,7 @@ function Results() {
           <div className="nw-group">
             <label>Property Type</label>
             <PillGroup
-              options={propertyTypes}
+              options={PROPERTY_TYPES}
               value={filters.type}
               onChange={(value) => updateFilter("type", value)}
             />
@@ -705,7 +821,7 @@ function Results() {
           <div className="nw-group">
             <label>Bedrooms</label>
             <PillGroup
-              options={bhks}
+              options={BHK_OPTIONS}
               value={filters.bhk}
               onChange={(value) => updateFilter("bhk", value)}
             />
@@ -714,7 +830,7 @@ function Results() {
           <div className="nw-group">
             <label>Furnishing</label>
             <PillGroup
-              options={furnishingTypes}
+              options={FURNISHING_OPTIONS}
               value={filters.furnishing}
               onChange={(value) => updateFilter("furnishing", value)}
             />
@@ -723,7 +839,7 @@ function Results() {
           <div className="nw-group">
             <label>Amenities</label>
             <div className="nw-pills">
-              {amenityList.map((amenity) => (
+              {AMENITY_OPTIONS.map((amenity) => (
                 <button
                   type="button"
                   key={amenity}
@@ -752,7 +868,9 @@ function Results() {
             <div>
               <h2>Recommended Properties</h2>
               <p>
-                {visibleProperties.length} of {properties.length} properties
+                {isLoading
+                  ? "Loading properties..."
+                  : `${visibleProperties.length} of ${properties.length} properties`}
               </p>
             </div>
 
@@ -769,14 +887,14 @@ function Results() {
               <button
                 type="button"
                 className={showFavorites ? "nw-fav-toggle active" : "nw-fav-toggle"}
-                onClick={() => setShowFavorites(!showFavorites)}
+                onClick={toggleSavedView}
               >
                 ♥ Saved ({favorites.length})
               </button>
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => changeSort(e.target.value)}
               >
                 <option value="recommended">Sort: Top Rated</option>
                 <option value="low">Price: Low to High</option>
@@ -786,6 +904,37 @@ function Results() {
             </div>
 
           </div>
+
+
+          {/* Saved homes dashboard (works like a shopping cart summary) */}
+
+          {showFavorites && savedSummary.count > 0 && (
+            <div className="nw-saved-summary">
+
+              <div>
+                <small>Saved homes</small>
+                <strong>{savedSummary.count}</strong>
+              </div>
+
+              <div>
+                <small>Combined rent / month</small>
+                <strong>{formatPrice(savedSummary.total)}</strong>
+              </div>
+
+              <div>
+                <small>Average rent</small>
+                <strong>{formatPrice(savedSummary.average)}</strong>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => dispatch(clearFavorites())}
+              >
+                Clear saved
+              </button>
+
+            </div>
+          )}
 
 
           {activeChips.length > 0 && (
@@ -802,7 +951,38 @@ function Results() {
           )}
 
 
-          {visibleProperties.length === 0 ? (
+          {isLoading ? (
+
+            /* LOADING STATE */
+
+            <div className="nw-grid" role="status" aria-label="Loading properties">
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <PropertySkeleton key={item} />
+              ))}
+            </div>
+
+          ) : status === "failed" ? (
+
+            /* ERROR STATE */
+
+            <div className="nw-empty nw-error-state" role="alert">
+
+              <div className="nw-empty-icon">⚠️</div>
+
+              <h3>Something went wrong</h3>
+
+              <p>{error}</p>
+
+              <button
+                type="button"
+                onClick={() => dispatch(fetchProperties())}
+              >
+                Try Again
+              </button>
+
+            </div>
+
+          ) : visibleProperties.length === 0 ? (
 
             <div className="nw-empty">
 
@@ -836,8 +1016,8 @@ function Results() {
                   property={property}
                   index={index}
                   favorite={favorites.includes(property.id)}
-                  onFavorite={toggleFavorite}
-                  onOpen={setSelectedProperty}
+                  onFavorite={handleFavorite}
+                  onOpen={openProperty}
                 />
               ))}
 
@@ -850,16 +1030,21 @@ function Results() {
       </div>
 
 
-      {selectedProperty && (
-        <PropertyModal
-          property={selectedProperty}
-          favorite={favorites.includes(selectedProperty.id)}
-          onFavorite={toggleFavorite}
-          onClose={closeModal}
-        />
+      {propertyId && status === "succeeded" && (
+        selectedProperty ? (
+          <PropertyModal
+            key={selectedProperty.id}
+            property={selectedProperty}
+            favorite={favorites.includes(selectedProperty.id)}
+            onFavorite={handleFavorite}
+            onClose={closeModal}
+          />
+        ) : (
+          <MissingPropertyModal onClose={closeModal} />
+        )
       )}
 
-    </div>
+    </>
   );
 }
 

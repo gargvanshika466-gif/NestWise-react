@@ -4,10 +4,10 @@ function Amenities({
   onAmenityChange,
 }) {
   return (
-    <div className="buyer-card">
+    <div className="nw-form-card">
 
-      <div className="section-heading">
-        <span>05</span>
+      <div className="nw-form-heading">
+        <span>4</span>
 
         <div>
           <h2>Preferred Amenities</h2>
@@ -16,13 +16,13 @@ function Amenities({
       </div>
 
 
-      <div className="amenities-grid">
+      <div className="nw-amenities-grid">
 
         {amenities.map((amenity) => (
 
           <label
             key={amenity}
-            className={`amenity-option ${
+            className={`nw-option ${
               selectedAmenities.includes(amenity)
                 ? "selected"
                 : ""
