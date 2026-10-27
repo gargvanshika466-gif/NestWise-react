@@ -1,76 +1,83 @@
 import {
   BrowserRouter,
   Routes,
-  Route,
-  Navigate
+  Route
 } from "react-router-dom";
 
+import { Provider } from "react-redux";
+
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Signup from "./pages/signup";
+import SellerPage from "./pages/SellerPage";
 import ListProperty from "./pages/ListProperty";
+import BuyerPage from "./pages/BuyerPage";
 import Results from "./pages/Results";
 
-import SellerPage from "./pages/seller/SellerPage";
-import Dashboard from "./pages/seller/Dashboard";
-import PublishProperty from "./pages/seller/PublishProperty";
-import MyProperties from "./pages/seller/MyProperties";
-import Status from "./pages/seller/Status";
-
+import BuyerLayout from "./components/BuyerLayout";
+import { BuyerProvider } from "./context/BuyerContext";
+import { store } from "./store/buyerStore";
 
 function App() {
   return (
-    <BrowserRouter>
 
-      <Routes>
+    // Redux store + Buyer context are available to every page
+    <Provider store={store}>
+      <BuyerProvider>
 
-        {/* Existing Pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <BrowserRouter>
 
-        <Route
-          path="/buyer"
-          element={<Navigate to="/results" replace />}
-        />
+          <Routes>
 
-        <Route path="/list-property" element={<ListProperty />} />
-        <Route path="/results" element={<Results />} />
+            <Route
+              path="/"
+              element={<Home />}
+            />
 
+            <Route
+              path="/login"
+              element={<Login />}
+            />
 
-        {/* Seller Pages */}
-        <Route path="/seller" element={<SellerPage />}>
+            <Route
+              path="/signup"
+              element={<Signup />}
+            />
 
-          <Route
-            index
-            element={<Navigate to="dashboard" replace />}
-          />
+            <Route
+              path="/seller"
+              element={<SellerPage />}
+            />
 
-          <Route
-            path="dashboard"
-            element={<Dashboard />}
-          />
+            <Route
+              path="/list-property"
+              element={<ListProperty />}
+            />
 
-          <Route
-            path="publish"
-            element={<PublishProperty />}
-          />
+            {/* Buyer pages share one layout (top bar + Outlet) */}
+            <Route element={<BuyerLayout />}>
 
-          <Route
-            path="properties"
-            element={<MyProperties />}
-          />
+              <Route
+                path="/buyer"
+                element={<BuyerPage />}
+              />
 
-          <Route
-            path="status"
-            element={<Status />}
-          />
+              {/* /results            -> list of homes
+                  /results/3          -> same page with home #3 open */}
+              <Route
+                path="/results/:propertyId?"
+                element={<Results />}
+              />
 
-        </Route>
+            </Route>
 
-      </Routes>
+          </Routes>
 
-    </BrowserRouter>
+        </BrowserRouter>
+
+      </BuyerProvider>
+    </Provider>
+
   );
 }
 
