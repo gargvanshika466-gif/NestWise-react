@@ -1,202 +1,264 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import BuyerDetails from "../components/BuyerDetails";
+import FormInput from "../components/FormInput";
 import PreferenceOptions from "../components/PreferenceOptions";
+import Amenities from "../components/Amenities";
+import PreferenceSummary from "../components/PreferenceSummary";
+
+import useBuyerPreferences from "../hooks/useBuyerPreferences";
+import { preferencesToParams, useBuyer } from "../context/BuyerContext";
+import { fetchProperties } from "../store/buyerStore";
+
+import {
+  PROPERTY_TYPES,
+  BHK_OPTIONS,
+  FURNISHING_OPTIONS,
+  AMENITY_OPTIONS
+} from "../store/propertiesApi";
+
+
+/* =========================================================
+   BUYER PREFERENCES PAGE   (route: /buyer)
+
+   Step 2 of the buyer journey:
+     Sign Up  ->  Preferences (this page)  ->  Results
+
+   - form handling : useForm + reusable FormInput / PreferenceOptions
+   - global state  : buyer + preferences come from BuyerContext,
+                     the city list comes from the Redux store
+   - async state   : the cities load from the (mock) API with
+                     loading and error handling
+   - navigation    : on submit we navigate to /results with the
+                     search written into the URL
+========================================================= */
 
 function BuyerPage() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const savedBuyer = JSON.parse(localStorage.getItem("buyerData"));
+  const { firstName } = useBuyer();
 
-  const [name, setName] = useState(savedBuyer?.name || "");
-  const [email, setEmail] = useState(savedBuyer?.email || "");
+  const { items, status, error } = useSelector((state) => state.properties);
 
-  const [location, setLocation] = useState("");
-  const [budget, setBudget] = useState("");
+  const form = useBuyerPreferences({
+    onSuccess: (preferences) =>
+      navigate(`/results?${preferencesToParams(preferences)}`)
+  });
 
-  const [propertyType, setPropertyType] = useState("");
-  const [bhk, setBhk] = useState("");
-  const [furnishing, setFurnishing] = useState("");
+  const { values, errors, getFieldProps, setFieldValue } = form;
 
-  const [amenities, setAmenities] = useState([]);
 
-  const propertyTypes = ["Apartment", "Villa", "PG", "Studio"];
-  const bhks = ["1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
+  useEffect(() => {
+    document.title = "NestWise | Your Preferences";
+  }, []);
 
-  const furnishingTypes = [
-    "Fully Furnished",
-    "Semi Furnished",
-    "Unfurnished"
-  ];
+  // Load the cities once (the Results page shares the same data)
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchProperties());
+  }, [status, dispatch]);
 
-  const amenityList = [
-    "Gym",
-    "Parking",
-    "Security",
-    "Lift"
-  ];
+  const cities = useMemo(
+    () => [...new Set(items.map((property) => property.location))],
+    [items]
+  );
 
-  function handleAmenity(amenity) {
+  const failedFieldCount = Object.keys(errors).length;
 
-    if (amenities.includes(amenity)) {
-      setAmenities(
-        amenities.filter((item) => item !== amenity)
-      );
-    } else {
-      setAmenities([...amenities, amenity]);
-    }
-
-  }
-
-  function handleSubmit(e) {
-
-    e.preventDefault();
-
-    if (!name || !location || !budget || !propertyType || !bhk) {
-      alert("Please fill all required details.");
-      return;
-    }
-
-    navigate("/results", {
-      state: {
-        name,
-        location,
-        budget: Number(budget),
-        propertyType,
-        bhk,
-        furnishing,
-        amenities
-      }
-    });
-
-  }
 
   return (
 
-    <div className="buyer-page">
+    <div className="nw-prefs">
 
-      <h1>Find Your Perfect Home</h1>
+      <header className="nw-prefs-head">
 
-      <p>Tell us what you are looking for.</p>
+        <h1>
+          {firstName
+            ? `Welcome ${firstName}, let's find your home`
+            : "Find Your Perfect Home"}
+        </h1>
 
-      <form onSubmit={handleSubmit}>
+        <p>
+          Tell us what you are looking for and we will show you the
+          best matches.
+        </p>
 
-        {/* Basic Details */}
-
-        <div className="card">
-
-          <h2>Basic Details</h2>
-
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Preferred Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Monthly Budget"
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-          />
-
-        </div>
+      </header>
 
 
-        {/* Property Type */}
+      <div className="nw-prefs-layout">
 
-        <PreferenceOptions
-          title="Property Type"
-          options={propertyTypes}
-          value={propertyType}
-          setValue={setPropertyType}
-        />
+        <form
+          className="nw-prefs-form"
+          onSubmit={form.handleSubmit}
+          noValidate
+        >
 
-
-        {/* BHK */}
-
-        <PreferenceOptions
-          title="Bedrooms"
-          options={bhks}
-          value={bhk}
-          setValue={setBhk}
-        />
+          <BuyerDetails getFieldProps={getFieldProps} />
 
 
-        {/* Furnishing */}
+          {/* Location + budget */}
 
-        <PreferenceOptions
-          title="Furnishing"
-          options={furnishingTypes}
-          value={furnishing}
-          setValue={setFurnishing}
-        />
+          <div className="nw-form-card">
 
+            <div className="nw-form-heading">
+              <span>2</span>
 
-        {/* Amenities */}
+              <div>
+                <h2>Location &amp; Budget</h2>
+                <p>Where do you want to live and what can you spend?</p>
+              </div>
+            </div>
 
-        <div className="section">
+            <FormInput
+              label="Preferred City"
+              options={cities}
+              placeholder={
+                status === "loading" || status === "idle"
+                  ? "Loading cities..."
+                  : "Select a city"
+              }
+              disabled={status !== "succeeded"}
+              required
+              {...getFieldProps("location")}
+            />
 
-          <h3>Amenities</h3>
+            {status === "failed" && (
+              <div className="nw-banner nw-banner-error" role="alert">
+                <span>{error}</span>
 
-          {amenityList.map((amenity) => (
+                <button
+                  type="button"
+                  onClick={() => dispatch(fetchProperties())}
+                >
+                  Retry
+                </button>
+              </div>
+            )}
 
-            <label key={amenity}>
+            <div className="nw-form-row">
 
-              <input
-                type="checkbox"
-                checked={amenities.includes(amenity)}
-                onChange={() => handleAmenity(amenity)}
+              <FormInput
+                label="Minimum Budget (₹ / month)"
+                type="number"
+                min="0"
+                placeholder="e.g. 10000"
+                {...getFieldProps("minBudget")}
               />
 
-              {amenity}
+              <FormInput
+                label="Maximum Budget (₹ / month)"
+                type="number"
+                min="0"
+                placeholder="e.g. 30000"
+                required
+                {...getFieldProps("maxBudget")}
+              />
 
-            </label>
+            </div>
 
-          ))}
-
-        </div>
-
-
-        {/* FIND HOME BUTTON */}
-
-        <button type="submit">
-          Find My Home
-        </button>
-
-      </form>
+          </div>
 
 
-      {/* Summary */}
+          {/* Property type, bedrooms, furnishing */}
 
-      {name && (
-        <div className="summary">
+          <div className="nw-form-card">
 
-          <h2>Your Preferences</h2>
+            <div className="nw-form-heading">
+              <span>3</span>
 
-          <p>Name: {name}</p>
-          <p>Location: {location}</p>
-          <p>Budget: ₹{budget}</p>
-          <p>Property: {propertyType}</p>
-          <p>Bedrooms: {bhk}</p>
-          <p>Furnishing: {furnishing}</p>
+              <div>
+                <h2>Type of Home</h2>
+                <p>Pick the kind of place that suits you.</p>
+              </div>
+            </div>
 
-          <p>
-            Amenities: {amenities.join(", ")}
+            <PreferenceOptions
+              title="Property Type"
+              options={PROPERTY_TYPES}
+              value={values.type}
+              setValue={(value) => setFieldValue("type", value)}
+              error={getFieldProps("type").error}
+              required
+            />
+
+            <PreferenceOptions
+              title="Bedrooms"
+              options={BHK_OPTIONS}
+              value={values.bhk}
+              setValue={(value) => setFieldValue("bhk", value)}
+              error={getFieldProps("bhk").error}
+              required
+            />
+
+            <PreferenceOptions
+              title="Furnishing"
+              options={FURNISHING_OPTIONS}
+              value={values.furnishing}
+              setValue={(value) => setFieldValue("furnishing", value)}
+            />
+
+          </div>
+
+
+          <Amenities
+            amenities={AMENITY_OPTIONS}
+            selectedAmenities={values.amenities}
+            onAmenityChange={form.handleAmenityChange}
+          />
+
+
+          {form.submitAttempted && failedFieldCount > 0 && (
+            <div className="nw-banner nw-banner-error" role="alert">
+              <span>
+                Please fix {failedFieldCount}{" "}
+                {failedFieldCount === 1 ? "field" : "fields"} highlighted above.
+              </span>
+            </div>
+          )}
+
+
+          <div className="nw-form-actions">
+
+            <button type="submit" className="nw-btn nw-btn-primary">
+              Find My Home →
+            </button>
+
+            <button
+              type="button"
+              className="nw-btn nw-btn-ghost"
+              onClick={form.resetPreferences}
+            >
+              Clear preferences
+            </button>
+
+          </div>
+
+          <p className="nw-skip">
+            Not ready yet? <Link to="/results">Browse all homes</Link>
           </p>
 
-        </div>
-      )}
+        </form>
+
+
+        <PreferenceSummary
+          name={values.name}
+          location={values.location}
+          propertyType={values.type}
+          bhk={values.bhk}
+          minBudget={values.minBudget}
+          maxBudget={values.maxBudget}
+          furnishing={values.furnishing}
+          selectedAmenities={values.amenities}
+        />
+
+      </div>
 
     </div>
+
   );
 }
 

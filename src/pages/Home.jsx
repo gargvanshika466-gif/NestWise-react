@@ -128,7 +128,12 @@ function Home() {
           </p>
 
           <form className="search-box" onSubmit={handleSearch}>
-            <span className="search-pin">📍</span>
+            <span className="search-pin">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#19873d" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </span>
             <input
               type="text"
               placeholder="Search Places..."
@@ -136,7 +141,10 @@ function Home() {
               onChange={e => setSearch(e.target.value)}
             />
             <button type="submit">
-              <span>🔍</span> Search
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              Search
             </button>
           </form>
 

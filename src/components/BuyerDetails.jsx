@@ -1,14 +1,15 @@
-function BuyerDetails({
-  name,
-  email,
-  setName,
-  setEmail,
-}) {
-  return (
-    <div className="buyer-card">
+import FormInput from "./FormInput";
 
-      <div className="section-heading">
-        <span>01</span>
+/* Step 1 of the preferences form: who is searching.
+   Every field comes from useForm's getFieldProps(), so the
+   validation messages are handled by the reusable FormInput. */
+
+function BuyerDetails({ getFieldProps }) {
+  return (
+    <div className="nw-form-card">
+
+      <div className="nw-form-heading">
+        <span>1</span>
 
         <div>
           <h2>Basic Details</h2>
@@ -16,36 +17,36 @@ function BuyerDetails({
         </div>
       </div>
 
-      <div className="form-row">
+      <div className="nw-form-row">
 
-        <div className="form-group">
+        <FormInput
+          label="Your Name"
+          placeholder="e.g. Aarav Sharma"
+          autoComplete="name"
+          required
+          {...getFieldProps("name")}
+        />
 
-          <label>Your Name</label>
-
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-        </div>
-
-
-        <div className="form-group">
-
-          <label>Email Address</label>
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-        </div>
+        <FormInput
+          label="Email Address"
+          type="email"
+          placeholder="name@example.com"
+          autoComplete="email"
+          required
+          {...getFieldProps("email")}
+        />
 
       </div>
+
+      <FormInput
+        label="Phone Number"
+        type="tel"
+        placeholder="10-digit mobile number"
+        autoComplete="tel"
+        inputMode="numeric"
+        hint="Optional. Used only when you request a visit."
+        {...getFieldProps("phone")}
+      />
 
     </div>
   )
