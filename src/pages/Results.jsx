@@ -740,7 +740,7 @@ function Results() {
           <p className="nw-eyebrow">● SMART HOME SEARCH</p>
 
           <h1>
-            Find Your <span>Perfect Home</span>
+            <span>Find Your Perfect Home</span>
           </h1>
 
           <p className="nw-hero-text">
