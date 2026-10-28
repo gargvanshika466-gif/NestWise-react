@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './home.css'
 
@@ -69,11 +69,35 @@ const TOP_CITIES = ['Bangalore', 'Hyderabad', 'Pune', 'Mumbai', 'Chennai', 'Delh
 
 function Home() {
   const [search, setSearch] = useState('')
+  const [activeTab, setActiveTab] = useState('all')
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 })
+  const heroRef = useRef(null)
   const navigate = useNavigate()
+
+  function handleMouseMove(e) {
+    if (!heroRef.current || window.innerWidth < 1040) return
+    const rect = heroRef.current.getBoundingClientRect()
+    const x = (e.clientX - rect.left - rect.width / 2) / 38
+    const y = (e.clientY - rect.top - rect.height / 2) / 38
+    setMouseOffset({
+      x: Math.max(-10, Math.min(10, x)),
+      y: Math.max(-10, Math.min(10, y))
+    })
+  }
+
+  function handleMouseLeave() {
+    setMouseOffset({ x: 0, y: 0 })
+  }
 
   function handleSearch(e) {
     e.preventDefault()
-    navigate('/results')
+    const query = search.trim()
+    const params = new URLSearchParams()
+    if (query) params.set('q', query)
+    if (activeTab === 'rent') params.set('type', 'rent')
+    if (activeTab === 'sale') params.set('type', 'sale')
+    const qs = params.toString()
+    navigate(qs ? `/results?${qs}` : '/results')
   }
 
   return (
@@ -107,8 +131,88 @@ function Home() {
 
       </nav>
 
-      {/* ── HERO (Matches Reference Screenshot 1) ── */}
-      <section className="hero">
+      {/* ── HERO ── */}
+      <section 
+        className="hero"
+        ref={heroRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Dynamic Multi-layered Background */}
+        <div className="hero-bg-layer" />
+        <div className="hero-overlay" />
+        <div className="hero-grid-overlay" />
+        <div className="hero-orb hero-orb-1" />
+        <div className="hero-orb hero-orb-2" />
+
+        {/* Floating Real Estate Feature 1 (Left Desktop) */}
+        <div 
+          className="hero-float-card hero-float-left"
+          style={{
+            transform: `translate3d(${mouseOffset.x * -0.7}px, ${mouseOffset.y * -0.7}px, 0)`
+          }}
+        >
+          <div className="float-card-inner">
+            <div className="float-card-img-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=260&q=80" 
+                alt="Modern 2BHK in Hyderabad" 
+                loading="lazy" 
+              />
+              <span className="float-badge-verified">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Verified
+              </span>
+            </div>
+            <div className="float-card-content">
+              <div className="float-card-price">₹32,000<small>/mo</small></div>
+              <div className="float-card-title">Modern 2BHK • Hitech City</div>
+              <div className="float-card-meta">
+                <span className="float-pulse-beacon" />
+                <span className="float-meta-text">Available Now • Hyderabad</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Real Estate Feature 2 (Right Desktop) */}
+        <div 
+          className="hero-float-card hero-float-right"
+          style={{
+            transform: `translate3d(${mouseOffset.x * 0.7}px, ${mouseOffset.y * 0.7}px, 0)`
+          }}
+        >
+          <div className="float-card-inner float-trust-inner">
+            <div className="float-trust-top">
+              <div className="float-trust-badge">
+                <span className="trust-shield-icon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </span>
+                Zero Brokerage
+              </div>
+              <div className="float-rating">
+                <span className="star-icon">★</span> 4.9
+              </div>
+            </div>
+            <div className="float-trust-metric">
+              <strong>12,400+</strong> homes verified
+            </div>
+            <div className="float-trust-footer">
+              <div className="trust-avatar-stack">
+                <span className="trust-dot dot-1" title="Apartments">🏢</span>
+                <span className="trust-dot dot-2" title="Villas">🏡</span>
+                <span className="trust-dot dot-3" title="Verified Keys">🔑</span>
+              </div>
+              <span className="trust-caption">Direct Owner Deals</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Central Content */}
         <div className="hero-inner">
 
           <div className="hero-badge">
@@ -117,6 +221,7 @@ function Home() {
                 <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/>
               </svg>
             </span>
+            <span className="badge-live-dot" />
             Trusted &amp; loved by home seekers across India
           </div>
 
@@ -129,6 +234,31 @@ function Home() {
             Verified apartments to rent and buy across India's best cities — honest prices, real photos, and zero brokerage games.
           </p>
 
+          {/* Quick Real Estate Filter Tabs */}
+          <div className="hero-search-tabs">
+            <button
+              type="button"
+              className={`hero-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveTab('all')}
+            >
+              All Homes
+            </button>
+            <button
+              type="button"
+              className={`hero-tab-btn ${activeTab === 'rent' ? 'active' : ''}`}
+              onClick={() => setActiveTab('rent')}
+            >
+              For Rent
+            </button>
+            <button
+              type="button"
+              className={`hero-tab-btn ${activeTab === 'sale' ? 'active' : ''}`}
+              onClick={() => setActiveTab('sale')}
+            >
+              For Sale
+            </button>
+          </div>
+
           <form className="search-box" onSubmit={handleSearch}>
             <span className="search-pin">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#198754" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -138,22 +268,50 @@ function Home() {
             </span>
             <input
               type="text"
-              placeholder="Search Places..."
+              placeholder={
+                activeTab === 'rent' 
+                  ? "Search rental homes by city, locality or BHK..." 
+                  : activeTab === 'sale' 
+                  ? "Search properties for sale across top cities..." 
+                  : "Search places, cities or verified projects..."
+              }
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            <button type="submit">
+            {search && (
+              <button 
+                type="button" 
+                className="search-clear-btn" 
+                onClick={() => setSearch('')}
+                aria-label="Clear search input"
+              >
+                ✕
+              </button>
+            )}
+            <button type="submit" className="search-submit-btn">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
-              Search
+              <span>Search</span>
             </button>
           </form>
 
           <div className="top-cities-row">
-            <span className="top-cities-label">Top Cities:</span>
+            <span className="top-cities-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Top Cities:
+            </span>
             {TOP_CITIES.map(city => (
-              <Link key={city} to="/results" className="top-city-link">{city}</Link>
+              <Link 
+                key={city} 
+                to={`/results?city=${encodeURIComponent(city)}`} 
+                className="top-city-link"
+              >
+                {city}
+              </Link>
             ))}
           </div>
 

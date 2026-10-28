@@ -189,25 +189,121 @@ body {
 }
 
 /* ===============================================================
-   HERO (Matches Screenshot 1)
+   HERO — DYNAMIC & INTERACTIVE LANDING EXPERIENCE
 =============================================================== */
 
 .hero {
   position: relative;
-  min-height: 560px;
-  padding: 84px 24px 72px;
+  min-height: 640px;
+  padding: 95px 24px 85px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
-    url('/hero-family.jpg');
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+  background-color: #F8FAF7;
 }
 
+/* 1. Dynamic Multi-Layered Background */
+.hero-bg-layer {
+  position: absolute;
+  inset: -20px;
+  background-image: url('/hero-family.jpg');
+  background-size: cover;
+  background-position: center;
+  animation: heroBreathe 24s ease-in-out infinite alternate;
+  will-change: transform;
+  pointer-events: none;
+}
+
+@keyframes heroBreathe {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.045) translate3d(0, -6px, 0);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 30%,
+    rgba(255, 255, 255, 0.82) 0%,
+    rgba(255, 255, 255, 0.91) 55%,
+    rgba(246, 250, 246, 0.98) 100%
+  );
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(25, 135, 84, 0.08) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Ambient Floating Lighting Orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(65px);
+  opacity: 0.65;
+  will-change: transform;
+}
+
+.hero-orb-1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.22) 0%, rgba(25, 135, 84, 0.08) 55%, transparent 75%);
+  top: -120px;
+  left: -80px;
+  animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+.hero-orb-2 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(216, 249, 86, 0.26) 0%, rgba(251, 191, 36, 0.08) 50%, transparent 75%);
+  bottom: -140px;
+  right: -100px;
+  animation: orbFloat2 22s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(45px, 35px) scale(1.1);
+  }
+  100% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+}
+
+@keyframes orbFloat2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-40px, -30px) scale(1.08);
+  }
+  100% {
+    transform: translate(25px, -15px) scale(0.96);
+  }
+}
+
+/* 2. Central Content Container & Entrance Sequences */
 .hero-inner {
+  position: relative;
+  z-index: 2;
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
@@ -217,18 +313,42 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #FCE7F3;
+  background: rgba(252, 231, 243, 0.9);
   color: #831843;
+  border: 1px solid rgba(244, 114, 182, 0.35);
   border-radius: 9999px;
   padding: 6px 18px;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 14px rgba(244, 114, 182, 0.15);
+  animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(244, 114, 182, 0.22);
 }
 
 .badge-sparkle {
   display: flex;
   align-items: center;
+  animation: sparkleTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+  50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+}
+
+.badge-live-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #16A34A;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  animation: heroBeaconPulse 2s infinite;
 }
 
 .hero-title {
@@ -238,43 +358,112 @@ body {
   line-height: 1.15;
   letter-spacing: -1.6px;
   margin-bottom: 18px;
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
 }
 
 .hero-highlight {
-  background: #D8F956;
+  position: relative;
+  background: linear-gradient(110deg, #D8F956 0%, #E2FA6E 35%, #FFFFFF 50%, #E2FA6E 65%, #D8F956 100%);
+  background-size: 200% 100%;
+  animation: highlightShine 7s infinite ease-in-out;
   color: #111827;
   border-radius: 18px;
   padding: 2px 20px;
   display: inline-block;
   line-height: 1.2;
+  box-shadow: 0 4px 18px rgba(216, 249, 86, 0.38);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-highlight:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 6px 22px rgba(216, 249, 86, 0.5);
+}
+
+@keyframes highlightShine {
+  0%, 20% {
+    background-position: 200% 0;
+  }
+  80%, 100% {
+    background-position: -200% 0;
+  }
 }
 
 .hero-subtitle {
   font-size: 16.5px;
   color: #4B5563;
   max-width: 680px;
-  margin: 0 auto 34px;
+  margin: 0 auto 28px;
   line-height: 1.55;
   font-weight: 400;
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.30s both;
 }
 
-/* Search Box */
+/* 3. Real Estate Filter Tabs */
+.hero-search-tabs {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  margin-bottom: 14px;
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+}
+
+.hero-tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 7px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #4B5563;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-tab-btn:hover {
+  color: #111827;
+}
+
+.hero-tab-btn.active {
+  background: #198754;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.28);
+}
+
+/* 4. Search Box with Dynamic Feedback */
 .search-box {
-  max-width: 640px;
+  max-width: 660px;
   margin: 0 auto 22px;
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 9999px;
   padding: 6px 8px 6px 20px;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
-  border: 1.5px solid #E5E7EB;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(229, 231, 235, 0.95);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.54s both;
+}
+
+.search-box:hover {
+  border-color: #D1D5DB;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.09);
+  transform: translateY(-2px);
 }
 
 .search-box:focus-within {
   border-color: #198754;
-  box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15), 0 4px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.16), 0 14px 38px rgba(25, 135, 84, 0.12);
+  transform: translateY(-2px);
 }
 
 .search-pin {
@@ -282,6 +471,11 @@ body {
   align-items: center;
   color: #198754;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.search-box:focus-within .search-pin {
+  transform: scale(1.12);
 }
 
 .search-box input {
@@ -292,15 +486,37 @@ body {
   font-family: inherit;
   color: #111827;
   background: transparent;
-  padding: 10px 12px;
+  padding: 10px 14px;
 }
 
 .search-box input::placeholder {
   color: #94A3B8;
 }
 
-.search-box button {
-  background: #198754;
+.search-clear-btn {
+  background: #F3F4F6;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #6B7280;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: all 0.15s ease;
+}
+
+.search-clear-btn:hover {
+  background: #E5E7EB;
+  color: #111827;
+  transform: scale(1.08);
+}
+
+.search-submit-btn {
+  background: linear-gradient(135deg, #198754 0%, #157347 100%);
   color: #FFFFFF;
   border: none;
   border-radius: 9999px;
@@ -312,40 +528,364 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.18s ease, transform 0.15s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(25, 135, 84, 0.25);
 }
 
-.search-box button:hover {
-  background: #146C43;
-  transform: translateY(-1px);
+.search-submit-btn:hover {
+  background: linear-gradient(135deg, #157347 0%, #0F5132 100%);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(25, 135, 84, 0.35);
 }
 
-/* Top cities row */
+.search-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* 5. Top Cities Row with Interactive Tags */
 .top-cities-row {
   font-size: 13.5px;
   color: #64748B;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both;
 }
 
 .top-cities-label {
+  font-weight: 600;
+  color: #475467;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.top-city-link {
+  color: #4B5563;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  border-radius: 9999px;
+  padding: 4px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.top-city-link:hover {
+  color: #198754;
+  background: #FFFFFF;
+  border-color: #198754;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.12);
+  text-decoration: none;
+}
+
+/* 6. Floating Real Estate Widgets (Desktop Parallax) */
+.hero-float-card {
+  position: absolute;
+  z-index: 3;
+  pointer-events: auto;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  animation: heroScaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both;
+}
+
+.hero-float-left {
+  left: calc(50% - 600px);
+  top: 44%;
+}
+
+.hero-float-right {
+  right: calc(50% - 600px);
+  top: 42%;
+}
+
+.float-card-inner {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 20px 40px -10px rgba(15, 31, 23, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  width: 260px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: heroFloatLeft 7s ease-in-out infinite alternate;
+}
+
+.hero-float-left:hover .float-card-inner {
+  transform: scale(1.03) translateY(-3px);
+  box-shadow: 0 26px 48px -10px rgba(15, 31, 23, 0.18), 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.float-card-img-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.float-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.float-badge-verified {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  background: rgba(22, 163, 74, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.float-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.float-card-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #198754;
+  line-height: 1.2;
+}
+
+.float-card-price small {
+  font-size: 11px;
   font-weight: 500;
   color: #64748B;
 }
 
-.top-city-link {
-  color: #64748B;
-  text-decoration: none;
-  transition: color 0.18s ease;
+.float-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 2px 0 4px;
 }
 
-.top-city-link:hover {
+.float-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: #64748B;
+}
+
+.float-pulse-beacon {
+  width: 6px;
+  height: 6px;
+  background-color: #198754;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7);
+  animation: heroBeaconPulse 1.8s infinite;
+  flex-shrink: 0;
+}
+
+/* Floating Card 2: Trust & Direct Owners */
+.float-trust-inner {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  padding: 16px;
+  animation: heroFloatRight 8.5s ease-in-out infinite alternate;
+}
+
+.hero-float-right:hover .float-trust-inner {
+  transform: scale(1.03) translateY(-3px);
+  box-shadow: 0 26px 48px -10px rgba(15, 31, 23, 0.18), 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.float-trust-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.float-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #E8F5EE;
+  color: #146C43;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.float-rating {
+  font-size: 12px;
+  font-weight: 700;
   color: #111827;
-  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.float-rating .star-icon {
+  color: #F59E0B;
+  font-size: 13px;
+}
+
+.float-trust-metric {
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.float-trust-metric strong {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.float-trust-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.trust-avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.trust-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #F3F4F6;
+  border: 1.5px solid #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-left: -5px;
+}
+
+.trust-dot:first-child {
+  margin-left: 0;
+}
+
+.trust-caption {
+  font-size: 11px;
+  font-weight: 600;
+  color: #198754;
+}
+
+/* 7. Keyframes Definition */
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heroFloatLeft {
+  0% {
+    transform: translateY(0px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(0.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-0.5deg);
+  }
+}
+
+@keyframes heroFloatRight {
+  0% {
+    transform: translateY(0px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(11px) rotate(-0.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0.5deg);
+  }
+}
+
+@keyframes heroBeaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.65);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 7px rgba(25, 135, 84, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+  }
+}
+
+/* 8. Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge,
+  .hero-title,
+  .hero-highlight,
+  .hero-subtitle,
+  .hero-search-tabs,
+  .search-box,
+  .top-cities-row,
+  .hero-float-card,
+  .float-card-inner,
+  .float-trust-inner,
+  .hero-bg-layer,
+  .hero-orb,
+  .badge-live-dot,
+  .float-pulse-beacon,
+  .badge-sparkle {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
 
 /* ===============================================================
@@ -752,6 +1292,21 @@ body {
    RESPONSIVE DESIGN
 =============================================================== */
 
+@media (max-width: 1260px) {
+  .hero-float-left {
+    left: 16px;
+  }
+  .hero-float-right {
+    right: 16px;
+  }
+}
+
+@media (max-width: 1040px) {
+  .hero-float-card {
+    display: none !important;
+  }
+}
+
 @media (max-width: 992px) {
   .navbar {
     padding: 0 24px;
@@ -786,12 +1341,13 @@ body {
     display: none;
   }
   .hero {
-    padding: 60px 16px 50px;
+    padding: 60px 16px 52px;
     min-height: auto;
   }
   .hero-title {
     font-size: 32px;
     letter-spacing: -1px;
+    margin-bottom: 14px;
   }
   .hero-highlight {
     padding: 2px 12px;
@@ -799,6 +1355,31 @@ body {
   }
   .hero-subtitle {
     font-size: 14.5px;
+    margin-bottom: 22px;
+  }
+  .hero-search-tabs {
+    margin-bottom: 12px;
+  }
+  .hero-tab-btn {
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+  .search-box {
+    padding: 5px 6px 5px 14px;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    gap: 8px;
+  }
+  .search-box input {
+    padding: 8px 6px;
+    font-size: 14px;
+    min-width: 140px;
+  }
+  .search-submit-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 18px;
+    font-size: 14px;
   }
   .property-cards,
   .how-cards {
