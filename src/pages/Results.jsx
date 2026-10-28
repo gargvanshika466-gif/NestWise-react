@@ -1,4 +1,4 @@
-﻿import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   Link,
   useLocation,
@@ -703,14 +703,19 @@ function Results() {
   }
 
 
-  // Browse Homes section (from the HEAD branch)
+  // Browse Homes section
   const [browseSearch, setBrowseSearch] = useState('')
   const [activeFilter, setActiveFilter] = useState('All homes')
+  const [selectedCity, setSelectedCity] = useState('')
 
   const filteredBrowse = BROWSE_PROPERTIES.filter(p => {
     const text = browseSearch.trim().toLowerCase()
 
     if (text && !p.title.toLowerCase().includes(text) && !p.location.toLowerCase().includes(text)) {
+      return false
+    }
+
+    if (selectedCity && !p.location.toLowerCase().includes(selectedCity.toLowerCase())) {
       return false
     }
 
@@ -1066,7 +1071,7 @@ function Results() {
 
       </div>
 
-      {/* ── BROWSE HOMES SECTION (from the HEAD branch) ── */}
+      {/* ── BROWSE HOMES SECTION ── */}
       <section className="browse-section">
 
         <div className="browse-header">
@@ -1077,7 +1082,7 @@ function Results() {
 
         <form className="browse-search" onSubmit={e => e.preventDefault()}>
           <span className="browse-search-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#19873d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#198754" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </span>
@@ -1111,47 +1116,71 @@ function Results() {
 
         <div className="browse-cities">
           {CITY_LINKS.map(city => (
-            <a key={city} href="#" className="browse-city-link">{city}</a>
+            <button
+              type="button"
+              key={city}
+              className={`browse-city-link ${selectedCity === city ? 'active' : ''}`}
+              onClick={() => setSelectedCity(prev => prev === city ? '' : city)}
+            >
+              {city}
+            </button>
           ))}
         </div>
 
-        <div className="browse-grid">
-          {filteredBrowse.map(p => (
-            <div key={p.id} className="browse-card">
-              <div className="browse-card-img-wrap">
-                <img src={p.img} alt={p.title} />
-                <span className={`browse-badge-type${p.badge === 'FOR SALE' ? ' sale' : ''}`}>{p.badge}</span>
-                {p.featured && <span className="browse-badge-featured">Featured</span>}
-              </div>
-              <div className="browse-card-body">
-                <div className="browse-card-price">{p.price}</div>
-                <div className="browse-card-title">{p.title}</div>
-                <div className="browse-card-location">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#19873d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  {p.location}
+        {filteredBrowse.length === 0 ? (
+          <div className="browse-empty">
+            <p>No homes found matching your search.</p>
+            <button
+              type="button"
+              className="browse-clear-btn"
+              onClick={() => {
+                setBrowseSearch('')
+                setActiveFilter('All homes')
+                setSelectedCity('')
+              }}
+            >
+              Clear Filters
+            </button>
+          </div>
+        ) : (
+          <div className="browse-grid">
+            {filteredBrowse.map(p => (
+              <div key={p.id} className="browse-card">
+                <div className="browse-card-img-wrap">
+                  <img src={p.img} alt={p.title} loading="lazy" />
+                  <span className={`browse-badge-type${p.badge === 'FOR SALE' ? ' sale' : ''}`}>{p.badge}</span>
+                  {p.featured && <span className="browse-badge-featured">Featured</span>}
                 </div>
-                <div className="browse-card-divider"/>
-                <div className="browse-card-specs">
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16"/><path d="M22 4v16"/><path d="M2 12h20"/><path d="M2 8h5a2 2 0 0 1 2 2v2H2"/><path d="M22 8h-5a2 2 0 0 0-2 2v2h7"/></svg>
-                    {p.beds} Beds
-                  </span>
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" y1="5" x2="8" y2="7"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-                    {p.baths} Baths
-                  </span>
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-                    {p.sqft} sq.ft
-                  </span>
+                <div className="browse-card-body">
+                  <div className="browse-card-price">{p.price}</div>
+                  <div className="browse-card-title">{p.title}</div>
+                  <div className="browse-card-location">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#198754" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    {p.location}
+                  </div>
+                  <div className="browse-card-divider"/>
+                  <div className="browse-card-specs">
+                    <span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16"/><path d="M22 4v16"/><path d="M2 12h20"/><path d="M2 8h5a2 2 0 0 1 2 2v2H2"/><path d="M22 8h-5a2 2 0 0 0-2 2v2h7"/></svg>
+                      {p.beds} Beds
+                    </span>
+                    <span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" y1="5" x2="8" y2="7"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                      {p.baths} Baths
+                    </span>
+                    <span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                      {p.sqft} sq.ft
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
       </section>
 
