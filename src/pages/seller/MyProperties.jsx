@@ -60,7 +60,7 @@ function MyProperties() {
       </div>
 
 
-      {/* Search & Filters */}
+     
       <div className="properties-controls">
 
         <div className="properties-search-wrap">

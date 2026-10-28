@@ -1,10 +1,16 @@
-/* ===========================
-   SELLER PROFILE PAGE
-=========================== */
+/* ==========================================================
+   NESTWISE SELLER PROFILE
+   Warm Real-Estate Design System:
+   - Card: Warm white (#FFFDFC) with beige borders (#E4D8CC)
+   - Avatar: Lavender accent (#8E7DBE)
+   - Save button: Terracotta (#B85C38)
+   - Success: Sage green (#71856A)
+========================================================== */
 
 .seller-profile-page {
   width: 100%;
-  max-width: 560px;
+  max-width: 580px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .sp-header {
@@ -13,29 +19,30 @@
 
 .sp-header h1 {
   margin: 0 0 6px;
-  font-size: 30px;
-  font-weight: 800;
-  color: #1a1a2e;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #4A3428;
+  letter-spacing: -0.5px;
 }
 
 .sp-header p {
   margin: 0;
-  color: #666;
+  color: #756A63;
   font-size: 14.5px;
 }
-
 
 /* ===========================
    CARD
 =========================== */
 
 .sp-card {
-  background: white;
-  border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: #FFFDFC;
+  border-radius: 16px;
+  border: 1px solid #E4D8CC;
+  box-shadow: 0 4px 18px rgba(74, 52, 40, 0.05);
   overflow: hidden;
 }
-
 
 /* ===========================
    AVATAR SECTION
@@ -45,39 +52,40 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 28px 28px 22px;
-  background: linear-gradient(135deg, #f0eaff 0%, #f9f6ff 100%);
-  border-bottom: 1px solid #ede8ff;
+  padding: 28px 28px 24px;
+  background: linear-gradient(135deg, #FAF6F0 0%, #F1E7DA 100%);
+  border-bottom: 1px solid #E4D8CC;
 }
 
 .sp-avatar {
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
-  background: #7c5ac7;
-  color: white;
+  background: #8E7DBE;
+  color: #FFFDFC;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
   font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(124, 90, 199, 0.3);
+  box-shadow: 0 4px 14px rgba(142, 125, 190, 0.35);
+  border: 2px solid #FFFDFC;
 }
 
 .sp-name {
   margin: 0 0 4px;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #4A3428;
 }
 
 .sp-subtitle {
   margin: 0;
   font-size: 13px;
-  color: #888;
+  color: #756A63;
 }
-
 
 /* ===========================
    FORM
@@ -99,40 +107,43 @@
 .sp-form-group label {
   font-size: 13.5px;
   font-weight: 600;
-  color: #444;
+  color: #4A3428;
 }
 
 .sp-form-group input {
   width: 100%;
   padding: 12px 14px;
   box-sizing: border-box;
-  border: 1.5px solid #e0d6f7;
-  border-radius: 10px;
+  border: 1px solid #E4D8CC;
+  border-radius: 8px;
   outline: none;
   font-family: inherit;
   font-size: 14px;
-  color: #333;
-  background: #faf8ff;
+  color: #2F2925;
+  background: #FFFDFC;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.sp-form-group input::placeholder {
+  color: #9A8D84;
+}
+
 .sp-form-group input:focus {
-  border-color: #7c5ac7;
-  box-shadow: 0 0 0 3px rgba(124, 90, 199, 0.12);
-  background: white;
+  border-color: #8E7DBE;
+  box-shadow: 0 0 0 3px rgba(142, 125, 190, 0.15);
+  background: #FFFDFC;
 }
 
 .sp-input-error {
-  border-color: #e74c3c !important;
-  background: #fff8f8 !important;
+  border-color: #C0392B !important;
+  background: #FDF2F2 !important;
 }
 
 .sp-field-error {
   font-size: 12px;
-  color: #e74c3c;
+  color: #C0392B;
   font-weight: 500;
 }
-
 
 /* ===========================
    ACTIONS
@@ -148,29 +159,28 @@
 
 .sp-save-success {
   font-size: 13.5px;
-  color: #278a48;
+  color: #71856A;
   font-weight: 600;
 }
 
 .sp-save-btn {
   padding: 12px 26px;
   border: none;
-  border-radius: 10px;
-  background: #7c5ac7;
-  color: white;
-  font-size: 14.5px;
+  border-radius: 8px;
+  background: #B85C38;
+  color: #FFFDFC;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(124, 90, 199, 0.28);
+  box-shadow: 0 2px 8px rgba(184, 92, 56, 0.25);
 }
 
 .sp-save-btn:hover {
-  background: #6848b0;
+  background: #8F432B;
   transform: translateY(-1px);
 }
-
 
 /* ===========================
    RESPONSIVE

@@ -60,12 +60,12 @@ const PROPERTIES = [
 ]
 
 const CITIES = [
-  { name: 'Bangalore', homes: 3, color: '#FCE7F0' },
-  { name: 'Hyderabad', homes: 2, color: '#D8F956' },
-  { name: 'Pune',      homes: 2, color: '#E6F7EB' },
-  { name: 'Mumbai',    homes: 2, color: '#E3EFFD' },
-  { name: 'Chennai',   homes: 2, color: '#FEF3D6' },
-  { name: 'Delhi NCR', homes: 1, color: '#F4F5F9' },
+  { name: 'Bangalore', homes: 3, color: '#F1E7DA' },
+  { name: 'Hyderabad', homes: 2, color: '#EAE5F5' },
+  { name: 'Pune',      homes: 2, color: '#EEF3EC' },
+  { name: 'Mumbai',    homes: 2, color: '#F5ECE1' },
+  { name: 'Chennai',   homes: 2, color: '#E8D4C4' },
+  { name: 'Delhi NCR', homes: 1, color: '#F7EFE6' },
 ]
 
 function Home() {
@@ -129,7 +129,7 @@ function Home() {
 
           <form className="search-box" onSubmit={handleSearch}>
             <span className="search-pin">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#19873d" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B85C38" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
@@ -210,19 +210,19 @@ function Home() {
         <div className="how-cards">
 
           <div className="how-card">
-            <div className="how-icon" style={{ background: '#FFE8F0' }}>🔍</div>
+            <div className="how-icon" style={{ background: '#F1E7DA' }}>🔍</div>
             <h3>Search</h3>
             <p>Tell us the city or locality you have in mind and see verified homes with real photos.</p>
           </div>
 
           <div className="how-card">
-            <div className="how-icon" style={{ background: '#CCEF4C' }}>❤️</div>
+            <div className="how-icon" style={{ background: '#EEF3EC' }}>❤️</div>
             <h3>Shortlist</h3>
             <p>Compare rent, size and amenities side by side, then keep the handful you actually love.</p>
           </div>
 
           <div className="how-card">
-            <div className="how-icon" style={{ background: '#E2F5E2' }}>📞</div>
+            <div className="how-icon" style={{ background: '#EAE5F5' }}>📞</div>
             <h3>Contact</h3>
             <p>Reach the owner or our city partner directly — no middlemen, no brokerage surprises.</p>
           </div>
