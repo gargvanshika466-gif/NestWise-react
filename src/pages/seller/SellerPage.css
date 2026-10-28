@@ -1,12 +1,17 @@
-/* ===========================
-   SELLER PAGE LAYOUT
-=========================== */
+/* ==========================================================
+   SELLER PAGE LAYOUT & SIDEBAR
+   Warm Real-Estate Design System:
+   - Sidebar: Warm deep brown (#35251D to #2A1D17)
+   - Active seller nav: Lavender (#8E7DBE)
+   - Content: Warm cream background (#FAF6F0)
+========================================================== */
 
 .seller-page {
   min-height: 100vh;
   display: flex;
-  background: #f0ebff;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: #FAF6F0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #2F2925;
 }
 
 /* ===========================
@@ -23,14 +28,11 @@
   flex-direction: column;
   padding: 28px 16px;
   box-sizing: border-box;
-  background: linear-gradient(
-    175deg,
-    #6c47b8 0%,
-    #7c5ac7 60%,
-    #8b6dd1 100%
-  );
-  color: white;
-  box-shadow: 4px 0 20px rgba(124, 90, 199, 0.2);
+  background: linear-gradient(180deg, #35251D 0%, #2A1D17 100%);
+  color: #FFFDFC;
+  box-shadow: 4px 0 24px rgba(47, 41, 37, 0.15);
+  border-right: 1px solid rgba(228, 216, 204, 0.15);
+  z-index: 100;
 }
 
 /* ===========================
@@ -38,24 +40,26 @@
 =========================== */
 
 .seller-logo {
-  padding: 5px 12px 28px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px 24px;
+  border-bottom: 1px solid rgba(255, 253, 252, 0.12);
 }
 
 .seller-logo h1 {
   margin: 0;
-  font-size: 26px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.5px;
+  color: #FFFDFC;
 }
 
 .seller-logo p {
-  margin: 6px 0 0;
-  font-size: 12px;
-  opacity: 0.75;
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  color: #EAE5F5;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  font-weight: 500;
+  letter-spacing: 1.2px;
+  font-weight: 600;
 }
 
 /* ===========================
@@ -65,8 +69,8 @@
 .seller-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 28px;
+  gap: 5px;
+  margin-top: 26px;
   flex: 1;
 }
 
@@ -74,19 +78,19 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 14px;
-  border-radius: 12px;
-  color: rgba(255, 255, 255, 0.85);
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: rgba(250, 246, 240, 0.75);
   text-decoration: none;
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
   position: relative;
 }
 
 .nav-icon {
-  width: 24px;
-  font-size: 17px;
+  width: 22px;
+  font-size: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,16 +98,16 @@
 }
 
 .seller-nav-link:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(250, 246, 240, 0.10);
+  color: #FFFDFC;
   transform: translateX(2px);
 }
 
 .seller-nav-link.active {
-  background: white;
-  color: #7c5ac7;
+  background: #8E7DBE;
+  color: #FFFFFF;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(142, 125, 190, 0.35);
 }
 
 .seller-nav-link.active .nav-icon {
@@ -111,7 +115,7 @@
 }
 
 /* ===========================
-   SELLER ACCOUNT
+   SELLER ACCOUNT & FOOTER
 =========================== */
 
 .seller-account-wrap {
@@ -125,52 +129,55 @@
   gap: 12px;
   width: 100%;
   padding: 14px 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border-top: 1px solid rgba(255, 253, 252, 0.12);
+  border-radius: 10px;
   border-left: none;
   border-right: none;
   border-bottom: none;
   cursor: pointer;
   background: transparent;
-  color: white;
+  color: #FFFDFC;
   font-family: inherit;
   transition: all 0.2s ease;
 }
 
 .seller-sidebar-footer:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(250, 246, 240, 0.10);
 }
 
 .seller-account-avatar {
   width: 38px;
   height: 38px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 253, 252, 0.15);
+  border: 1px solid rgba(255, 253, 252, 0.25);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 17px;
   flex-shrink: 0;
 }
 
 .seller-account-info {
   flex: 1;
+  text-align: left;
 }
 
 .seller-account-info p {
   margin: 0 0 2px;
   font-size: 13.5px;
   font-weight: 600;
+  color: #FFFDFC;
 }
 
 .seller-account-info span {
   font-size: 11.5px;
-  opacity: 0.75;
+  color: rgba(250, 246, 240, 0.7);
 }
 
 .seller-account-arrow {
-  font-size: 20px;
-  opacity: 0.7;
+  font-size: 18px;
+  color: rgba(250, 246, 240, 0.7);
   transition: transform 0.2s ease;
   display: inline-block;
 }
@@ -188,11 +195,10 @@
   bottom: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: white;
+  background: #FFFDFC;
   border-radius: 14px;
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.18),
-    0 2px 8px rgba(124, 90, 199, 0.15);
+  border: 1px solid #E4D8CC;
+  box-shadow: 0 12px 36px rgba(74, 52, 40, 0.18);
   overflow: hidden;
   animation: dropdownFadeIn 0.18s ease;
   z-index: 100;
@@ -203,7 +209,6 @@
     opacity: 0;
     transform: translateY(6px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -222,29 +227,29 @@
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #4A3428;
   text-align: left;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .seller-dropdown-item:hover {
-  background: #f5f0ff;
-  color: #7c5ac7;
+  background: #EAE5F5;
+  color: #6F6199;
 }
 
 .seller-dropdown-divider {
   height: 1px;
-  background: #f0eaff;
+  background: #E4D8CC;
   margin: 0;
 }
 
 .seller-dropdown-logout {
-  color: #c0392b;
+  color: #C0392B;
 }
 
 .seller-dropdown-logout:hover {
-  background: #fff0f0;
-  color: #c0392b;
+  background: #FDF2F2;
+  color: #C0392B;
 }
 
 /* ===========================
@@ -255,8 +260,9 @@
   width: calc(100% - 260px);
   min-height: 100vh;
   margin-left: 260px;
-  padding: 38px;
+  padding: 38px 44px;
   box-sizing: border-box;
+  background: #FAF6F0;
 }
 
 /* ===========================
@@ -271,7 +277,7 @@
   .seller-content {
     width: calc(100% - 220px);
     margin-left: 220px;
-    padding: 28px;
+    padding: 28px 24px;
   }
 }
 
@@ -307,6 +313,6 @@
   .seller-content {
     width: 100%;
     margin-left: 0;
-    padding: 22px 16px;
+    padding: 24px 16px;
   }
 }

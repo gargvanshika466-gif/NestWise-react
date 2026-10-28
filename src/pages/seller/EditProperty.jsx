@@ -12,20 +12,21 @@ function EditProperty() {
   if (!property) {
     return (
       <section style={{ padding: "40px", textAlign: "center" }}>
-        <h2 style={{ color: "#2d2d4e" }}>Property Not Found</h2>
-        <p style={{ color: "#777" }}>This property does not exist.</p>
+        <h2 style={{ color: "#4A3428", fontFamily: "'Fraunces', Georgia, serif" }}>Property Not Found</h2>
+        <p style={{ color: "#756A63" }}>This property does not exist.</p>
         <button
           onClick={() => navigate("/seller/properties")}
           style={{
             marginTop: "16px",
-            padding: "10px 22px",
-            background: "#7c5ac7",
-            color: "white",
+            padding: "11px 22px",
+            background: "#B85C38",
+            color: "#FFFDFC",
             border: "none",
-            borderRadius: "10px",
+            borderRadius: "8px",
             cursor: "pointer",
             fontFamily: "inherit",
             fontSize: "14px",
+            fontWeight: 700,
           }}
         >
           ← Back to My Properties

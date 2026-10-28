@@ -58,7 +58,7 @@ function Signup() {
 
   const handleSellerAccount = () => {
 
-    navigate("/list-property");
+    navigate("/seller");
 
   };
 

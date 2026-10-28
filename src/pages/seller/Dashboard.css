@@ -1,8 +1,15 @@
-/* NESTWISE DASHBOARD */
+/* ==========================================================
+   NESTWISE SELLER DASHBOARD
+   Warm Real-Estate Design System:
+   - Cards: Warm white (#FFFDFC) with beige borders (#E4D8CC)
+   - Primary action: Terracotta (#B85C38)
+   - Secondary action: Soft beige (#F1E7DA)
+   - Accents: Sage green (#71856A) & Seller lavender (#8E7DBE)
+========================================================== */
 
 .dashboard {
   width: 100%;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .dashboard-header {
@@ -10,15 +17,17 @@
 }
 
 .dashboard-header h1 {
-  margin: 0 0 8px;
-  font-size: 30px;
-  font-weight: 800;
-  color: #1a1a2e;
+  margin: 0 0 6px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #4A3428;
+  letter-spacing: -0.5px;
 }
 
 .dashboard-header p {
   margin: 0;
-  color: #666;
+  color: #756A63;
   font-size: 15px;
 }
 
@@ -34,29 +43,31 @@
 }
 
 .stat-card {
-  background: white;
+  background: #FFFDFC;
   padding: 22px 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
-  border-left: 6px solid #7c5ac7;
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #E4D8CC;
+  border-left: 5px solid #8E7DBE;
+  box-shadow: 0 4px 16px rgba(74, 52, 40, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(124, 90, 199, 0.14);
+  box-shadow: 0 8px 24px rgba(74, 52, 40, 0.10);
+  border-color: #D6C6B6;
 }
 
 .stat-card.stat-published {
-  border-left-color: #278a48;
+  border-left-color: #71856A;
 }
 
 .stat-card.stat-pending {
-  border-left-color: #a56b00;
+  border-left-color: #B85C38;
 }
 
 .stat-card.stat-draft {
-  border-left-color: #9c84c8;
+  border-left-color: #8E7DBE;
 }
 
 .stat-icon {
@@ -65,31 +76,33 @@
 }
 
 .stat-card h3 {
-  margin: 0 0 8px;
-  color: #555;
-  font-size: 13.5px;
-  font-weight: 600;
+  margin: 0 0 6px;
+  color: #756A63;
+  font-size: 12.5px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.6px;
+  font-family: 'Inter', sans-serif;
 }
 
 .stat-card p {
   margin: 0;
   font-size: 32px;
   font-weight: 800;
-  color: #7c5ac7;
+  color: #8E7DBE;
+  letter-spacing: -0.5px;
 }
 
 .stat-published p {
-  color: #278a48;
+  color: #71856A;
 }
 
 .stat-pending p {
-  color: #a56b00;
+  color: #B85C38;
 }
 
 .stat-draft p {
-  color: #9c84c8;
+  color: #8E7DBE;
 }
 
 /* ===========================
@@ -97,18 +110,20 @@
 =========================== */
 
 .quick-actions {
-  background: white;
-  padding: 24px;
+  background: #FFFDFC;
+  padding: 26px 28px;
   border-radius: 16px;
+  border: 1px solid #E4D8CC;
   margin-bottom: 22px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 16px rgba(74, 52, 40, 0.05);
 }
 
 .quick-actions h2 {
   margin: 0 0 18px;
-  font-size: 19px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
   font-weight: 700;
-  color: #2d2d4e;
+  color: #4A3428;
 }
 
 .action-buttons {
@@ -119,34 +134,38 @@
 
 .action-btn {
   border: none;
-  padding: 12px 22px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  font-family: inherit;
+  font-family: 'Inter', sans-serif;
   transition: all 0.2s ease;
 }
 
+/* Major primary action: Terracotta */
 .action-btn-primary {
-  background: #7c5ac7;
-  color: white;
-  box-shadow: 0 4px 12px rgba(124, 90, 199, 0.28);
+  background: #B85C38;
+  color: #FFFDFC;
+  box-shadow: 0 2px 8px rgba(184, 92, 56, 0.25);
 }
 
 .action-btn-primary:hover {
-  background: #6848b0;
+  background: #8F432B;
   transform: translateY(-1px);
 }
 
+/* Secondary action: Soft beige */
 .action-btn-secondary {
-  background: #f0eaff;
-  color: #7c5ac7;
-  border: 1.5px solid #c4b5e8;
+  background: #F1E7DA;
+  color: #4A3428;
+  border: 1.5px solid #E4D8CC;
 }
 
 .action-btn-secondary:hover {
-  background: #e4d6ff;
+  background: #E8D4C4;
+  border-color: #D6C6B6;
+  color: #2F2925;
   transform: translateY(-1px);
 }
 
@@ -155,22 +174,24 @@
 =========================== */
 
 .recent-activity {
-  background: white;
-  padding: 24px;
+  background: #FFFDFC;
+  padding: 26px 28px;
   border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  border: 1px solid #E4D8CC;
+  box-shadow: 0 4px 16px rgba(74, 52, 40, 0.05);
 }
 
 .recent-activity h2 {
   margin: 0 0 18px;
-  font-size: 19px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
   font-weight: 700;
-  color: #2d2d4e;
+  color: #4A3428;
 }
 
 .empty-recent {
   text-align: center;
-  padding: 28px 20px;
+  padding: 34px 20px;
 }
 
 .empty-recent-icon {
@@ -180,7 +201,7 @@
 
 .empty-recent p {
   margin: 0;
-  color: #888;
+  color: #756A63;
   font-size: 14px;
 }
 
@@ -195,15 +216,16 @@
   align-items: center;
   gap: 14px;
   padding: 14px;
-  border: 1.5px solid #f0eaff;
+  border: 1px solid #E4D8CC;
   border-radius: 12px;
+  background: #FFFDFC;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .recent-property:hover {
-  border-color: #c4b5e8;
-  background: #faf8ff;
+  border-color: #B85C38;
+  background: #FAF6F0;
   transform: translateX(3px);
 }
 
@@ -213,7 +235,8 @@
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
-  background: #f0eaff;
+  background: #F1E7DA;
+  border: 1px solid #E4D8CC;
 }
 
 .recent-property-img img {
@@ -231,18 +254,19 @@
   margin: 0 0 4px;
   font-size: 15px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #4A3428;
+  font-family: 'Inter', sans-serif;
 }
 
 .recent-location {
   margin: 0 0 2px;
-  color: #777;
+  color: #756A63;
   font-size: 12.5px;
 }
 
 .recent-rent {
   margin: 0;
-  color: #7c5ac7;
+  color: #B85C38;
   font-weight: 700;
   font-size: 13.5px;
 }
@@ -252,28 +276,32 @@
 =========================== */
 
 .property-status {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
   white-space: nowrap;
   flex-shrink: 0;
+  letter-spacing: 0.4px;
 }
 
 .property-status.published {
-  background: #e8f7ed;
-  color: #278a48;
+  background: #EEF3EC;
+  color: #52634E;
+  border: 1px solid #D6E0D3;
 }
 
 .property-status.pending {
-  background: #fff4dc;
-  color: #a56b00;
+  background: #FAF0EB;
+  color: #8F432B;
+  border: 1px solid #F0D5C9;
 }
 
 .property-status.draft {
-  background: #eee9f8;
-  color: #7c5ac7;
+  background: #EAE5F5;
+  color: #6F6199;
+  border: 1px solid #D6CEEC;
 }
 
 /* ===========================
