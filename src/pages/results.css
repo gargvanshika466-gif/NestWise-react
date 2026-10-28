@@ -1003,6 +1003,7 @@
 }
 
 .nw-price-row h3 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   margin: 0;
   font-size: 24px;
   font-weight: 800;
@@ -1011,6 +1012,7 @@
 }
 
 .nw-price-row small {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: var(--muted);
